@@ -227,7 +227,7 @@ def MainGame():
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 120
-            alien_x_start_pos = 60
+            alien_x_start_pos = 100
             alien_layout = [[1,1,1,1,1],
                            [1,1,1,1,1],
                            [1,1,1,1,1],
@@ -237,7 +237,7 @@ def MainGame():
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 120
-            alien_x_start_pos = 60
+            alien_x_start_pos = 100
             alien_layout = [[1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1],
@@ -565,6 +565,7 @@ def MainGame():
             super().__init__(xpos,ypos)
             self.length = 30
             self.height = 20
+            self.uplift = 0
 
         def Move_Player(self):
             ## updating the shoot timer
@@ -666,20 +667,21 @@ def MainGame():
                         ## playing the alien collide sound
                         Player_Bullet.Alien_Collide_Sound.play()
 
-                        ## removing the bullet from the player bullet's list
-                        if self in player_1_bullets:
-                            player_1_bullets.remove(self)
-                        elif self in player_2_bullets:
-                            player_2_bullets.remove(self)
-
                         ## subtracting health from the aliens
                         alien.health = alien.health - 1
                         
                         ## checking if the alien's health is equal to zero
                         if alien.health == 0:
+
                             ## splitting the alien
                             alien.Split()
                         else:
+                            ## removing the bullet from the player bullet's list
+                            if self in player_1_bullets:
+                                player_1_bullets.remove(self)
+                            elif self in player_2_bullets:
+                                player_2_bullets.remove(self)
+                            
                             ## breaking otherwise because the player's score are not updated unless the alien disappears
                             break
 
@@ -692,10 +694,12 @@ def MainGame():
                         elif alien.type == 3:
                             increment = 3
 
-                        ## updating the player scores
+                        ## updating the player scores and removing the player's bullet
                         if self in player_1_bullets:
+                            player_1_bullets.remove(self)
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
                         elif self in player_2_bullets:
+                            player_2_bullets.remove(self)
                             player_2_score.phrase[2] = player_2_score.phrase[2] + increment
 
                         ## updating the high score

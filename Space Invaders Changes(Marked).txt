@@ -73,7 +73,7 @@
           I also made sure that is the cause because the player's score only updates when it's health decreases to zero
        Time for the ULTRA FUN AND EXCITING LEVEL PART
       23) did This is the time when I began to add levels to the game. For level 3, I added a few big aliens didasdfjasldfja;lksdfja;lsdjf;asdjf;la
-      24) I made the scalefactor for more TREMEMDOUS FUN positioning of the aliens and loaded the aliens based on the x and y scale factor. The aliens now
+      24) did I made the scalefactor for more TREMEMDOUS FUN positioning of the aliens and loaded the aliens based on the x and y scale factor. The aliens now
           looks like a giant ship
       25) did I updated the scale factor a little bit by making the size and the dimentions different from it creating many bugs. I also made sure that when
  the size is one, the size multipler is 1 using the recursive property
@@ -87,13 +87,16 @@
       33)did  I made all the aliens move the same steps because previously, it was so difficult to arrange levels, and I also made a level with a big alien
           comprised of many small aliens
       34) did I made sure to add the level every time the aliens refill and that it is equal to zero every time that the level restarts again.
-      35) I added the yshift to the aliens so they know where to start by making it originally 120
+      35) did I added the yshift to the aliens so they know where to start by making it originally 120 and also added the xshift originally at 100
       36) did I removed the aspect where the aliens move downwards after each level by removing every area where the alien counter position is
-      37)  I made sure that the aliens are positioned out directly towards the alien x distance and the alien y distance fromt he alein x factor * 15 and 
+      37)  did I made sure that the aliens are positioned out directly towards the alien x distance and the alien y distance fromt he alein x factor * 15 and 
           the alien y factor * 15 
       38) did I made sure that the aliens do not have a backup xpos anymore of 100 pixels
       39) did I increased it to 60 pixels so the aliens don't jump down uncessarily
-      40) I made sure that the aliens shoot down at me
+      40) did I made sure that the aliens shoot down at me
+      advice
+      41) I added a monster and a dodge bullet 
+      42) I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets
           
 a 2 is equivalent to a big alien
 

@@ -209,7 +209,7 @@ def MainGame():
         nonlocal Flag_Game_Level
 
         ## resetting all the alien attributes
-        Alien.Timer = 40
+        Alien.Timer = 20
         Alien.Animation = 0
         Alien.Flag_Collide_Side = None
         Alien.Flag_Down_Step = None
@@ -218,16 +218,26 @@ def MainGame():
         ## resetting alien movement sounds and position moving down the screen afters each level
         Alien.Counter_Background_Sound = 1 
         if Start_Game == True:
-            Alien.Counter_Position = 0
+            Flag_Game_Level = 0
+        
+        Flag_Game_Level = Flag_Game_Level + 1
 
         ## layouts for various levels
         if Flag_Game_Level == 1:
+            alien_x_distance = 30
+            alien_y_distance = 30
+            alien_y_start_pos = 120
+            alien_x_start_pos = 60
             alien_layout = [[1,1,1,1,1],
                            [1,1,1,1,1],
                            [1,1,1,1,1],
-                           [1,1,1,1,3]]
+                           [1,1,1,1,2]]
         
         elif Flag_Game_Level == 2:
+            alien_x_distance = 30
+            alien_y_distance = 30
+            alien_y_start_pos = 120
+            alien_x_start_pos = 60
             alien_layout = [[1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1],
@@ -239,11 +249,11 @@ def MainGame():
                 if alien_layout[row][column] >= 1:
                     ## adding the aliens to the group list
                     if row == 4 or row == 3:
-                        aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,2,alien_layout[row][column]))
+                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,2,alien_layout[row][column]))
                     elif row == 2 or row == 1:
-                        aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,1,alien_layout[row][column]))
+                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,1,alien_layout[row][column]))
                     else:
-                        aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,3,alien_layout[row][column]))
+                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,3,alien_layout[row][column]))
 
 
     def Barrier_Refill():
@@ -382,12 +392,11 @@ def MainGame():
     class Alien(Game_Element):                                                                                                                                                                                 
         ## movement
         Speed = 5
-        Timer = 40
+        Timer = 20
         Flag_Collide_Side = None
         Flag_Down_Step = False
         
         ## counters
-        Counter_Position = 0
         Counter_Background_Sound = 1
 
         ## animation
@@ -452,10 +461,6 @@ def MainGame():
  
         def Move_Alien(self):
             self.xpos = self.xpos + self.Speed
-            if self.Current_Animation == 0:
-                self.Current_Animation = 1
-            elif self.Current_Animation == 1:
-                self.Current_Animation = 0
 
             ## checking if the alien hits the edge
             if self.xpos + self.length >= 440:
@@ -464,7 +469,7 @@ def MainGame():
                 Alien.Flag_Collide_Side = 'left'
 
         def Move_Down(self):
-            self.ypos = self.ypos + (15 - (Alien.Counter_Position/2))
+            self.ypos = self.ypos + 15
             if Alien.Flag_Collide_Side == 'left':
                 Alien.Speed = 5
             elif Alien.Flag_Collide_Side == 'right':
@@ -490,9 +495,17 @@ def MainGame():
                 Flag_Gameover = True
 
         def Shoot(self):
-            ## aliens shooting a bullet
-            if random.randint(1,100) == 1:
-                alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
+            ## aliens shooting a bullet at player 1
+            if player_1 != None:
+                if self.xpos + self.length > player_1.xpos and player_1.xpos + player_1.length > self.xpos:
+                    if random.randint(1,30) == 1:
+                        alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
+            
+            # aliens shooting a bullet at player 2
+            if player_2 != None:
+                if self.xpos + self.length > player_2.xpos and player_2.xpos + player_2.length > self.xpos:
+                    if random.randint(1,30) == 1:
+                        alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
 
         def Split(self):
 
@@ -515,11 +528,11 @@ def MainGame():
 
         def Draw(self,color='white'):
             if color == 'white':
-                return screen.blit(Alien.Image_List[self.size - 1][0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[self.size - 1][0][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
             elif color == 'green':
-                return screen.blit(Alien.Image_List[self.size - 1][1][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[self.size - 1][1][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
             elif color == 'red':
-                return screen.blit(Alien.Image_List[self.size - 1][2][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[self.size - 1][2][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
 
         def Draw_Letter_Take(self):
             return screen.blit(Alien.Letter_Flip_Image_List[self.Current_Animation],(self.xpos - 8,self.ypos))
@@ -1437,12 +1450,22 @@ def MainGame():
             if len(Alien_Explosion_List) == 0:
                 Alien.Timer = Alien.Timer - 1
                 if  Alien.Timer <= 0:
-                    Alien.Timer = 40
+                    Alien.Timer = 20
+
+                    ## updating the alien's animation 
+                    if Alien.Current_Animation == 0:
+                        Alien.Current_Animation = 1
+                    elif Alien.Current_Animation == 1:
+                        Alien.Current_Animation = 0
+
+                    ## moving the aliens down whenever the aliens reach a side
                     if Alien.Flag_Collide_Side != None:
                         for alien in aliens:
                             alien.Move_Down()
                             alien.Shoot()
                             alien.Check()
+                    
+                    ## moving the aliens regularly
                     elif Alien.Flag_Collide_Side == None:
                         for alien in aliens:
                             alien.Move_Alien()
@@ -1671,7 +1694,7 @@ def MainGame():
                 else:
                     bullet_explosion_Iteration_Counter = bullet_explosion_Iteration_Counter + 1
 
-        ## updating the window
+        ## updating the windo
             pygame.display.update()
             clock.tick(60)
 
@@ -1681,11 +1704,6 @@ def MainGame():
                 alien_bullets = []
                 player_1_bullets = []
                 player_2_bullets = []
-
-                ## changing the alien's counter ypos
-                Alien.Counter_Position = Alien.Counter_Position + 1
-                if Alien.Counter_Position == 10:
-                    Alien.Counter_Position = 0
 
                 ## resetting the player's xpos 
                 if player_1 != None:

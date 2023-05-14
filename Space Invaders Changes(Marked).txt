@@ -1,5 +1,5 @@
 1) Deleted Alien.Counter Movement
-
+testing
 2) Repositioned Flag_Gameover = False
 3) Added the Flag_Level part 
 4) Adding the Flag_Level display at the very end of the menu
@@ -12,7 +12,7 @@
 	2) I changed the layout for the aliens to only 2-D lists instaed of 3-D lists
 	3) I reverted how the aliens are filled by different ways by removing alien grou pand xpos
 		a) I removed alien_group
-            b) I changed the group iteration to column iteration
+            b) I changed the group iteration to column iteration 
             c) I changed the group* to the column*30
             d) I removed xpos counter
       4) I changed how the aliens are iterated in player bullets check through a variety of steps

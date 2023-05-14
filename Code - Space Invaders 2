@@ -228,22 +228,22 @@ def MainGame():
                            [1,1,1,1,1]]
         
         elif Flag_Game_Level == 2:
-            alien_layout = [[0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0]]
+            alien_layout = [[1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1]]
         
         ## filling the aliens
         for row in range(len(alien_layout) - 1,-1,-1):
             for column in range(len(alien_layout[row]) - 1,-1,-1):
-                ## adding the aliens to the group list
-                if row == 4 or row == 3:
-                    aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,2))
-                elif row == 2 or row == 1:
-                    aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,1))
-                else:
-                    aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,3))
+                if alien_layout[row][column] >= 1:
+                    ## adding the aliens to the group list
+                    if row == 4 or row == 3:
+                        aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,2))
+                    elif row == 2 or row == 1:
+                        aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,1))
+                    else:
+                        aliens.append(Alien(column*30 + 100,row*30 + 120 + 6*Alien.Counter_Position,3))
 
 
     def Barrier_Refill():

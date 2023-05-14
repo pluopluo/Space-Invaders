@@ -1538,7 +1538,7 @@ def MainGame():
                                 player_2.Flag_Movement_Direction = None
                         else:
                             if player_1.Flag_Movement_Direction == 'right':
-                                player_1.Flag_Movement_Direction = None
+                                player_1.Flag_Movement_Direction = Nones
 
     ## drawing things 
         ## drawing the alien invasion line

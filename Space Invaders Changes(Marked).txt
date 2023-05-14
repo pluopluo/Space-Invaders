@@ -96,7 +96,7 @@
       40) did I made sure that the aliens shoot down at me
       advice
       41) I added a monster and a dodge bullet 
-      42) I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets
+      42) I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets and in the if conditions to incrase the score
           
 a 2 is equivalent to a big alien
 

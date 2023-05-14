@@ -222,10 +222,10 @@ def MainGame():
 
         ## layouts for various levels
         if Flag_Game_Level == 1:
-            alien_layout = [[0,0,0,0,0],
-                           [0,0,0,0,0],
-                           [0,0,0,0,0],
-                           [0,0,0,0,0]]
+            alien_layout = [[1,1,1,1,1],
+                           [1,1,1,1,1],
+                           [1,1,1,1,1],
+                           [1,1,1,1,1]]
         
         elif Flag_Game_Level == 2:
             alien_layout = [[0,0,0,0,0,0,0,0,0],
@@ -607,6 +607,10 @@ def MainGame():
             if self in player_1_bullets or self in player_2_bullets:
                 for alien in aliens:
                     if Collide(alien,self) == True:
+
+                        ## removing the alien from the list
+                        aliens.remove(alien)
+
                         ## checking how much should be added to the scores based on the alien type
                         increment = 0
                         if alien.type == 2:
@@ -1620,7 +1624,7 @@ def MainGame():
 
         ## updating the window
             pygame.display.update()
-            clock.tick(600)
+            clock.tick(60)
 
             ## checking if all the aliens are shot
             if len(aliens) == 0 and len(Alien_Explosion_List) == 0:

@@ -615,6 +615,9 @@ def MainGame():
         img = pygame.image.load(Game_Element.Basic_Url+'Player Bullet\player bullet green.jpeg')
         Green_Image = pygame.transform.scale(img,(2,16))
 
+        ## setting up the sound
+        Alien_Collide_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'alien shot sound.wav')
+
         ## setting up the destruction ranges
         Dr = [2,5,4,7]
 
@@ -647,6 +650,9 @@ def MainGame():
                 for alien in aliens:
                     if Collide(alien,self) == True:
 
+                        ## playing the alien collide sound
+                        Player_Bullet.Alien_Collide_Sound.play()
+
                         ## removing the bullet from the player bullet's list
                         if self in player_1_bullets:
                             player_1_bullets.remove(self)
@@ -655,10 +661,13 @@ def MainGame():
 
                         ## subtracting health from the aliens
                         alien.health = alien.health - 1
+                        
+                        ## checking if the alien's health is equal to zero
                         if alien.health == 0:
-                            ## removing the alien from the list
+                            ## splitting the alien
                             alien.Split()
                         else:
+                            ## breaking otherwise because the player's score are not updated unless the alien disappears
                             break
 
                         ## checking how much should be added to the scores based on the alien type
@@ -678,9 +687,6 @@ def MainGame():
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment
-
-                        ## playing the explosion sound
-                        Alien_Explosion.Sound.play()
                         break 
 
                     if self not in player_1_bullets and self not in player_2_bullets:
@@ -935,8 +941,6 @@ def MainGame():
         ## setting up the Existing_Timer
         Existing_Timer = 10
 
-        ## setting up the sound
-        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'alien shot sound.wav')
         def Update_Timer(self):
             self.Existing_Timer = self.Existing_Timer - 1
             if self.Existing_Timer == 0:

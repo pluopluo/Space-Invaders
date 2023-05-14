@@ -96,7 +96,7 @@
       39) I increased it to 60 pixels so the aliens don't jump down uncessarily
           
 a 2 is equivalent to a big alien
-      
+
 
 ## Tools to be erased and only used for convvenience
 commented things using four hastags

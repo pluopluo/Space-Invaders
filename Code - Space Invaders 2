@@ -218,7 +218,7 @@ def MainGame():
         ## resetting alien movement sounds and position moving down the screen afters each level
         Alien.Counter_Background_Sound = 1 
         if Start_Game == True:
-            Flag_Game_Level = 0
+            Flag_Game_Level = 3
         
         Flag_Game_Level = Flag_Game_Level + 1
 
@@ -231,8 +231,94 @@ def MainGame():
             alien_layout = [[1,1,1,1,1],
                            [1,1,1,1,1],
                            [1,1,1,1,1],
-                           [1,1,1,1,2]]
+                           [1,1,1,1,1]]
+
+            counter = 0
+            for row in alien_layout:
+                for column in row:
+                    if column == 1:
+                        counter = counter + 1
+                    elif column == 2:
+                        counter = counter + 5
+            print(counter)
         
+        elif Flag_Game_Level == 2:
+            alien_x_distance = 30
+            alien_y_distance = 30
+            alien_y_start_pos = 120
+            alien_x_start_pos = 100
+            alien_layout = [[1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1]]
+
+            counter = 0
+            for row in alien_layout:
+                for column in row:
+                    if column == 1:
+                        counter = counter + 1
+                    elif column == 2:
+                        counter = counter + 5
+            print(counter)
+
+        elif Flag_Game_Level == 3:
+            alien_x_distance = 20
+            alien_y_distance = 20
+            alien_y_start_pos = 120
+            alien_x_start_pos = 100
+            alien_layout = [[0,0,1,0,0,0,0,0,1,0,0],
+                            [0,0,0,1,0,0,0,1,0,0,0],
+                            [0,0,1,1,1,1,1,1,1,0,0],
+                            [0,1,1,0,1,1,1,0,1,1,0],
+                            [1,1,1,1,1,1,1,1,1,1,1],
+                            [1,0,1,1,1,1,1,1,1,0,1],
+                            [1,0,1,0,0,0,0,0,1,0,1],
+                            [0,0,0,1,1,0,1,1,0,0,0]]
+
+            counter = 0
+            for row in alien_layout:
+                for column in row:
+                    if column == 1:
+                        counter = counter + 1
+                    elif column == 2:
+                        counter = counter + 5
+            print(counter)
+
+        elif Flag_Game_Level == 4:
+            alien_x_distance = 20
+            alien_y_distance = 15
+            alien_y_start_pos = 120
+            alien_x_start_pos = 100
+            alien_layout = [[1,1,0,0,0,0,0,0,1,1],
+                            [1,1,0,0,0,0,0,0,1,1],
+                            [1,1,0,0,0,0,0,0,1,1],
+                            [1,1,0,0,2,0,0,0,1,1],
+                            [0,1,1,0,0,0,0,1,1,0],
+                            [0,1,1,0,0,0,0,1,1,0],
+                            [0,1,1,0,0,0,0,1,1,0],
+                            [0,0,1,1,0,0,1,1,0,0],
+                            [0,0,1,1,0,0,1,1,0,0],                 
+                            [0,0,0,1,1,1,1,0,0,0],    
+                            [0,0,0,0,1,1,0,0,0,0]]
+            counter = 0
+            for row in alien_layout:
+                for column in row:
+                    if column == 1:
+                        counter = counter + 1
+                    elif column == 2:
+                        counter = counter + 5
+            print(counter)
+
+        elif Flag_Game_Level == 5:
+            alien_x_distance = 30
+            alien_y_distance = 30
+            alien_y_start_pos = 120
+            alien_x_start_pos = 100
+            alien_layout = [[0,0,0,0,0,0,0],
+                            [0,0,3,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0]]
+
         elif Flag_Game_Level == 2:
             alien_x_distance = 30
             alien_y_distance = 30
@@ -248,9 +334,9 @@ def MainGame():
             for column in range(len(alien_layout[row]) - 1,-1,-1):
                 if alien_layout[row][column] >= 1:
                     ## adding the aliens to the group list
-                    if row == 4 or row == 3:
+                    if row > 3/5*len(alien_layout):
                         aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,2,alien_layout[row][column]))
-                    elif row == 2 or row == 1:
+                    elif row > 1/5*len(alien_layout):
                         aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,1,alien_layout[row][column]))
                     else:
                         aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,3,alien_layout[row][column]))
@@ -700,7 +786,6 @@ def MainGame():
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
-                            player_2_score.phrase[2] = player_2_score.phrase[2] + increment
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment

@@ -230,7 +230,7 @@ def MainGame():
         ## resetting alien movement sounds and position moving down the screen afters each level
         Alien.Counter_Background_Sound = 1 
         if Start_Game == True:
-            Flag_Game_Level = 6
+            Flag_Game_Level = 8
         
         ## increasing the level of the game
         Flag_Game_Level = Flag_Game_Level + 1
@@ -336,7 +336,75 @@ def MainGame():
                             [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1]]
+        
+        elif Flag_Game_Level == 8:
+            alien_x_distance = 20
+            alien_y_distance = 20
+            alien_y_start_pos = 100
+            alien_x_start_pos = 60
+            alien_layout = [[0,0,0,0,0,0,0,0,0,0,0,0,0],
+                            [3,0,0,0,0,0,3,0,0,0,0,0,3],
+                            [0,0,0,0,0,0,0,0,0,0,0,0,0]]
+        
+
+        elif Flag_Game_Level == 9:
+            alien_x_distance = 20
+            alien_y_distance = 20
+            alien_y_start_pos = 100
+            alien_x_start_pos = 100
+            alien_layout = [[0,0,0,0,0,0,0,0,0,0,0,0],
+                            [3,0,0,0,0,1,0,3,0,0,0,1],
+                            [0,0,0,0,0,0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0,0,0,0,0,0]]
+
+
+        elif Flag_Game_Level == 10:
+            alien_x_distance = 20
+            alien_y_distance = 20
+            alien_y_start_pos = 100
+            alien_x_start_pos = 60
+            alien_layout = [[0],
+                            [4],
+                            [0]]
+            
+        elif Flag_Game_Level == 11:
+            alien_x_distance = 30
+            alien_y_distance = 30
+            alien_y_start_pos = 20
+            alien_x_start_pos = 60
+            alien_layout = [[0,0,0,0,0,0,0,0,0],
+                            [2,0,2,0,2,0,2,0,2],
+                            [0,0,0,0,0,0,0,0,0],
+                            [2,0,2,0,2,0,2,0,2],
+                            [0,0,0,0,0,0,0,0,0],
+                            [2,0,2,0,2,0,2,0,2],
+                            [0,0,0,0,0,0,0,0,0],
+                            [2,0,2,0,2,0,2,0,2]]
             saens()
+            
+        elif Flag_Game_Level == 12:
+            alien_x_distance = 20
+            alien_y_distance = 15
+            alien_y_start_pos = 50
+            alien_x_start_pos = 60
+            alien_layout = [[1,1,1,1,1,0,1,0,0,0,1,0,1,1,1,1],
+                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
+                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
+                            [0,0,1,0,0,0,1,1,1,1,1,0,1,1,1,1],
+                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
+                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
+                            [0,0,1,0,0,0,1,0,0,0,1,0,1,1,1,1],
+                            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                            [1,1,1,1,0,1,0,0,0,1,0,1,1,1,1,0],
+                            [1,0,0,0,0,1,1,0,0,1,0,1,0,0,0,1],
+                            [1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
+                            [1,1,1,1,0,1,0,1,0,1,0,1,0,0,0,1],
+                            [1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
+                            [1,0,0,0,0,1,0,0,1,1,0,1,0,0,0,1],
+                            [1,1,1,1,0,1,0,0,0,1,0,1,1,1,1,0]]
+            saens()
+
+
     
         ## filling the aliens
         for row in range(len(alien_layout) - 1,-1,-1):

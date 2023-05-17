@@ -1,2 +1,2 @@
 # Space Invaders
-Space Invaders and My own incorperated version Built With Python
+Space Invaders and my own incorperated version Built With Python

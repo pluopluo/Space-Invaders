@@ -1,3 +1,2 @@
 # Space Invaders
-Space Invaders Built With PYthon
-testing
+Space Invaders and My own incorperated version Built With Python

@@ -97,6 +97,7 @@
       advice
       41) I added a monster and a dodge bullet 
       42) did I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets and in the if conditions to incrase the score
+      43) did I made the aliens add an alien bullet in the right sport
           
 a 2 is equivalent to a big alien
 

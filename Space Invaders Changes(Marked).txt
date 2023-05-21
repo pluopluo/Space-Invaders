@@ -98,9 +98,12 @@
       41) I added a monster and a dodge bullet 
       42) did I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets and in the if conditions to incrase the score
       43) did I made the aliens add an alien bullet in the right sport
+<<<<<<< HEAD
       44) did I added a function to decipher how many aliens on the screen and how many shots neeeded as each level goes up
       45) did I made sure to level draw after every level. 
 
+=======
+>>>>>>> cc9470ddb6723a3757c55e700b00a3b48d71daf8
           
 a 2 is equivalent to a big alien
 

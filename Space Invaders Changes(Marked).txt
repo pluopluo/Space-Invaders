@@ -1,5 +1,4 @@
 1) Deleted Alien.Counter Movement
-
 2) Repositioned Flag_Gameover = False
 3) Added the Flag_Level part 
 4) Adding the Flag_Level display at the very end of the menu
@@ -12,7 +11,7 @@
 	2) I changed the layout for the aliens to only 2-D lists instaed of 3-D lists
 	3) I reverted how the aliens are filled by different ways by removing alien grou pand xpos
 		a) I removed alien_group
-            b) I changed the group iteration to column iteration
+            b) I changed the group iteration to column iteration 
             c) I changed the group* to the column*30
             d) I removed xpos counter
       4) I changed how the aliens are iterated in player bullets check through a variety of steps
@@ -73,27 +72,35 @@
       22) I deupgraded the alien so that it's health is decreased manually, and whenever it's health reaches zero, that's when the functions take place.
           I also made sure that is the cause because the player's score only updates when it's health decreases to zero
        Time for the ULTRA FUN AND EXCITING LEVEL PART
-      23) This is the time when I began to add levels to the game. For level 3, I added a few big aliens
-      24) I made the scalefactor for more TREMEMDOUS FUN positioning of the aliens and loaded the aliens based on the x and y scale factor. The aliens now
+      23) did This is the time when I began to add levels to the game. For level 3, I added a few big aliens didasdfjasldfja;lksdfja;lsdjf;asdjf;la
+      24) did I made the scalefactor for more TREMEMDOUS FUN positioning of the aliens and loaded the aliens based on the x and y scale factor. The aliens now
           looks like a giant ship
-      25) I updated the scale factor a little bit by making the size and the dimentions different from it creating many bugs. I also made sure that when
+      25) did I updated the scale factor a little bit by making the size and the dimentions different from it creating many bugs. I also made sure that when
  the size is one, the size multipler is 1 using the recursive property
-      26) I made the entire alien class have only one animation so that when I load new aliens, it will match all the other aliens
-      27) That just cause the entire alien class system to crash and the aliens do not change animation anymore. I instead only changed animations after all the aliens have moved
-      28) I uploaded all the alien images differently in a more structured and more organized manner having checked 3 times
-      29) I upgraded the code so that I first transformed the image before appending the image into a list. I edited if self.size > 1 for splitting from	    if self.size != 1
-      30) I upgraded the alien's health to increase exponentially
-      31) I upgraded the timer so the timer is shorter as this makes the game a little more difficult
-      32) I made the alien timer 30 now and I also made the bigger aliens move bigger steps then the smaller aliens
-      33) I made all the aliens move the same steps because previously, it was so difficult to arrange levels, and I also made a level with a big alien
-          comprised of many small aliens
-      34) I made sure to add the level every time the aliens refill and that it is equal to zero every time that the level restarts again.
-      35) I added the yshift to the aliens so they know where to start by making it originally 120
-      36) I removed the aspect where the aliens move downwards after each level by removing every area where the alien counter position is
-      37) I made sure that the aliens are positioned out directly towards the alien x distance and the alien y distance fromt he alein x factor * 15 and 
-          the alien y factor * 15 
-      38) I made sure that the aliens do not have a backup xpos anymore of 100 pixels
-      39) I increased it to 60 pixels so the aliens don't jump down uncessarily
+      26) did I made the entire alien class have only one animation so that when I load new aliens, it will match all the other aliens
+      27) did  That just cause the entire alien class system to crash and the aliens do not change animation anymore. I instead only changed animations after all the aliens have moved
+      28) did I uploaded all the alien images differently in a more structured and more organized manner having checked 3 times
+      29)did  I upgraded the code so that I first transformed the image before appending the image into a list. I edited if self.size > 1 for splitting from	    if self.size != 1
+      30) did I upgraded the alien's health to increase exponentially
+      31) did I upgraded the timer so the timer is shorter as this makes the game a little more difficult
+      32) did I made the alien timer 30 now and I also made the bigger aliens move bigger steps then the smaller aliens
+      33)did  I made all the aliens move the same steps because previously, it was so difficult to arrange levels, and I also made a level with a big alien
+          did comprised of many small aliens
+      34) did I made sure to add the level every time the aliens refill and that it is equal to zero every time that the level restarts again.
+      35) did I added the yshift to the aliens so they know where to start by making it originally 120 and also added the xshift originally at 100
+      36) did I removed the aspect where the aliens move downwards after each level by removing every area where the alien counter position is
+      37)  did I made sure that the aliens are positioned out directly towards the alien x distance and the alien y distance fromt he alein x factor * 15 and 
+          did the alien y factor * 15 
+      38) did I made sure that the aliens do not have a backup xpos anymore of 100 pixels
+      39) did I increased it to 60 pixels so the aliens don't jump down uncessarily
+      40) did I made sure that the aliens shoot down at me or aim at me
+      advice
+      41) I added a monster and a dodge bullet 
+      42) did I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets and in the if conditions to incrase the score
+      43) did I made the aliens add an alien bullet in the right sport
+      44) did I added a function to decipher how many aliens on the screen and how many shots neeeded as each level goes up
+      45) did I made sure to level draw after every level. 
+
           
 a 2 is equivalent to a big alien
 

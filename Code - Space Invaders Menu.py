@@ -501,8 +501,8 @@ def MainGame_1():
 
     ## main class
     class Game_Element:
-        Basic_Sound_Url = 'Sounds\\'
-        Basic_Url = 'Images\\'
+        Basic_Sound_Url = 'Space-Invaders\Sounds\\'
+        Basic_Url = 'Space-Invaders\Images\\'
         def __init__(self,xpos,ypos):
             self.xpos = xpos
             self.ypos = ypos
@@ -3583,16 +3583,9 @@ def MainGame_2():
 
 def Menu():
 
-
-    def Close():
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                exit()
-
     class Game_Element:
-        Basic_Sound_Url = 'Sounds\\'
-        Basic_Url = 'Images\\'
+        Basic_Sound_Url = 'Space-Invaders/Sounds\\'
+        Basic_Url = 'Space-Invaders/Images\\'
         def __init__(self,xpos,ypos):
             self.xpos = xpos
             self.ypos = ypos
@@ -3618,19 +3611,34 @@ def Menu():
         def __init__(self,xpos,ypos,phrase):
             super().__init__(xpos,ypos)
             self.phrase = phrase
-        def Draw(self,delay=0):
+        def Draw(self):
             Counter_Spacing = 0
 
-            for character in self:
+            for character in self.phrase:
                 ## drawing the letter
                 screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
                 Counter_Spacing = Counter_Spacing + 15
 
-                ## pausing if there is a delay
-                if delay != 0:
-                    Close()
-                    pygame.display.update()
-                    clock.tick(delay)
+    def Middle(phrase):
+        space = 480 - len(phrase)*15
+        print(space/2)
         
-        while True:
-            a = Words_And_Phrases(100,100,['P'])
+    while True:
+
+        ## setting up the messages
+        Space_Invaders_Message_List = ['S','P','A','C','E','space','I','N','V','A','D','E','R','S']
+        Space_Invaders_Message = Words_And_Phrases(135,100,Space_Invaders_Message_List)
+        Space_Invaders_Message.Draw()
+
+        Space_Invaders_2_Message_List = ['S','P','A','C','E','space','I','N','V','A','D','E','R','S',2]
+        Space_Invaders_2_Message = Words_And_Phrases(100,140,Space_Invaders_2_Message_List)
+        Space_Invaders_2_Message.Draw()
+
+        Middle(Space_Invaders_Message_List)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+        clock.tick(60)
+        pygame.display.update()
+Menu()

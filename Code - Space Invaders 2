@@ -218,7 +218,7 @@ def MainGame():
         ## resetting alien movement sounds and position moving down the screen afters each level
         Alien.Counter_Background_Sound = 1 
         if Start_Game == True:
-            Flag_Game_Level = 11
+            Flag_Game_Level = 5
         
         ## increasing the level of the game
         Flag_Game_Level = Flag_Game_Level + 1
@@ -492,8 +492,8 @@ def MainGame():
 
     ## main class
     class Game_Element:
-        Basic_Sound_Url = 'Sounds\\'
-        Basic_Url = 'Images\\'
+        Basic_Sound_Url = 'Space-Invaders\Sounds\\'
+        Basic_Url = 'Space-Invaders\Images\\'
         def __init__(self,xpos,ypos):
             self.xpos = xpos
             self.ypos = ypos

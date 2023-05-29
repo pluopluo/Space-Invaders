@@ -501,8 +501,8 @@ def MainGame():
 
     ## main class
     class Game_Element:
-        Basic_Sound_Url = 'Sounds\\'
-        Basic_Url = 'Images\\'
+        Basic_Sound_Url = 'Space-Invaders\Sounds\\'
+        Basic_Url = 'Space-Invaders\Images\\'
         def __init__(self,xpos,ypos):
             self.xpos = xpos
             self.ypos = ypos

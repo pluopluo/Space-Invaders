@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 ## setting up the game play
 def MainGame():
 
-    def Close():
+    def Close_Or_Skip():
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -30,7 +30,7 @@ def MainGame():
 
     def Pause(time):
         for counter in range(0,time*10):
-            Close()
+            Close_Or_Skip()
             clock.tick(10)
 
     def Collide(object_1,object_2):
@@ -140,7 +140,7 @@ def MainGame():
         for iteration in range(1,20):
             for animation in range(1,3):
                 player_explosion.Draw(animation)
-                Close()
+                Close_Or_Skip()
                 pygame.display.update()
                 clock.tick(15)
                 
@@ -202,7 +202,7 @@ def MainGame():
         if player_1 == None and player_2 == None:
             Flag_Gameover = True
 
-    def Alien_Refill(Start_Game=False):
+    def Fill_Alien():
 
         ## nonlocal declaration to the lists and variables
         nonlocal aliens
@@ -217,24 +217,16 @@ def MainGame():
 
         ## resetting alien movement sounds and position moving down the screen afters each level
         Alien.Counter_Background_Sound = 1 
-        if Start_Game == True:
-            Flag_Game_Level = 5
-        
-        ## increasing the level of the game
-        Flag_Game_Level = Flag_Game_Level + 1
 
         ## layouts for various levels
-        if Flag_Game_Level == 1:
+        if Flag_Game_Level == [0,1]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 120
             alien_x_start_pos = 100
-            alien_layout = [[1,1,1,1,1],
-                            [1,1,1,1,1],
-                            [1,1,1,1,1],
-                            [1,1,1,1,1]]
+            alien_layout = [[1]]
         
-        elif Flag_Game_Level == 2:
+        elif Flag_Game_Level == [0,2]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 120
@@ -244,7 +236,7 @@ def MainGame():
                             [1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1]]
 
-        elif Flag_Game_Level == 3:
+        elif Flag_Game_Level == [0,3]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 120
@@ -258,7 +250,7 @@ def MainGame():
                             [1,0,1,0,0,0,0,0,1,0,1],
                             [0,0,0,1,1,0,1,1,0,0,0]]
 
-        elif Flag_Game_Level == 4:
+        elif Flag_Game_Level == [0,4]:
             alien_x_distance = 20
             alien_y_distance = 15
             alien_y_start_pos = 120
@@ -276,7 +268,7 @@ def MainGame():
                             [0,0,0,1,1,1,1,0,0,0],
                             [0,0,0,0,1,1,0,0,0,0]]
 
-        elif Flag_Game_Level == 5:
+        elif Flag_Game_Level == [0,5]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 100
@@ -287,7 +279,7 @@ def MainGame():
                             [0,0,0,0,0,0,0],
                             [2,0,2,0,2,0,2]]
         
-        elif Flag_Game_Level == 6:
+        elif Flag_Game_Level == [0,6]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 60
@@ -305,7 +297,7 @@ def MainGame():
                             [0,1,0,0,0,0,0,1,0,0,0,0,0,1,0],
                             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
-        elif Flag_Game_Level == 7:
+        elif Flag_Game_Level == [0,7]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 40
@@ -322,7 +314,7 @@ def MainGame():
                             [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1]]
         
-        elif Flag_Game_Level == 8:
+        elif Flag_Game_Level == [0,8]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 100
@@ -331,10 +323,10 @@ def MainGame():
                             [3,0,0,0,0,0,3,0,0,0,0,0,3],
                             [0,0,0,0,0,0,0,0,0,0,0,0,0]]
         
-        elif Flag_Game_Level == 9:
+        elif Flag_Game_Level == [0,9]:
             alien_x_distance = 20
             alien_y_distance = 15
-            alien_y_start_pos = 60
+            alien_y_start_pos = 80
             alien_x_start_pos = 40
             alien_layout = [[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
                             [0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
@@ -352,7 +344,7 @@ def MainGame():
                             [0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0],
                             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
-        elif Flag_Game_Level == 10:
+        elif Flag_Game_Level == [1,0]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 100
@@ -361,7 +353,7 @@ def MainGame():
                             [4],
                             [0]]
             
-        elif Flag_Game_Level == 11:
+        elif Flag_Game_Level == [1,1]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 80
@@ -374,7 +366,7 @@ def MainGame():
                             [0,0,0,0,0,0,0,0,0],
                             [2,0,2,0,2,0,2,0,2]]
             
-        elif Flag_Game_Level == 12:
+        elif Flag_Game_Level == [1,2]:
             alien_x_distance = 20
             alien_y_distance = 15
             alien_y_start_pos = 80
@@ -430,9 +422,29 @@ def MainGame():
         Flag_Skip  = 'stage_2'
         for xpos in range(0,480,120):
             pygame.draw.rect(screen,black,(xpos,0,120,480))
-            Close()
+            Close_Or_Skip()
             pygame.display.update()
             clock.tick(20)
+
+    def Level_Draw():
+        nonlocal Flag_Game_Level
+
+        ## drawing the level for something equal to or greater then 10
+        if Flag_Game_Level[0] > 0:
+            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[0],Flag_Game_Level[1]]
+            level_message = Words_And_Phrases(180,180,level_message_list)
+        else:
+        ## drawing the level for something that is less then 10
+            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[1]]
+            level_message = Words_And_Phrases(187,180,level_message_list)
+
+        level_message.Draw()
+
+        pygame.display.update()
+        Pause(2)
+
+        ## drawing a square to erase the words
+        pygame.draw.rect(screen,black,(180,180,120,14))
 
     def Screen_Draw():      
         screen.fill(black)
@@ -469,31 +481,20 @@ def MainGame():
         for player in player_2_backup:
             player.Draw('blue')
         
+        ## drawing the level before drawing the aliens
+        Level_Draw()
+        
         ## drawing the aliens and closing the screen if the quit button is pressed
         for alien in aliens:
             alien.Draw('white')
-            Close()
+            Close_Or_Skip()
             pygame.display.update()
             clock.tick(60)
 
-    def Level_Draw():
-        nonlocal Flag_Game_Level
-
-        # emptying out the screen
-        pygame.draw.rect(screen,black,(0,180,480,300))
-
-        # drawing the level message
-        level_message_list = ['L','E','V','E','L','space',Flag_Game_Level]
-        level_message = Words_And_Phrases(187,180,level_message_list)
-        level_message.Draw()
-
-        pygame.display.update()
-        Pause(2)
-
     ## main class
     class Game_Element:
-        Basic_Sound_Url = 'Space-Invaders\Sounds\\'
-        Basic_Url = 'Space-Invaders\Images\\'
+        Basic_Sound_Url = 'Sounds\\'
+        Basic_Url = 'Images\\'
         def __init__(self,xpos,ypos):
             self.xpos = xpos
             self.ypos = ypos
@@ -503,7 +504,7 @@ def MainGame():
         Character_Dictionary = {}
         Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z','SPACE',0,1,2,
-                                 3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip']
+                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip']
         
         ## uploading all the character
         Character_Image_List = []
@@ -528,15 +529,15 @@ def MainGame():
                     if Flag_Skip == True or Flag_Skip == 'stage_2':
                         if Flag_Skip == True:
                             Fill_Black()
-                        break
-
+                        break 
+                
                 ## drawing the letter
                 screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
                 Counter_Spacing = Counter_Spacing + 15
 
                 ## pausing if there is a delay
                 if delay != 0:
-                    Close()
+                    Close_Or_Skip()
                     pygame.display.update()
                     clock.tick(delay)
 
@@ -851,6 +852,7 @@ def MainGame():
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
+                            player_1_score.phrase[2] = player_1_score.phrase[2] + increment
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment
@@ -1183,7 +1185,7 @@ def MainGame():
     
     ## The Game Loop
     while True:
-    ## setting up the menu 1
+## setting up the menu 1
         ## setting up the words and messages
         please_select_message_list = ['P','L','E','A','S','E','space','S','E','L','E','C','T']
         please_select_message = Words_And_Phrases(140,100,please_select_message_list)
@@ -1246,14 +1248,13 @@ def MainGame():
 
 ## setting up the menu 2
 
-        ## skip flag variable
+        ## flag skip variable
         Flag_Skip = False
 
         ## emptying the screen
         screen.fill(black)
         
         # drawing the player's score and high score
-
         score_message.Draw()
         player_1_score.Draw()
         player_2_score.Draw()
@@ -1276,11 +1277,11 @@ def MainGame():
         score_advance_table = Words_And_Phrases(80,250,score_advance_table_message)
         score_advance_table.Draw(10)
 
-        ## drawing the alien display
+        ## drawing the alien display only if the player hasn't skipped
         if Flag_Skip == False:
             mystery_ship_display = Mystery_Ship(144,285)
             mystery_ship_display.Draw()
-            
+                
             alien_3_display = Alien(153,320,3,1)
             alien_3_display.Draw('white')
 
@@ -1291,7 +1292,6 @@ def MainGame():
             alien_2_display.Draw('white')
 
         ## drawing the alien values
-
         mystery_point_message_list = ['equal','question_mark','space','M','Y','S','T','E','R','Y']
         mystery_point_message = Words_And_Phrases(180,285,mystery_point_message_list)
         mystery_point_message.Draw(10)
@@ -1316,11 +1316,14 @@ def MainGame():
 
         ## moving the alien towards the letter to take it
         while True:
-            ## breaking the loop if the skip variable is true
+
+            ## checking if the player decides to skip and the break the loop if that happens
+            Close_Or_Skip()
             if Flag_Skip == True or Flag_Skip == 'stage_2':
                 if Flag_Skip == True:
                     Fill_Black()
                 break
+
             ## drawing the words
             pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
@@ -1336,18 +1339,18 @@ def MainGame():
                 ## changing the alien speed
                 start_alien.Speed = 5
 
-                Close()
                 pygame.display.update()
                 clock.tick(30)
                 break
 
-            Close()
             pygame.display.update()
             clock.tick(30)
 
         ## moving the alien away from the letter to take it away
         while True:
-            ## breaking the loop if the skip variable is true
+
+            ## checking if the player decides to skip and breaking the loop if the skip variable is true
+            Close_Or_Skip()
             if Flag_Skip == True or Flag_Skip == 'stage_2':
                 if Flag_Skip == True:
                     Fill_Black()
@@ -1367,27 +1370,29 @@ def MainGame():
                 ## changing the alien speed
                 start_alien.Speed = -5
 
-                Close()
                 pygame.display.update()
                 clock.tick(30)
                 break
 
-            Close()
             pygame.display.update()
             clock.tick(30)
 
         ## moving the alien towards the letter to replace it
         while True:
-            ## breaking the loop if the skip variable is true
+            ## checking if the player decides to skip and breaking the loop if the skip variable is true
+            Close_Or_Skip()
             if Flag_Skip == True or Flag_Skip == 'stage_2':
                 if Flag_Skip == True:
                     Fill_Black()
                 break
+
             ## drawing the words
             pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
+
             ## drawing the alien
             start_alien.Draw_Letter_Place()
+
             ## checking if the alien reaches the cordinate of 260 where it place the flipped letter
             if start_alien.xpos == 260:
 
@@ -1398,7 +1403,6 @@ def MainGame():
                 ## changing the alien speed
                 start_alien.Speed = 5
 
-                Close()
                 pygame.display.update()
                 clock.tick(30)
                 break
@@ -1406,17 +1410,19 @@ def MainGame():
             ## moving the alien
             start_alien.Move_Alien()
 
-            Close()
             pygame.display.update()
             clock.tick(30)
         
         ## moving the alien away from the letter
         while True:
+
             ## breaking the loop if the skip variable is true
+            Close_Or_Skip()
             if Flag_Skip == True or Flag_Skip == 'stage_2':
                 if Flag_Skip == True:
                     Fill_Black()
                 break
+
             ## drawing the words
             pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
@@ -1426,29 +1432,21 @@ def MainGame():
             start_alien.Move_Alien()
             start_alien.Draw()
 
-            ## checking if the alien reaches the cordinate of 600 where the game will begin
+            ## checking if the alien reaches the cordinate of 600 and ending the loop
             if start_alien.xpos == 600:
-                Close()
                 pygame.display.update()
                 clock.tick(30)
                 break
 
-            Close()
             pygame.display.update()
             clock.tick(30)
 
         ## deleting the start alien from no use
         del start_alien
+        
+    ## checking if the player hasn't skipped and setting up the menu 3 and menu 4
+        if Flag_Skip == False:
 
-        ## ending the flag skip if it has not happened
-        if Flag_Skip != 'stage_2':
-            Flag_Skip = 'done'
-        else:
-            Flag_Skip = 'stage_3'
-
-# setting up the final signal for the game to begin
-    ## drawing the first part
-        for xpos in range(0,600,120):
             screen.fill(black)
             ## drawing the scores
             score_message.Draw()
@@ -1463,60 +1461,69 @@ def MainGame():
 
             ## drawing the message describing the one player buttons used
             if Flag_Game_Mode == 'one_player':
-                only_one_player_button_message_list = ['O','N','L','Y','space',1,'P','L','A','Y','E','R','space','B','U','T','T','O','N']
-                only_one_player_button_message = Words_And_Phrases(97,230,only_one_player_button_message_list)
+                only_one_player_button_message_list = ['O','N','L','Y','space',1,'space','P','L','A','Y','E','R','space','B','U','T','T','O','N']
+                only_one_player_button_message = Words_And_Phrases(90,230,only_one_player_button_message_list)
                 only_one_player_button_message.Draw()
 
             ## drawing the message describing the two player buttons used
             elif Flag_Game_Mode == 'two_player':
-                only_two_player_button_message_list = [2,'P','L','A','Y','E','R','space','B','U','T','T','O','N']
-                only_two_player_button_message = Words_And_Phrases(135,230,only_two_player_button_message_list)
+                only_two_player_button_message_list = [2,'space','P','L','A','Y','E','R','space','B','U','T','T','O','N']
+                only_two_player_button_message = Words_And_Phrases(127,230,only_two_player_button_message_list)
                 only_two_player_button_message.Draw()
-
-            ## drawing the disappearing rectangle
-            pygame.draw.rect(screen,black,(xpos,0,480 - xpos,480))
-
-            ## displaying the rectangle and screen only when the player has skpped
-            if Flag_Skip == 'stage_3':
-                Close()
-                pygame.display.update()
-                clock.tick(20)
-
-        pygame.display.update()
-####        Pause(2)
-
-    ## drawing the second part
-        for i in range(1,31):
-            screen.fill(black)
-            if Flag_Game_Mode == 'one_player':
-                ## blinking the first player's score and drawing the one player message
-                one_player_message.Draw()
-                if i%2 == 0:
-                    player_1_score.Draw()
-
-            if Flag_Game_Mode == 'two_player':
-                ## blinking both players's score and drawing the two player message
-                two_player_message.Draw()
-                if i%2 == 0:
-                    player_2_score.Draw()
-                    player_1_score.Draw()
-            else:
-                player_2_score.Draw()
-
-            ## drawing the rest of the score info
-            score_message.Draw()
-            high_score.Draw()
             
-            Close()
+            ## updating the screen only without the flagskip variable
             pygame.display.update()
-####            clock.tick(15)
+            Pause(2)
+
+    
+        ## setting up menu 4
+            for time in range(1,30):
+                screen.fill(black)
+
+                ## checking if the player decides to skip and breaking from the for loop if it happened
+                Close_Or_Skip()
+                if Flag_Skip == True or Flag_Skip == 'stage_2':
+                    if Flag_Skip == True:
+                        Fill_Black()
+                    break
+
+                if Flag_Game_Mode == 'one_player':
+                    ## drawing the play player 1 message and blinking the player 1 score
+                    play_one_player_message_list = ['P','L','A','Y','space','P','L','A','Y','E','R','left',1,'right']
+                    play_one_player_message = Words_And_Phrases(135,180,play_one_player_message_list)
+                    play_one_player_message.Draw()
+                    if time%2 == 0:
+                        player_1_score.Draw()
+
+                if Flag_Game_Mode == 'two_player':
+                    ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
+                    play_two_player_message_list = ['P','L','A','Y','space','P','L','A','Y','E','R','left',2,'right']
+                    play_two_player_message = Words_And_Phrases(135,220,play_two_player_message_list)
+                    play_two_player_message.Draw()
+                    if time%2 == 0:
+                        player_2_score.Draw()
+                        player_1_score.Draw()
+                else:
+                    player_2_score.Draw()
+
+                ## drawing the rest of the score info
+                score_message.Draw()
+                high_score.Draw()
+
+                pygame.display.update()
+                clock.tick(15)
+
+        ## ending the flag skip
+        Flag_Skip = 'done'
+
+## setting up the level and drawing it on the screen
+        Flag_Game_Level = [0,1]
 
 ## setting up the basic variables
         ## setting up the Gameover Flag Variable
         Flag_Gameover = False
-        Flag_Game_Level = 1
-        
-####        Level_Draw()
+
+
 
 ## setting up the elements
 
@@ -1538,7 +1545,7 @@ def MainGame():
             player_2_life.phrase = [2]
             
         aliens = []
-        Alien_Refill(True)
+        Fill_Alien()
 
         ## alien attributes
         Alien_Explosion_List = []
@@ -1584,7 +1591,7 @@ def MainGame():
         Bullet_Explosion_List = []
         
     # setting up the screen
-####        Screen_Draw()
+        Screen_Draw()
 
     ## starting the game
         while True:
@@ -1867,14 +1874,19 @@ def MainGame():
                     player_2.xpos = 90
                     player_2.Flag_Movement_Direction = None
 
+                ## increasing the level of the game
+                Flag_Game_Level[1] = Flag_Game_Level[1] + 1
 
+                ## inreasing the level of the game by the tens place
+                if Flag_Game_Level[1] > 9:
+                    Flag_Game_Level[0] = Flag_Game_Level[0] + 1
+                    Flag_Game_Level[1] = Flag_Game_Level[1] - 10
 
                 ## Refilling Aliens and Barriers
-                Alien_Refill()
+                Fill_Alien()
                 Barrier_Refill()
 
                 ## drawing the new level and preparing the screen
-                Level_Draw()
                 Screen_Draw()
 
 

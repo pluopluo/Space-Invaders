@@ -1171,8 +1171,10 @@ def MainGame():
             ## drawing the words
             pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
+
             ## drawing the alien
             start_alien.Draw_Letter_Place()
+
             ## checking if the alien reaches the cordinate of 260 where it place the flipped letter
             if start_alien.xpos == 260:
 
@@ -1195,6 +1197,7 @@ def MainGame():
         
         ## moving the alien away from the letter
         while True:
+
             ## breaking the loop if the skip variable is true
             Close_Or_Skip()
             if Flag_Skip == True or Flag_Skip == 'stage_2':
@@ -1211,7 +1214,7 @@ def MainGame():
             start_alien.Move_Alien()
             start_alien.Draw()
 
-            ## checking if the alien reaches the cordinate of 600 where the game will begin
+            ## checking if the alien reaches the cordinate of 600 and ending the loop
             if start_alien.xpos == 600:
                 pygame.display.update()
                 clock.tick(30)
@@ -1258,7 +1261,7 @@ def MainGame():
         ## setting up menu 4
             for time in range(1,30):
                 screen.fill(black)
-                
+
                 ## checking if the player decides to skip and breaking from the for loop if it happened
                 Close_Or_Skip()
                 if Flag_Skip == True or Flag_Skip == 'stage_2':

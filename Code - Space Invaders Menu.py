@@ -1,3 +1,4 @@
+## importing code files
 ## basic python setup
 import random
 import pygame
@@ -3584,8 +3585,8 @@ def MainGame_2():
 def Menu():
 
     class Game_Element:
-        Basic_Sound_Url = 'Space-Invaders/Sounds\\'
-        Basic_Url = 'Space-Invaders/Images\\'
+        Basic_Sound_Url = 'Sounds\\'
+        Basic_Url = 'Images\\'
         def __init__(self,xpos,ypos):
             self.xpos = xpos
             self.ypos = ypos

@@ -101,9 +101,6 @@
 <<<<<<< HEAD
       44) did I added a function to decipher how many aliens on the screen and how many shots neeeded as each level goes up
       45) did I made sure to level draw after every level. 
-
-=======
->>>>>>> cc9470ddb6723a3757c55e700b00a3b48d71daf8
           
 a 2 is equivalent to a big alien
 
@@ -153,3 +150,11 @@ commented things using four hastags
             ## updating the alien's timer
             elif Alien.Timer > 0 and len(Alien_Explosion_List) == 0:
                 Alien.Timer = Alien.Timer - 1
+
+
+
+
+
+
+Plan: I am now trying to match up the code so both of them is equal and am iterating through the entire process and next time if I make any changes to one code, I will also make to the other for the better. 
+I am now currently in the class of the alien class 

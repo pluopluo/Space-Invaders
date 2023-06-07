@@ -29,9 +29,15 @@ def MainGame():
                         Flag_Skip = True
 
     def Pause(time):
-        for counter in range(0,time*10):
+        num_of_time_units = int(time*60)
+        for time_unit in range(0,num_of_time_units):
+            ## checking if the player has pressed skip when the screen pauses
             Close_Or_Skip()
-            clock.tick(10)
+            if Flag_Skip == True or Flag_Skip == 'stage_2':
+                if Flag_Skip == True:
+                    Fill_Black()
+                break
+            clock.tick(60)
 
     def Collide(object_1,object_2):
         if object_1.xpos + object_1.length > object_2.xpos and object_2.xpos + object_2.length > object_1.xpos:
@@ -41,16 +47,23 @@ def MainGame():
     def Alien_Barrier_Collision(alien,Barrier):
         Barrier_Iteration_Counter = 0
         Barrier_Struck = False
+
+        ## iterating through the barriers
         while True:
             if Barrier_Iteration_Counter == len(Barrier):
                 break
+
+            ## checking if a barrier block hit the alien
             if alien.xpos + alien.length >= Barrier[Barrier_Iteration_Counter].xpos and alien.xpos <= Barrier[Barrier_Iteration_Counter].xpos + Barrier[Barrier_Iteration_Counter].length:
                 if alien.ypos + alien.height >= Barrier[Barrier_Iteration_Counter].ypos:
                     Barrier_Struck = True
+            
+            ## destroying the barrier block
             if Barrier_Struck == True:
                 Barrier.pop(Barrier_Iteration_Counter)
                 Barrier_Struck = False
             else:
+                ## updating the iteration counter only if the barrier isn't destroyed
                 Barrier_Iteration_Counter = Barrier_Iteration_Counter + 1
 
     def Bullet_Barrier_Collision(Barrier,bullet):
@@ -224,19 +237,33 @@ def MainGame():
             alien_y_distance = 30
             alien_y_start_pos = 120
             alien_x_start_pos = 100
-            alien_layout = [[1]]
-        
+            alien_layout = [[1,1,1,1],
+                            [1,1,1,1],
+                            [1,1,1,1]]
+    
         elif Flag_Game_Level == [0,2]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 120
             alien_x_start_pos = 100
-            alien_layout = [[1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1]]
-
+            alien_layout = [[1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1]]
+        
         elif Flag_Game_Level == [0,3]:
+            alien_x_distance = 30
+            alien_y_distance = 30
+            alien_y_start_pos = 100
+            alien_x_start_pos = 100
+            alien_layout = [[0,0,1,1,0,0],
+                            [0,1,1,1,1,0],
+                            [1,1,1,1,1,1],
+                            [1,1,1,1,1,1],
+                            [0,1,1,1,1,0],
+                            [0,0,1,1,0,0]]
+            
+        elif Flag_Game_Level == [0,4]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 120
@@ -250,7 +277,7 @@ def MainGame():
                             [1,0,1,0,0,0,0,0,1,0,1],
                             [0,0,0,1,1,0,1,1,0,0,0]]
 
-        elif Flag_Game_Level == [0,4]:
+        elif Flag_Game_Level == [0,5]:
             alien_x_distance = 20
             alien_y_distance = 15
             alien_y_start_pos = 120
@@ -268,7 +295,7 @@ def MainGame():
                             [0,0,0,1,1,1,1,0,0,0],
                             [0,0,0,0,1,1,0,0,0,0]]
 
-        elif Flag_Game_Level == [0,5]:
+        elif Flag_Game_Level == [0,6]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 100
@@ -279,7 +306,7 @@ def MainGame():
                             [0,0,0,0,0,0,0],
                             [2,0,2,0,2,0,2]]
         
-        elif Flag_Game_Level == [0,6]:
+        elif Flag_Game_Level == [0,7]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 60
@@ -297,7 +324,7 @@ def MainGame():
                             [0,1,0,0,0,0,0,1,0,0,0,0,0,1,0],
                             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
-        elif Flag_Game_Level == [0,7]:
+        elif Flag_Game_Level == [0,8]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 40
@@ -314,7 +341,7 @@ def MainGame():
                             [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1]]
         
-        elif Flag_Game_Level == [0,8]:
+        elif Flag_Game_Level == [0,9]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 100
@@ -323,7 +350,7 @@ def MainGame():
                             [3,0,0,0,0,0,3,0,0,0,0,0,3],
                             [0,0,0,0,0,0,0,0,0,0,0,0,0]]
         
-        elif Flag_Game_Level == [0,9]:
+        elif Flag_Game_Level == [1,0]:
             alien_x_distance = 20
             alien_y_distance = 15
             alien_y_start_pos = 80
@@ -344,7 +371,7 @@ def MainGame():
                             [0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0],
                             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
-        elif Flag_Game_Level == [1,0]:
+        elif Flag_Game_Level == [1,1]:
             alien_x_distance = 20
             alien_y_distance = 20
             alien_y_start_pos = 100
@@ -353,7 +380,7 @@ def MainGame():
                             [4],
                             [0]]
             
-        elif Flag_Game_Level == [1,1]:
+        elif Flag_Game_Level == [1,2]:
             alien_x_distance = 30
             alien_y_distance = 30
             alien_y_start_pos = 80
@@ -366,7 +393,7 @@ def MainGame():
                             [0,0,0,0,0,0,0,0,0],
                             [2,0,2,0,2,0,2,0,2]]
             
-        elif Flag_Game_Level == [1,2]:
+        elif Flag_Game_Level == [1,3]:
             alien_x_distance = 20
             alien_y_distance = 15
             alien_y_start_pos = 80
@@ -418,13 +445,17 @@ def MainGame():
                 alien_invasion_line.append(Barrier(column*2,row*2 + 435))
 
     def Fill_Black():
-        nonlocal Flag_Skip
-        Flag_Skip  = 'stage_2'
+        ## filling the screen quickly but not directly
         for xpos in range(0,480,120):
             pygame.draw.rect(screen,black,(xpos,0,120,480))
             Close_Or_Skip()
             pygame.display.update()
             clock.tick(20)
+
+        ## making sure that the function doesn't happen again if the player has skipped
+        nonlocal Flag_Skip
+        if Flag_Skip == True:
+            Flag_Skip  = 'stage_2'
 
     def Level_Draw():
         nonlocal Flag_Game_Level
@@ -446,40 +477,42 @@ def MainGame():
         ## drawing a square to erase the words
         pygame.draw.rect(screen,black,(180,180,120,14))
 
-    def Screen_Draw():      
-        screen.fill(black)
+    def Screen_Draw(start_of_game = False):      
+        if start_of_game == True:
+            screen.fill(black)
 
-        ## drawing the score
-        score_message.Draw()
-        player_1_score.Draw()
-        player_2_score.Draw()
-        high_score.Draw()
-        player_1_life.Draw()
-        player_2_life.Draw()
+            ## drawing the score
+            score_message.Draw()
+            player_1_score.Draw()
+            player_2_score.Draw()
+            high_score.Draw()
+            player_1_life.Draw()
+            player_2_life.Draw()
+            credit_message.Draw()
 
-        ## drawing the floor
-        for Barrier_particle in alien_invasion_line:
-            Barrier_particle.Draw()
+            ## drawing the floor
+            for Barrier_particle in alien_invasion_line:
+                Barrier_particle.Draw()
 
-        ## drawing the Barrier
-        for Barrier_particle in Barrier1:
-            Barrier_particle.Draw()
-        for Barrier_particle in Barrier2:
-            Barrier_particle.Draw()
-        for Barrier_particle in Barrier3:
-            Barrier_particle.Draw()
-        for Barrier_particle in Barrier4:
-            Barrier_particle.Draw()
-        
+            ## drawing the Barrier
+            for Barrier_particle in Barrier1:
+                Barrier_particle.Draw()
+            for Barrier_particle in Barrier2:
+                Barrier_particle.Draw()
+            for Barrier_particle in Barrier3:
+                Barrier_particle.Draw()
+            for Barrier_particle in Barrier4:
+                Barrier_particle.Draw()
+            
 
-        ## drawing the players 
-        player_1.Draw('green')
-        if player_2 != None:
-            player_2.Draw('blue')
-        for player in player_1_backup:
-            player.Draw('green')
-        for player in player_2_backup:
-            player.Draw('blue')
+            ## drawing the players 
+            player_1.Draw('green')
+            if player_2 != None:
+                player_2.Draw('blue')
+            for player in player_1_backup:
+                player.Draw('green')
+            for player in player_2_backup:
+                player.Draw('blue')
         
         ## drawing the level before drawing the aliens
         Level_Draw()
@@ -520,10 +553,11 @@ def MainGame():
         def __init__(self,xpos,ypos,phrase):
             super().__init__(xpos,ypos)
             self.phrase = phrase
+
         def Draw(self,delay=0):
             Counter_Spacing = 0
-            for character in self.phrase:
 
+            for character in self.phrase:
                 ## checking if it is to be skipped
                 if Player_Selected == True:
                     if Flag_Skip == True or Flag_Skip == 'stage_2':
@@ -557,9 +591,8 @@ def MainGame():
         ## setting up the letter interaction images from the start screen
         Letter_Flip_Image_List = []
 
+        ## loading and transforming the images then adding it to the list
         for image_number in range(1,5):
-
-            ## loading and transforming the image then adding it to the list
             img = pygame.image.load(Game_Element.Basic_Url+'Alien Letter Flip\Interaction '+str(image_number)+'.jpeg')
             img = pygame.transform.scale(img,(32,15))
             Letter_Flip_Image_List.append(img)
@@ -1517,16 +1550,13 @@ def MainGame():
         Flag_Skip = 'done'
 
 ## setting up the level and drawing it on the screen
-        Flag_Game_Level = [0,1]
+        Flag_Game_Level = [0,5]
 
 ## setting up the basic variables
         ## setting up the Gameover Flag Variable
         Flag_Gameover = False
 
-
-
 ## setting up the elements
-
         ## setting up the player, their backup, and their live 
         player_1 = None
         player_2 = None
@@ -1591,7 +1621,7 @@ def MainGame():
         Bullet_Explosion_List = []
         
     # setting up the screen
-        Screen_Draw()
+        Screen_Draw(True)
 
     ## starting the game
         while True:
@@ -1866,12 +1896,10 @@ def MainGame():
                 player_1_bullets = []
                 player_2_bullets = []
 
-                ## resetting the player's xpos 
+                ## making the players stop
                 if player_1 != None:
-                    player_1.xpos = 50
                     player_1.Flag_Movement_Direction = None
                 elif player_2 != None:
-                    player_2.xpos = 90
                     player_2.Flag_Movement_Direction = None
 
                 ## increasing the level of the game

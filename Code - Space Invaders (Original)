@@ -421,7 +421,7 @@ def MainGame():
             for alien_type in range(1,4):
                 alien_animation_list = []
                 for animation in range(1,3):
-                    img = pygame.image.load(Game_Element.Basic_Url+'Alien\\'+str(alien_color)+' '+str(type)+' '+str(animation)+'.jpeg')
+                    img = pygame.image.load(Game_Element.Basic_Url+'Alien\\'+str(alien_color)+' '+str(alien_type)+' '+str(animation)+'.jpeg')
         
                     ## deciding the width of the aliens
                     if alien_type == 3:

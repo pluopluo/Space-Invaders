@@ -457,26 +457,6 @@ def MainGame():
         if Flag_Skip == True:
             Flag_Skip  = 'stage_2'
 
-    def Level_Draw():
-        nonlocal Flag_Game_Level
-
-        ## drawing the level for something equal to or greater then 10
-        if Flag_Game_Level[0] > 0:
-            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[0],Flag_Game_Level[1]]
-            level_message = Words_And_Phrases(180,180,level_message_list)
-        else:
-        ## drawing the level for something that is less then 10
-            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[1]]
-            level_message = Words_And_Phrases(187,180,level_message_list)
-
-        level_message.Draw()
-
-        pygame.display.update()
-        Pause(2)
-
-        ## drawing a square to erase the words
-        pygame.draw.rect(screen,black,(180,180,120,14))
-
     def Screen_Draw(start_of_game = False): 
 
     ## limiting the process of drawing everything to be only at the start of the game 
@@ -506,7 +486,6 @@ def MainGame():
             for Barrier_particle in Barrier4:
                 Barrier_particle.Draw()
             
-
             ## drawing the players 
             player_1.Draw('green')
             if player_2 != None:
@@ -516,10 +495,27 @@ def MainGame():
             for player in player_2_backup:
                 player.Draw('blue')
         
-        ## drawing the level before drawing the aliens
-        Level_Draw()
+    ## drawing the level message
+        nonlocal Flag_Game_Level
+
+        ## drawing the level for something equal to or greater then 10
+        if Flag_Game_Level[0] > 0:
+            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[0],Flag_Game_Level[1]]
+            level_message = Words_And_Phrases(180,180,level_message_list)
+        else:
+        ## drawing the level for something that is less then 10
+            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[1]]
+            level_message = Words_And_Phrases(187,180,level_message_list)
+        level_message.Draw()
         
-        ## drawing the aliens and closing the screen if the quit button is pressed
+        ## updating the game and pausing it
+        pygame.display.update()
+        Pause(2)
+
+        ## drawing a square to erase level message
+        pygame.draw.rect(screen,black,(180,180,120,14))
+        
+    ## drawing the aliens and closing the screen if the quit button is pressed
         for alien in aliens:
             alien.Draw('white')
             Close_Or_Skip()
@@ -1704,8 +1700,6 @@ def MainGame():
                             alien.Shoot()
                             alien.Check()
 
-
-                
                 ## playing the background music of the alien movement
                     mixer.music.load(Game_Element.Basic_Sound_Url+'background sound '+str(Alien.Counter_Background_Sound)+'.wav')
                     mixer.music.play()
@@ -1860,7 +1854,8 @@ def MainGame():
             high_score.Draw()            
             player_1_life.Draw()
             player_2_life.Draw()
-            
+            credit_message.Draw()
+
         ## drawing the player
             if player_1 != None:
                 player_1.Draw('green')
@@ -1955,9 +1950,8 @@ def MainGame():
                 Fill_Alien()
                 Barrier_Refill()
 
-                ## drawing the new level and preparing the screen
+                ## calling screen draw function displaying new level message and drawing the aliens 
                 Screen_Draw()
-
 
         ## checking if the players are hit
             if player_1 != None:

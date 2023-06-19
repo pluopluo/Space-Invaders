@@ -477,7 +477,9 @@ def MainGame():
         ## drawing a square to erase the words
         pygame.draw.rect(screen,black,(180,180,120,14))
 
-    def Screen_Draw(start_of_game = False):      
+    def Screen_Draw(start_of_game = False): 
+
+    ## limiting the process of drawing everything to be only at the start of the game 
         if start_of_game == True:
             screen.fill(black)
 
@@ -608,15 +610,15 @@ def MainGame():
                     alien_animation_list = []
                     for animation_frame in range(1,3):
 
+                        ## loading the image and deciding the scale factor
+                        img = pygame.image.load(Game_Element.Basic_Url+'Alien\\'+str(alien_color)+' '+str(alien_type)+' '+str(animation_frame)+'.jpeg')
+                        alien_scale_factor = 2**(alien_size - 1)
+
                         ## deciding the length of the aliens depending on it's type
                         if alien_type == 3:
                             alien_length = 15
                         else:
                             alien_length = 20
-
-                        ## loading the image
-                        img = pygame.image.load(Game_Element.Basic_Url+'Alien\\'+str(alien_color)+' '+str(alien_type)+' '+str(animation_frame)+'.jpeg')
-                        alien_scale_factor = 2**(alien_size - 1)
 
                         ## transforming the image
                         img = pygame.transform.scale(img,(alien_length*alien_scale_factor,15*alien_scale_factor))
@@ -631,7 +633,12 @@ def MainGame():
             super().__init__(xpos,ypos)
             self.type = type
             self.size = size
-            self.health = 2**(self.size - 1)
+
+            ## setting up the scale factor 
+            self.scale_factor = 2**(self.size - 1)
+
+            ## setting the health based on it's scale factor
+            self.health = self.scale_factor
 
             ## deciding it's length and width
             if self.type == 3:
@@ -641,17 +648,12 @@ def MainGame():
                 self.length = 20
                 self.height = 15
             
-            self.length = self.length*self.health
-            self.height = self.height*self.health
+            ## transforming the length and height based on the scale factor
+            self.length = self.length*self.scale_factor
+            self.height = self.height*self.scale_factor
  
         def Move_Alien(self):
             self.xpos = self.xpos + self.Speed
-
-            ## checking if the alien hits the edge
-            if self.xpos + self.length >= 440:
-                Alien.Flag_Collide_Side = 'right'
-            elif self.xpos <= 35:
-                Alien.Flag_Collide_Side = 'left'
 
         def Move_Down(self):
             self.ypos = self.ypos + 15
@@ -662,6 +664,11 @@ def MainGame():
             Alien.Flag_Collide_Side = None
 
         def Check(self):
+            ## checking if the alien hits the edge
+            if self.xpos + self.length >= 440:
+                Alien.Flag_Collide_Side = 'right'
+            elif self.xpos <= 35:
+                Alien.Flag_Collide_Side = 'left'
 
             ## checking if the aliens reach the Barrier
             if self.ypos + self.height > 330 and self.ypos < 370:
@@ -750,7 +757,6 @@ def MainGame():
             super().__init__(xpos,ypos)
             self.length = 30
             self.height = 20
-            self.uplift = 0
 
         def Move_Player(self):
             ## updating the shoot timer
@@ -891,6 +897,7 @@ def MainGame():
                         high_score.phrase[2] = high_score.phrase[2] + increment
                         break 
 
+                    ## ending the iteration if the bullet is removed
                     if self not in player_1_bullets and self not in player_2_bullets:
                         break
 
@@ -1144,10 +1151,12 @@ def MainGame():
         Existing_Timer = 10
 
         def Update_Timer(self):
+            ## removing the explosion when the timer reaches zero
             self.Existing_Timer = self.Existing_Timer - 1
             if self.Existing_Timer == 0:
                 nonlocal Alien_Explosion_List
                 Alien_Explosion_List.remove(self)
+
         def Draw(self):
             if self.ypos + 13 > 330:
                 screen.blit(Alien_Explosion.Green_Image,(self.xpos,self.ypos))
@@ -1155,7 +1164,6 @@ def MainGame():
                 screen.blit(Alien_Explosion.White_Image,(self.xpos,self.ypos))
 
     class Mystery_Ship_Explosion(Alien_Explosion):
-
         ## uploading the images
         Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship Explosion\\mystery ship explosion red.jpeg')
         Explosion_Image = pygame.transform.scale(Img,(42,16))
@@ -1175,6 +1183,7 @@ def MainGame():
             self.points = points
 
         def Update_Timer(self):
+            ## removing the explosion when the timer reaches zero
             self.Existing_Timer = self.Existing_Timer - 1
             if self.Existing_Timer == 0:
                 nonlocal Mystery_Ship_Explosion_List
@@ -1199,15 +1208,18 @@ def MainGame():
     class Player_Explosion(Game_Element):
         ## uploading the sound
         Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player explosion sound.wav')
+
         ## uploading the player explosion images
         Image_List = []
         for image_number in range(1,4):
             img = pygame.image.load(Game_Element.Basic_Url+'Player Explosion\player explosion '+str(image_number)+'.jpeg')
             Image_List.append(pygame.transform.scale(img,(40,20)))
+
         def __init__(self,xpos,ypos,length,height):
             super().__init__(xpos,ypos)
             self.length = length
             self.height = height
+
         def Draw(self,image_number):
             if image_number == 1:
                 screen.blit(Player_Explosion.Image_List[0],(self.xpos,self.ypos))
@@ -1223,8 +1235,8 @@ def MainGame():
         please_select_message_list = ['P','L','E','A','S','E','space','S','E','L','E','C','T']
         please_select_message = Words_And_Phrases(140,100,please_select_message_list)
 
-        one_or_two_players_message_list = [1,'space','O','R','space',2,'space','P','L','A','Y','E','R','S']
-        one_or_two_players_message = Words_And_Phrases(135,140,one_or_two_players_message_list)
+        one_or_two_players_message_list = ['left',1,'space','O','R','space',2,'space','P','L','A','Y','E','R','S','right']
+        one_or_two_players_message = Words_And_Phrases(120,180,one_or_two_players_message_list)
 
         one_player_message_list = [1,'P','L','A','Y','E','R']
         one_player_message = Words_And_Phrases(190,180,one_player_message_list)
@@ -1236,14 +1248,32 @@ def MainGame():
         asterisk_list = ['asterisk']
         asterisk = Words_And_Phrases(170,180,asterisk_list)
 
+        ## setting up the important credit message
+        credit_message_list = ['C','R','E','D','I','T','space',0,0]
+        credit_message = Words_And_Phrases(340,456,credit_message_list)
+
         ## setting up the flag variable to begin the game
         Player_Selected = False
 
         ## setting up the mode variable
         Flag_Game_Mode = 'one_player'
-        
+
+        ## setting up the player's score and the high score
+        score_message_list = ['S','C','O','R','E','left',1,'right','space','H','I','dash','S','C','O','R','E','space','S','C','O','R','E','left',2,'right']
+        score_message = Words_And_Phrases(45,20,score_message_list)
+        player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
+        player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
+        high_score = Words_And_Phrases(200,60,[0,0,0,0])
+
         while True:
             screen.fill(black)
+
+            ## drawing the player's score
+            score_message.Draw()
+            player_1_score.Draw()
+            player_2_score.Draw()
+            high_score.Draw()
+            credit_message.Draw()
 
             ## drawing the phrases
             please_select_message.Draw()
@@ -1257,30 +1287,27 @@ def MainGame():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
+
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
+                        ## changing the asterik's position resetting the game mode
                         asterisk = Words_And_Phrases(170,220,asterisk_list)
                         Flag_Game_Mode = 'two_player'
+
                     elif event.key == K_UP:
+                        ## changing the asterik's position resetting the game mode
                         asterisk = Words_And_Phrases(170,180,asterisk_list)
                         Flag_Game_Mode = 'one_player'
+
                     elif event.key == K_RETURN:
                         Player_Selected = True
+                        
             pygame.display.update()
             clock.tick(60)
             if Player_Selected == True:
                 break
 
-
-        ## setting up the player's score and the high score
-        score_message_list = ['S','C','O','R','E','left',1,'right','space','H','I','dash','S','C','O','R','E','space','S','C','O','R','E','left',2,'right']
-        score_message = Words_And_Phrases(45,20,score_message_list)
-        player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
-        player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
-        high_score = Words_And_Phrases(200,60,[0,0,0,0])
-
 ## setting up the menu 2
-
         ## flag skip variable
         Flag_Skip = False
 
@@ -1292,6 +1319,7 @@ def MainGame():
         player_1_score.Draw()
         player_2_score.Draw()
         high_score.Draw()
+        credit_message.Draw()
 
         # setting up and drawing the words and messages
         play_message_list = ['P','L','A']
@@ -1305,10 +1333,12 @@ def MainGame():
         Space_Invaders_message = Words_And_Phrases(135,190,Space_Invaders_message_list)
         Space_Invaders_message.Draw(10)
 
+        Pause(0.5)
+
         ## drawing the score_advance_table
         score_advance_table_message = ['asterisk','S','C','O','R','E','space','A','D','V','A','N','C','E','space','T','A','B','L','E','asterisk']
         score_advance_table = Words_And_Phrases(80,250,score_advance_table_message)
-        score_advance_table.Draw(10)
+        score_advance_table.Draw()
 
         ## drawing the alien display only if the player hasn't skipped
         if Flag_Skip == False:
@@ -1480,12 +1510,17 @@ def MainGame():
     ## checking if the player hasn't skipped and setting up the menu 3 and menu 4
         if Flag_Skip == False:
 
-            screen.fill(black)
+        ## setting up the menu 3
+
+            ## filling the screen black quickly but not directly
+            Fill_Black()
+
             ## drawing the scores
             score_message.Draw()
             player_1_score.Draw()
             player_2_score.Draw()
             high_score.Draw()
+            credit_message.draw()
 
             ## drawing the buttons
             push_message_list = ['P','U','S','H']
@@ -1510,6 +1545,9 @@ def MainGame():
 
     
         ## setting up menu 4
+            ## filling the screen black quickly but not directly
+            Fill_Black()
+
             for time in range(1,30):
                 screen.fill(black)
 
@@ -1539,9 +1577,10 @@ def MainGame():
                 else:
                     player_2_score.Draw()
 
-                ## drawing the rest of the score info
+                ## drawing the rest of the score info and the credit message
                 score_message.Draw()
                 high_score.Draw()
+                credit_message.Draw()
 
                 pygame.display.update()
                 clock.tick(15)
@@ -1549,14 +1588,15 @@ def MainGame():
         ## ending the flag skip
         Flag_Skip = 'done'
 
-## setting up the level and drawing it on the screen
-        Flag_Game_Level = [0,5]
-
-## setting up the basic variables
-        ## setting up the Gameover Flag Variable
-        Flag_Gameover = False
+        ## changing the credit's xpos if the player mode is 2 player
+        if Flag_Game_Mode == 'two_player':
+            credit_message.xpos = 173
 
 ## setting up the elements
+        ## setting up the Flag Game Level and Gameover FLag Variable
+        Flag_Game_Level = [0,5]
+        Flag_Gameover = False
+
         ## setting up the player, their backup, and their live 
         player_1 = None
         player_2 = None
@@ -1621,6 +1661,7 @@ def MainGame():
         Bullet_Explosion_List = []
         
     # setting up the screen
+        Fill_Black()
         Screen_Draw(True)
 
     ## starting the game

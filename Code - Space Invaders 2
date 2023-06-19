@@ -1229,20 +1229,20 @@ def MainGame():
 ## setting up the menu 1
         ## setting up the words and messages
         please_select_message_list = ['P','L','E','A','S','E','space','S','E','L','E','C','T']
-        please_select_message = Words_And_Phrases(140,100,please_select_message_list)
+        please_select_message = Words_And_Phrases(140,140,please_select_message_list)
 
         one_or_two_players_message_list = ['left',1,'space','O','R','space',2,'space','P','L','A','Y','E','R','S','right']
         one_or_two_players_message = Words_And_Phrases(120,180,one_or_two_players_message_list)
 
         one_player_message_list = [1,'P','L','A','Y','E','R']
-        one_player_message = Words_And_Phrases(190,180,one_player_message_list)
+        one_player_message = Words_And_Phrases(190,220,one_player_message_list)
 
         two_player_message_list = [2,'P','L','A','Y','E','R']
-        two_player_message = Words_And_Phrases(190,220,two_player_message_list)
+        two_player_message = Words_And_Phrases(190,260,two_player_message_list)
 
         ## setting up the select asterisk
         asterisk_list = ['asterisk']
-        asterisk = Words_And_Phrases(170,180,asterisk_list)
+        asterisk = Words_And_Phrases(170,220,asterisk_list)
 
         ## setting up the important credit message
         credit_message_list = ['C','R','E','D','I','T','space',0,0]
@@ -1950,7 +1950,7 @@ def MainGame():
                 Fill_Alien()
                 Barrier_Refill()
 
-                ## calling screen draw function displaying new level message and drawing the aliens 
+                ## calling screen draw function 
                 Screen_Draw()
 
         ## checking if the players are hit

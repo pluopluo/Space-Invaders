@@ -496,6 +496,8 @@ def MainGame():
                 alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
 
         def Draw(self,color='white'):
+
+            ## drawing the alien based on the color selected
             if color == 'white':
                 return screen.blit(Alien.Image_List[0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
             elif color == 'green':

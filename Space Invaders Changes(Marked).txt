@@ -101,6 +101,7 @@
 <<<<<<< HEAD
       44) did I added a function to decipher how many aliens on the screen and how many shots neeeded as each level goes up
       45) did I made sure to level draw after every level. 
+    
           
 a 2 is equivalent to a big alien
 
@@ -158,3 +159,9 @@ commented things using four hastags
 
 Plan: I am now trying to match up the code so both of them is equal and am iterating through the entire process and next time if I make any changes to one code, I will also make to the other for the better. 
 I am now currently in the class of the alien class 
+
+I updated the commentary that writes to draw the alien before 
+actually drawing the alien
+
+I also added a function in the alin class called change animation int he alien
+class

@@ -154,14 +154,17 @@ commented things using four hastags
 
 
 
-
-
-
 Plan: I am now trying to match up the code so both of them is equal and am iterating through the entire process and next time if I make any changes to one code, I will also make to the other for the better. 
 I am now currently in the class of the alien class 
+
+## after a long time in coding, these steps are far past the errors prior and I am just trying
+to correct everything with no bugs
 
 I updated the commentary that writes to draw the alien before 
 actually drawing the alien
 
-I also added a function in the alin class called change animation int he alien
-class
+I added in space invaders 2 a function called change animation but it was uncessary so I deleted it
+
+I changed it so that the alien changes animation whenever it moves
+
+I also made sure that whenever I drew the alien, I would draw the self animation not the class animation

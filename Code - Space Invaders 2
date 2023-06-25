@@ -650,6 +650,10 @@ def MainGame():
  
         def Move_Alien(self):
             self.xpos = self.xpos + self.Speed
+            if self.Current_Animation == 0:
+                self.Current_Animation = 1
+            elif self.Current_Animation == 1:
+                self.Current_Animation = 0
 
         def Move_Down(self):
             self.ypos = self.ypos + 15

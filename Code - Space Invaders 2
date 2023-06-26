@@ -648,15 +648,35 @@ def MainGame():
             self.length = self.length*self.scale_factor
             self.height = self.height*self.scale_factor
  
-        def Move_Alien(self):
+        def Move_Alien(self,start_alien = False):
             self.xpos = self.xpos + self.Speed
-            if self.Current_Animation == 0:
-                self.Current_Animation = 1
-            elif self.Current_Animation == 1:
-                self.Current_Animation = 0
+
+            ## checking if the alien is a start alien from the parameters
+            if start_alien == True:
+                ## changing the alien's animation
+                if self.Current_Animation == 0:
+                    self.Current_Animation = 1
+                elif self.Current_Animation == 1:
+                    self.Current_Animation = 0
+
+            ## checking if the alien hits the edge
+            if self.xpos + self.length >= 440:
+                Alien.Flag_Collide_Side = 'right'
+            elif self.xpos <= 35:
+                Alien.Flag_Collide_Side = 'left'
+        
+        def Change_Animation():
+            ## changing the alien's animation
+            if Alien.Current_Animation == 0:
+                Alien.Current_Animation = 1
+            elif Alien.Current_Animation == 1:
+                Alien.Current_Animation = 0
 
         def Move_Down(self):
+            ## changing the aliens' ypos
             self.ypos = self.ypos + 15
+
+            ## changing the aliens' speed based on the collide side
             if Alien.Flag_Collide_Side == 'left':
                 Alien.Speed = 5
             elif Alien.Flag_Collide_Side == 'right':
@@ -664,12 +684,6 @@ def MainGame():
             Alien.Flag_Collide_Side = None
 
         def Check(self):
-            ## checking if the alien hits the edge
-            if self.xpos + self.length >= 440:
-                Alien.Flag_Collide_Side = 'right'
-            elif self.xpos <= 35:
-                Alien.Flag_Collide_Side = 'left'
-
             ## checking if the aliens reach the Barrier
             if self.ypos + self.height > 330 and self.ypos < 370:
                 if self.xpos + self.length > 48 and self.xpos < 108:
@@ -700,7 +714,6 @@ def MainGame():
                         alien_bullets.append(Alien_Bullet(self.xpos + self.length/2,self.ypos + self.height))
 
         def Split(self):
-
             ## removing the alien from the screen
             aliens.remove(self)
 
@@ -719,14 +732,13 @@ def MainGame():
                             aliens.append(Alien(self.xpos + row*self.length/2,self.ypos + column*self.height/2,self.type,self.size - 1))
 
         def Draw(self,color='white'):
-
             ## drawing the alien based on the color selected
             if color == 'white':
-                return screen.blit(Alien.Image_List[self.size - 1][0][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[self.size - 1][0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
             elif color == 'green':
-                return screen.blit(Alien.Image_List[self.size - 1][1][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[self.size - 1][1][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
             elif color == 'red':
-                return screen.blit(Alien.Image_List[self.size - 1][2][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[self.size - 1][2][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
 
         def Draw_Letter_Take(self):
             return screen.blit(Alien.Letter_Flip_Image_List[self.Current_Animation],(self.xpos - 8,self.ypos))
@@ -1036,12 +1048,12 @@ def MainGame():
                 self.Dr = [3,5,5,7]
       
         def Move_Alien_Bullet(self):
-                ## updating the animation
-                self.Current_Animation = self.Current_Animation + 1
-                if self.Current_Animation == 4:
-                    self.Current_Animation = 0
-                ## updating the y cordinates
-                self.ypos = self.ypos + 3
+            ## updating the animation
+            self.Current_Animation = self.Current_Animation + 1
+            if self.Current_Animation == 4:
+                self.Current_Animation = 0
+            ## updating the y cordinates
+            self.ypos = self.ypos + 3
 
         def Check(self):
             nonlocal alien_bullets, Bullet_Explosion_List
@@ -1396,7 +1408,7 @@ def MainGame():
 
             ## drawing the alien
             start_alien.Draw()
-            start_alien.Move_Alien()
+            start_alien.Move_Alien(True)
 
             ## checking if the alien reaches the cordinate of 265 where it will take the letter
             if start_alien.xpos == 260:
@@ -1427,7 +1439,7 @@ def MainGame():
 
             ## drawing the alien
             start_alien.Draw_Letter_Take()
-            start_alien.Move_Alien()
+            start_alien.Move_Alien(True)
 
             ## checking if the alien reaches the cordinate of 600 where it will flip the letter
             if start_alien.xpos == 600:
@@ -1473,7 +1485,7 @@ def MainGame():
                 break
 
             ## moving the alien
-            start_alien.Move_Alien()
+            start_alien.Move_Alien(True)
 
             pygame.display.update()
             clock.tick(30)
@@ -1494,7 +1506,7 @@ def MainGame():
             y_message.Draw()
 
             ## drawing the alien
-            start_alien.Move_Alien()
+            start_alien.Move_Alien(True)
             start_alien.Draw()
 
             ## checking if the alien reaches the cordinate of 600 and ending the loop
@@ -1522,7 +1534,7 @@ def MainGame():
             player_1_score.Draw()
             player_2_score.Draw()
             high_score.Draw()
-            credit_message.draw()
+            credit_message.Draw()
 
             ## drawing the buttons
             push_message_list = ['P','U','S','H']
@@ -1686,11 +1698,8 @@ def MainGame():
                 if  Alien.Timer <= 0:
                     Alien.Timer = 20
 
-                    ## updating the alien's animation 
-                    if Alien.Current_Animation == 0:
-                        Alien.Current_Animation = 1
-                    elif Alien.Current_Animation == 1:
-                        Alien.Current_Animation = 0
+                    ## changing the aliens' animation
+                    Alien.Change_Animation()
 
                     ## moving the aliens down whenever the aliens reach a side
                     if Alien.Flag_Collide_Side != None:

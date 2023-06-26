@@ -154,17 +154,25 @@ commented things using four hastags
 
 
 
-Plan: I am now trying to match up the code so both of them is equal and am iterating through the entire process and next time if I make any changes to one code, I will also make to the other for the better. 
+1) Plan: I am now trying to match up the code so both of them is equal and am iterating through the entire process and next time if I make any changes to one code, I will also make to the other for the better. 
 I am now currently in the class of the alien class 
 
 ## after a long time in coding, these steps are far past the errors prior and I am just trying
 to correct everything with no bugs
 
-I updated the commentary that writes to draw the alien before 
+1) I updated the commentary that writes to draw the alien before 
 actually drawing the alien
-
-I added in space invaders 2 a function called change animation but it was uncessary so I deleted it
-
-I changed it so that the alien changes animation whenever it moves
-
-I also made sure that whenever I drew the alien, I would draw the self animation not the class animation
+2) I added in space invaders 2 a function called change animation but it was uncessary so I deleted it
+instead, I changed it so that the alien changes animation whenever it moves
+3) I also made sure that whenever I drew the alien, I would draw the self animation not the class animation
+4) I made sure to delete the periodic alien class variable and localized it instead similar to the original game
+6) Scrap! I scrapped 1,2,3,and 4. 
+7) I made sure to create a function to change the alien's animation
+8) I made sure to change the self.Animation only when it is a start alien
+by usign parameters
+9) I added all the parameters the start alien movements as true
+10) I made sure to call the function changing the alien's animation for the game aliens
+11) I repositioned the area where the alien's length and flag collide
+side is checked wheneer it is moved
+12) I added commentary for the alien move down function and the change animation function
+13) I made sure to avoid any spacing for the function call and the next line.

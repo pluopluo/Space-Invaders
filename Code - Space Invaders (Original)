@@ -455,13 +455,18 @@ def MainGame():
 
         def Move_Alien(self):
             self.xpos = self.xpos + self.Speed
+            
+            ## changing the alien's animation
             if self.Current_Animation == 0:
                 self.Current_Animation = 1
             elif self.Current_Animation == 1:
                 self.Current_Animation = 0
 
         def Move_Down(self):
+            ## changing the aliens' ypos
             self.ypos = self.ypos + (15 - (Alien.Counter_Position/2))
+
+            ## changing the aliens' speed based on the collide side
             if Alien.Flag_Collide_Side == 'left':
                 Alien.Speed = 5
             elif Alien.Flag_Collide_Side == 'right':
@@ -496,7 +501,6 @@ def MainGame():
                 alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
 
         def Draw(self,color='white'):
-
             ## drawing the alien based on the color selected
             if color == 'white':
                 return screen.blit(Alien.Image_List[0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
@@ -1431,7 +1435,7 @@ def MainGame():
         
     # setting up the screen
         Fill_Black()
-        Screen_Draw()
+        Screen_Draw(True)
 
     ## starting the game
         while True:

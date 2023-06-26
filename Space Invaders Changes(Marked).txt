@@ -176,3 +176,8 @@ by usign parameters
 side is checked wheneer it is moved
 12) I added commentary for the alien move down function and the change animation function
 13) I made sure to avoid any spacing for the function call and the next line.
+
+## now, I will try to add a new level that has unlimited amount of aliens
+1) In order to do this, I will have to generate the cordinates for a new level
+2) I created a function in the alien class that generates 10 more aliens when the aliens
+in the original layout gets down

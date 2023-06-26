@@ -413,6 +413,18 @@ def MainGame():
                             [1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
                             [1,0,0,0,0,1,0,0,1,1,0,1,0,0,0,1],
                             [1,1,1,1,0,1,0,0,0,1,0,1,1,1,1,0]]
+        
+        elif Flag_Game_Level == [1,4]:
+            alien_x_distance = 20
+            alien_y_distance = 15
+            alien_x_start_pos = 60
+            alien_y_start_pos = 80
+            alien_layout = [[1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1]]
 
         ## filling the aliens
         for row in range(len(alien_layout) - 1,-1,-1):
@@ -730,6 +742,11 @@ def MainGame():
                     for row in range(0,2):
                         for column in range(0,2):
                             aliens.append(Alien(self.xpos + row*self.length/2,self.ypos + column*self.height/2,self.type,self.size - 1))
+
+        def Level_14_Generate_Alien(self):
+            ## generating new aliens 
+            global aliens
+            aliens.append(Alien(self.xpos,self.ypos - 15,self.type,self.size))
 
         def Draw(self,color='white'):
             ## drawing the alien based on the color selected

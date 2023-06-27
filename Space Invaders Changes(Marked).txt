@@ -187,4 +187,4 @@ and the alien is moving down
 Check to make sure the position is right, I made the xpos for it 400 and will change it back
 5) I found that the right xpos is 40
 6) I made sure to change the mystery ship's xpos back to 2500 from 
-7) I backspaced the Move Alien Bullet funciton in the original space invaders
+7) I backspaced the Move Alien Bullet funciton in the original space invaders game

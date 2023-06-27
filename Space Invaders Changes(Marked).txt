@@ -189,3 +189,16 @@ Check to make sure the position is right, I made the xpos for it 400 and will ch
 6) I made sure to change the mystery ship's xpos back to 2500 from 
 7) I backspaced the Move Alien Bullet funciton in the original space invaders game
 8) I made sure to print 'here' in the copy alien function
+9) There is a bug where the aliens stop moving and the game crashes
+10) I made sure to stop that by nonlocalizing the flag game variable
+11) The bug is still there
+12) I decided to print the length of the aliens both in the function and in the game
+13) I decided to stop printing the length of the aliens in the middle of the game and instead utilize the function
+for printing the aliens in the function with a pause
+14) I found that the results were that the aliens kept getting bigger without stopping so I 
+15) I finally realized that with the new aliens, they were never iterated through so I made sure
+to add new aliens only when the aliens already moved down 
+16) I deleted everything
+17) I changed how to add the new aliens to the lists in order to make it better
+18) I changed my mind now!
+

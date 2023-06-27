@@ -685,6 +685,9 @@ def MainGame():
                 Alien.Current_Animation = 0
 
         def Move_Down(self):
+            ## nonlocalizing the flag game variable
+            nonlocal Flag_Game_Level
+
             ## changing the aliens' ypos
             self.ypos = self.ypos + 15
 
@@ -748,7 +751,6 @@ def MainGame():
                             aliens.append(Alien(self.xpos + row*self.length/2,self.ypos + column*self.height/2,self.type,self.size - 1))
 
         def Copy_Alien(self):
-            print('here')
             ## generating new aliens 
             nonlocal aliens
             aliens.append(Alien(self.xpos,self.ypos - 15,self.type,self.size))

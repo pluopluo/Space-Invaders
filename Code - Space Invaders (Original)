@@ -809,12 +809,12 @@ def MainGame():
                 self.Dr = [3,5,5,7]
       
         def Move_Alien_Bullet(self):
-                ## updating the animation
-                self.Current_Animation = self.Current_Animation + 1
-                if self.Current_Animation == 4:
-                    self.Current_Animation = 0
-                ## updating the y cordinates
-                self.ypos = self.ypos + 3
+            ## updating the animation
+            self.Current_Animation = self.Current_Animation + 1
+            if self.Current_Animation == 4:
+                self.Current_Animation = 0
+            ## updating the y cordinates
+            self.ypos = self.ypos + 3
 
         def Check(self):
             nonlocal alien_bullets, Bullet_Explosion_List

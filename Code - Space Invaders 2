@@ -695,6 +695,10 @@ def MainGame():
                 Alien.Speed = -5
             Alien.Flag_Collide_Side = None
 
+            ## checking if the game should generate new aliens in level 14
+            if Flag_Game_Level == [1,4]:
+                self.Copy_Alien()
+
         def Check(self):
             ## checking if the aliens reach the Barrier
             if self.ypos + self.height > 330 and self.ypos < 370:
@@ -743,9 +747,9 @@ def MainGame():
                         for column in range(0,2):
                             aliens.append(Alien(self.xpos + row*self.length/2,self.ypos + column*self.height/2,self.type,self.size - 1))
 
-        def Level_14_Generate_Alien(self):
+        def Copy_Alien(self):
             ## generating new aliens 
-            global aliens
+            nonlocal aliens
             aliens.append(Alien(self.xpos,self.ypos - 15,self.type,self.size))
 
         def Draw(self,color='white'):
@@ -1625,7 +1629,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        Flag_Game_Level = [0,5]
+        Flag_Game_Level = [1,4]
         Flag_Gameover = False
 
         ## setting up the player, their backup, and their live 
@@ -1652,7 +1656,7 @@ def MainGame():
         Alien_Explosion_List = []
 
         ## setting up the Mystery_Ship
-        mystery_ship = Mystery_Ship(2500,90)
+        mystery_ship = Mystery_Ship(2500,40)
         Mystery_Ship_Explosion_List = []
         
         ## setting up the Barrier layout

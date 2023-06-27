@@ -698,10 +698,6 @@ def MainGame():
                 Alien.Speed = -5
             Alien.Flag_Collide_Side = None
 
-            ## checking if the game should generate new aliens in level 14
-            if Flag_Game_Level == [1,4]:
-                self.Copy_Alien()
-
         def Check(self):
             ## checking if the aliens reach the Barrier
             if self.ypos + self.height > 330 and self.ypos < 370:
@@ -751,9 +747,14 @@ def MainGame():
                             aliens.append(Alien(self.xpos + row*self.length/2,self.ypos + column*self.height/2,self.type,self.size - 1))
 
         def Copy_Alien(self):
-            ## generating new aliens 
+            ## globalizing variables
             nonlocal aliens
-            aliens.append(Alien(self.xpos,self.ypos - 15,self.type,self.size))
+
+            ## checking if the alien is within the right ypos
+            if self.ypos == 95:
+
+                ## generating the new aliens 
+                aliens.append(Alien(self.xpos,self.ypos - 15,self.type,self.size))
 
         def Draw(self,color='white'):
             ## drawing the alien based on the color selected
@@ -1731,14 +1732,23 @@ def MainGame():
                             alien.Move_Down()
                             alien.Shoot()
                             alien.Check()
-                    
+
+                        ## checking the requirements to generate new aliens
+                        if Flag_Game_Level == [1,4]:
+
+                            ## iterating through the aliens list
+                            for iteration in range(len(aliens) - 1,len(aliens) - 11,-1):
+
+                                ## adding the new alien to the game
+                                aliens[iteration].Copy_Alien()
+
                     ## moving the aliens regularly
                     elif Alien.Flag_Collide_Side == None:
                         for alien in aliens:
                             alien.Move_Alien()
                             alien.Shoot()
                             alien.Check()
-
+                    
                 ## playing the background music of the alien movement
                     mixer.music.load(Game_Element.Basic_Sound_Url+'background sound '+str(Alien.Counter_Background_Sound)+'.wav')
                     mixer.music.play()

@@ -213,4 +213,22 @@ to add new aliens only when the aliens already moved down
 28) I increased the fill black screen by a large 
 
 29) Remember to check if the code is organized from steps 23 - 28
+30) This is the time where I am going to start to change the class Words And phrases
+    a) I began making the phrase a list of the prhase
+    b) I made sure when iterating througn the phrase:
+        I checked for various symbols
+    c) I canceled listing the phrase for string operation
+    d) I made all the numbers strings instead including the left, right, equal, asterisk, question_mark, dash, and space
+    e) It came with a few exceptions of the yflip
+    f) I ran into many errors. The first one was the key error of '1'
+    g) To solve it, I made sure that the words and phrases class doesn't have any more string intergars
+    but regular integars which transform the string integar to a regular integar
+        g.1) I also frogot to get rid of the usless 'Space' in the character name lists
+        g.2) I also made sure to first transform the image before storing it to the list
+        g.3) I also updated the pause letter draw to close function
+        g.4) I upgraded it so I don't have to have the character image list anymore
+    f) suprisingly, it already worked. I am just going to have to check it many times to make sure it is organized
+    g) I will also have to add it to the original space invaders gam
+
+
 

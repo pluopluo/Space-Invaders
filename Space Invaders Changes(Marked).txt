@@ -209,4 +209,8 @@ to add new aliens only when the aliens already moved down
 24) I made sure to generate then with the number 3 as the type
 25) I made sure to add a message for level 14 and level 15
 26) I added spacing to the bullet draws for the aliens
+27) I added messages showing the audience the new levels
+28) I increased the fill black screen by a large 
+
+29) Remember to check if the code is organized from steps 23 - 28
 

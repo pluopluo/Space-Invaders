@@ -229,6 +229,9 @@ to add new aliens only when the aliens already moved down
         g.4) I upgraded it so I don't have to have the character image list anymore
     f) suprisingly, it already worked. I am just going to have to check it many times to make sure it is organized
     g) I will also have to add it to the original space invaders gam
+    h) Time for the fun part. 
+    I) I managed to get rid of all the message list and put it directly as the message
+    J) I need to do that for both programs of code
 
 
 

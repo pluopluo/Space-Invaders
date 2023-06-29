@@ -524,8 +524,7 @@ def MainGame():
         if Flag_Game_Level[0] > 0:
 
             ## preparing the level message
-            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[0],Flag_Game_Level[1]]
-            level_message = Words_And_Phrases(180,180,level_message_list)
+            level_message = Words_And_Phrases(180,180,['LEVEL',Flag_Game_Level[0],Flag_Game_Level[1]])
 
             ## checking if the level is 14 and also writing a message
             if Flag_Game_Level == [1,4]:
@@ -595,13 +594,9 @@ def MainGame():
         Character_Dictionary = {}
         for character_name in Character_Name_List:
 
-            ## loading the image
+            ## loading the image, transforming it, then storing it
             img = pygame.image.load(Game_Element.Basic_Url+'letters\\'+str(character_name)+'.jpeg')
-
-            ## transforming the image
             img = pygame.transform.scale(img,(10,14))
-            
-            ## storing the image to the dictionary with the respective value
             Character_Dictionary[character_name] = img
             
         def __init__(self,xpos,ypos,phrase):
@@ -644,7 +639,7 @@ def MainGame():
                 ## checking if the character is a string number and changing it to an integar
                 string_number_list = ['0','1','2','3','4','5','6','7','8','9']
                 if character in string_number_list:
-                    character == int(character)
+                    character = int(character)
                 
                 ## drawing the letter and increasing the counter spacing
                 screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
@@ -1344,25 +1339,16 @@ def MainGame():
     while True:
 ## setting up the menu 1
         ## setting up the words and messages
-        please_select_message_list = ['P','L','E','A','S','E','space','S','E','L','E','C','T']
-        please_select_message = Words_And_Phrases(140,140,please_select_message_list)
-
-        one_or_two_players_message_list = ['left',1,'space','O','R','space',2,'space','P','L','A','Y','E','R','S','right']
-        one_or_two_players_message = Words_And_Phrases(120,180,one_or_two_players_message_list)
-
-        one_player_message_list = [1,'P','L','A','Y','E','R']
-        one_player_message = Words_And_Phrases(190,220,one_player_message_list)
-
-        two_player_message_list = [2,'P','L','A','Y','E','R']
-        two_player_message = Words_And_Phrases(190,260,two_player_message_list)
+        please_select_message = Words_And_Phrases(140,140,'PLEASE SELECT')
+        one_or_two_players_message = Words_And_Phrases(120,180,'<1 OR 2 PLAYERS>')
+        one_player_message = Words_And_Phrases(190,220,'1PLAYER')
+        two_player_message = Words_And_Phrases(190,260,'2PLAYER')
 
         ## setting up the select asterisk
-        asterisk_list = ['asterisk']
-        asterisk = Words_And_Phrases(170,220,asterisk_list)
+        asterisk = Words_And_Phrases(170,220,'*')
 
         ## setting up the important credit message
-        credit_message_list = ['C','R','E','D','I','T','space',0,0]
-        credit_message = Words_And_Phrases(340,456,credit_message_list)
+        credit_message = Words_And_Phrases(340,456,'CREDIT 00')
 
         ## setting up the flag variable to begin the game
         Player_Selected = False
@@ -1371,8 +1357,7 @@ def MainGame():
         Flag_Game_Mode = 'one_player'
 
         ## setting up the player's score and the high score
-        score_message_list = ['S','C','O','R','E','left',1,'right','space','H','I','dash','S','C','O','R','E','space','S','C','O','R','E','left',2,'right']
-        score_message = Words_And_Phrases(45,20,score_message_list)
+        score_message = Words_And_Phrases(45,20,'SCORE<1> HI-SCORE SCORE<2>')
         player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
         player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
         high_score = Words_And_Phrases(200,60,[0,0,0,0])
@@ -1403,12 +1388,12 @@ def MainGame():
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
                         ## changing the asterik's position resetting the game mode
-                        asterisk = Words_And_Phrases(170,220,asterisk_list)
+                        asterisk = Words_And_Phrases(170,220,'asterisk')
                         Flag_Game_Mode = 'two_player'
 
                     elif event.key == K_UP:
                         ## changing the asterik's position resetting the game mode
-                        asterisk = Words_And_Phrases(170,180,asterisk_list)
+                        asterisk = Words_And_Phrases(170,180,'asterisk')
                         Flag_Game_Mode = 'one_player'
 
                     elif event.key == K_RETURN:
@@ -1434,22 +1419,19 @@ def MainGame():
         credit_message.Draw()
 
         # setting up and drawing the words and messages
-        play_message_list = ['P','L','A']
-        play_message = Words_And_Phrases(210,150,play_message_list)
+        play_message = Words_And_Phrases(210,150,'PLA')
         play_message.Draw(10)
 
-        y_message = Words_And_Phrases(255,150,['yflip'])
+        y_message = Words_And_Phrases(255,150,'yflip')
         y_message.Draw(10)
 
-        Space_Invaders_message_list = ['S','P','A','C','E','space','I','N','V','A','D','E','R','S']
-        Space_Invaders_message = Words_And_Phrases(135,190,Space_Invaders_message_list)
+        Space_Invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
         Space_Invaders_message.Draw(10)
 
         Pause(0.5)
 
         ## drawing the score_advance_table
-        score_advance_table_message = ['asterisk','S','C','O','R','E','space','A','D','V','A','N','C','E','space','T','A','B','L','E','asterisk']
-        score_advance_table = Words_And_Phrases(80,250,score_advance_table_message)
+        score_advance_table = Words_And_Phrases(80,250,'*SCORE ADVANCE TABLE*')
         score_advance_table.Draw()
 
         ## drawing the alien display only if the player hasn't skipped
@@ -1467,20 +1449,16 @@ def MainGame():
             alien_2_display.Draw('white')
 
         ## drawing the alien values
-        mystery_point_message_list = ['equal','question_mark','space','M','Y','S','T','E','R','Y']
-        mystery_point_message = Words_And_Phrases(180,285,mystery_point_message_list)
+        mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
         mystery_point_message.Draw(10)
         
-        thirty_points_message_list = ['equal',3,0,'space','P','O','I','N','T','S']
-        thirty_points_message = Words_And_Phrases(180,320,thirty_points_message_list)
+        thirty_points_message = Words_And_Phrases(180,320,'=30 POINTS')
         thirty_points_message.Draw(10)
 
-        twenty_points_message_list = ['equal',2,0,'space','P','O','I','N','T','S']
-        twenty_points_message = Words_And_Phrases(180,355,twenty_points_message_list)
+        twenty_points_message = Words_And_Phrases(180,355,'=20 POINTS')
         twenty_points_message.Draw(10)
 
-        ten_points_message_list = ['equal',1,0,'space','P','O','I','N','T','S']
-        ten_points_message = Words_And_Phrases(180,390,ten_points_message_list)
+        ten_points_message = Words_And_Phrases(180,390,'=10 POINTS')
         ten_points_message.Draw(10)
 
     ## setting up the short alien film
@@ -1572,8 +1550,7 @@ def MainGame():
             if start_alien.xpos == 260:
 
                 # flipping the letter
-                y_message_list = ['Y']
-                y_message = Words_And_Phrases(255,150,y_message_list)
+                y_message = Words_And_Phrases(255,150,'Y')
 
                 ## changing the alien speed
                 start_alien.Speed = 5
@@ -1635,20 +1612,17 @@ def MainGame():
             credit_message.Draw()
 
             ## drawing the buttons
-            push_message_list = ['P','U','S','H']
-            push_message = Words_And_Phrases(210,180,push_message_list)
+            push_message = Words_And_Phrases(210,180,'PUSH')
             push_message.Draw()
 
             ## drawing the message describing the one player buttons used
             if Flag_Game_Mode == 'one_player':
-                only_one_player_button_message_list = ['O','N','L','Y','space',1,'space','P','L','A','Y','E','R','space','B','U','T','T','O','N']
-                only_one_player_button_message = Words_And_Phrases(90,230,only_one_player_button_message_list)
+                only_one_player_button_message = Words_And_Phrases(90,230,'ONLY 1 PLAYER BUTTON')
                 only_one_player_button_message.Draw()
 
             ## drawing the message describing the two player buttons used
             elif Flag_Game_Mode == 'two_player':
-                only_two_player_button_message_list = [2,'space','P','L','A','Y','E','R','space','B','U','T','T','O','N']
-                only_two_player_button_message = Words_And_Phrases(127,230,only_two_player_button_message_list)
+                only_two_player_button_message = Words_And_Phrases(127,230,'2 PLAYER BUTTON')
                 only_two_player_button_message.Draw()
             
             ## updating the screen only without the flagskip variable
@@ -1672,16 +1646,14 @@ def MainGame():
 
                 if Flag_Game_Mode == 'one_player':
                     ## drawing the play player 1 message and blinking the player 1 score
-                    play_one_player_message_list = ['P','L','A','Y','space','P','L','A','Y','E','R','left',1,'right']
-                    play_one_player_message = Words_And_Phrases(135,180,play_one_player_message_list)
+                    play_one_player_message = Words_And_Phrases(135,180,'PLAY PLAYER<1>')
                     play_one_player_message.Draw()
                     if time%2 == 0:
                         player_1_score.Draw()
 
                 if Flag_Game_Mode == 'two_player':
                     ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
-                    play_two_player_message_list = ['P','L','A','Y','space','P','L','A','Y','E','R','left',2,'right']
-                    play_two_player_message = Words_And_Phrases(135,220,play_two_player_message_list)
+                    play_two_player_message = Words_And_Phrases(135,220,'PLAY PLAYER<2>')
                     play_two_player_message.Draw()
                     if time%2 == 0:
                         player_2_score.Draw()
@@ -2093,8 +2065,7 @@ def MainGame():
         ## ending the game
             if Flag_Gameover == True:
                 ## drawing the Game Over Sign
-                game_over_message_list = ['G','A','M','E','O','V','E','R']
-                game_over_message = Words_And_Phrases(180,120,game_over_message_list)
+                game_over_message = Words_And_Phrases(180,120,'GAMEOVER')
                 game_over_message.Draw()
                 pygame.display.update()
                 Pause(2)

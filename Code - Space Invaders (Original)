@@ -342,46 +342,69 @@ def MainGame():
 
     class Words_And_Phrases(Game_Element):
         ## uploading all the character names
-        Character_Dictionary = {}
         Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
-                                'O','P','Q','R','S','T','U','V','W','X','Y','Z','SPACE',0,1,2,
+                                'O','P','Q','R','S','T','U','V','W','X','Y','Z',0,1,2,
                                 3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip']
         
-        ## uploading all the character
-        Character_Image_List = []
+        ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
+        Character_Dictionary = {}
         for character_name in Character_Name_List:
-            Character_Image_List.append(pygame.image.load(Game_Element.Basic_Url+'letters\\'+str(character_name)+'.jpeg'))
-     
-        ## storing the resized character images into a dictionary with the value of the respective character name 
-        for index in range(len(Character_Name_List)):
-            character_image = Character_Image_List[index]
-            resized_character_image = pygame.transform.scale(character_image,(10,14))
-            Character_Dictionary[Character_Name_List[index]] = resized_character_image
+
+            ## loading the image, transforming it, then storing it
+            img = pygame.image.load(Game_Element.Basic_Url+'letters\\'+str(character_name)+'.jpeg')
+            img = pygame.transform.scale(img,(10,14))
+            Character_Dictionary[character_name] = img
             
         def __init__(self,xpos,ypos,phrase):
+
+            ## setting up the xpos, ypos and phrase
             super().__init__(xpos,ypos)
             self.phrase = phrase
 
         def Draw(self,delay=0):
+
+            ## setting up the counter spacing used for drawing 
             Counter_Spacing = 0
 
+            ## iteration process
             for character in self.phrase:
-                ## checking if it is to be skipped
+
+                ## checking if the player decides to skip
                 if Player_Selected == True:
                     if Flag_Skip == True or Flag_Skip == 'stage_2':
                         if Flag_Skip == True:
                             Fill_Black()
-                        break
-
-                ## drawing the letter
+                        break 
+                
+                ## checking if the character is a symbol and changing it to words
+                if character == '<':
+                    character = 'left'
+                elif character == '>':
+                    character = 'right'
+                elif character == '=':
+                    character = 'equal'
+                elif character == '*':
+                    character = 'asterisk'
+                elif character == '?':
+                    character = 'question_mark'
+                elif character == '-':
+                    character = 'dash'
+                elif character == ' ':
+                    character = 'space'
+                
+                ## checking if the character is a string number and changing it to an integar
+                string_number_list = ['0','1','2','3','4','5','6','7','8','9']
+                if character in string_number_list:
+                    character == int(character)
+                
+                ## drawing the letter and increasing the counter spacing
                 screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
                 Counter_Spacing = Counter_Spacing + 15
 
                 ## pausing if there is a delay
                 if delay != 0:
-                    Close_Or_Skip()
                     pygame.display.update()
-                    clock.tick(delay)
+                    Pause(delay)
 
     class Alien(Game_Element):                                                                                                                                                                                 
         ## movement

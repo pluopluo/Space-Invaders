@@ -764,7 +764,7 @@ def MainGame():
             if self.ypos == 95:
 
                 ## generating the new aliens 
-                aliens.append(Alien(self.xpos,self.ypos - 15,self.type,self.size))
+                aliens.append(Alien(self.xpos,self.ypos - 15,3,self.size))
 
         def Draw(self,color='white'):
             ## drawing the alien based on the color selected
@@ -1747,10 +1747,13 @@ def MainGame():
                         if Flag_Game_Level == [1,4] or Flag_Game_Level == [1,5]:
 
                             ## generating the upper range
-                            upper_range = int(len(aliens)*4/5)
+                            if Flag_Game_Level == [1,4]:
+                                upper_range = len(aliens) - 11
+                            elif Flag_Game_Level == [1,5]:
+                                upper_range = len(aliens) - 13
 
                             ## iterating through the aliens list
-                            for iteration in range(len(aliens) - 1,upper_range + 9,-1):
+                            for iteration in range(len(aliens) - 1,upper_range,-1):
 
                                 ## adding the new alien to the game
                                 aliens[iteration].Copy_Alien()

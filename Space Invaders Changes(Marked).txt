@@ -207,4 +207,6 @@ to add new aliens only when the aliens already moved down
 22) I added level 15
 23) I added the upper range as an iteration upper range based on the length of the aliens
 24) I made sure to generate then with the number 3 as the type
+25) I made sure to add a message for level 14 and level 15
+26) I added spacing to the bullet draws for the aliens
 

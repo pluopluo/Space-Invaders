@@ -419,22 +419,22 @@ def MainGame():
             alien_y_distance = 15
             alien_x_start_pos = 60
             alien_y_start_pos = 80
-            alien_layout = [[1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1]]
+            alien_layout = [[1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1]]
         
         elif Flag_Game_Level == [1,5]:
             alien_x_distance = 20
             alien_y_distance = 15
             alien_x_start_pos = 60
             alien_y_start_pos = 80
-            alien_layout = [[1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1]]
+            alien_layout = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
 
         ## filling the aliens
         for row in range(len(alien_layout) - 1,-1,-1):
@@ -1154,6 +1154,7 @@ def MainGame():
         def Draw(self):
             ## drawing the alien bullet
             counter_xpos = 0
+
             ## checking what type it is and drawing the right images
             if self.type == 1:
                 for image_particle in Alien_Bullet.layout_1[self.Current_Animation]:
@@ -1162,6 +1163,7 @@ def MainGame():
                     else:
                         screen.blit(Alien_Bullet.Image_List[0][image_particle- 1],(self.xpos,self.ypos + counter_xpos))
                     counter_xpos = counter_xpos + 2
+
             if self.type == 2:
                 for image_particle in Alien_Bullet.layout_2[self.Current_Animation]:
                     if self.ypos + 2 > 330:
@@ -1169,6 +1171,7 @@ def MainGame():
                     else:
                         screen.blit(Alien_Bullet.Image_List[0][image_particle- 1],(self.xpos,self.ypos + counter_xpos))
                     counter_xpos = counter_xpos + 2
+                    
             if self.type == 3:
                 for image_particle in Alien_Bullet.layout_3[self.Current_Animation]:
                     if self.ypos + 2 > 330:
@@ -1746,11 +1749,11 @@ def MainGame():
                         ## checking the requirements to generate new aliens
                         if Flag_Game_Level == [1,4] or Flag_Game_Level == [1,5]:
 
-                            ## generating the upper range
+                            ## generating the upper range based on the level
                             if Flag_Game_Level == [1,4]:
-                                upper_range = len(aliens) - 11
-                            elif Flag_Game_Level == [1,5]:
                                 upper_range = len(aliens) - 13
+                            elif Flag_Game_Level == [1,5]:
+                                upper_range = len(aliens) - 15
 
                             ## iterating through the aliens list
                             for iteration in range(len(aliens) - 1,upper_range,-1):

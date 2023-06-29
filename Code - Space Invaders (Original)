@@ -880,6 +880,7 @@ def MainGame():
         def Draw(self):
             ## drawing the alien bullet
             counter_xpos = 0
+
             ## checking what type it is and drawing the right images
             if self.type == 1:
                 for image_particle in Alien_Bullet.layout_1[self.Current_Animation]:
@@ -888,6 +889,7 @@ def MainGame():
                     else:
                         screen.blit(Alien_Bullet.Image_List[0][image_particle- 1],(self.xpos,self.ypos + counter_xpos))
                     counter_xpos = counter_xpos + 2
+
             if self.type == 2:
                 for image_particle in Alien_Bullet.layout_2[self.Current_Animation]:
                     if self.ypos + 2 > 330:
@@ -895,6 +897,7 @@ def MainGame():
                     else:
                         screen.blit(Alien_Bullet.Image_List[0][image_particle- 1],(self.xpos,self.ypos + counter_xpos))
                     counter_xpos = counter_xpos + 2
+                    
             if self.type == 3:
                 for image_particle in Alien_Bullet.layout_3[self.Current_Animation]:
                     if self.ypos + 2 > 330:

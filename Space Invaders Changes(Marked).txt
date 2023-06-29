@@ -205,4 +205,5 @@ to add new aliens only when the aliens already moved down
 20) I only did it with certain if conditions
 21) I created the if condition of level 14 outside
 22) I added level 15
+23) I added the upper range as an iteration upper range based on the length of the aliens
 

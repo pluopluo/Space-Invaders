@@ -423,7 +423,6 @@ def MainGame():
                             [1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1]]
         
         elif Flag_Game_Level == [1,5]:
@@ -432,7 +431,6 @@ def MainGame():
             alien_x_start_pos = 60
             alien_y_start_pos = 80
             alien_layout = [[1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1],
                             [1,1,1,1,1,1,1,1,1,1,1,1],
@@ -1746,10 +1744,13 @@ def MainGame():
                             alien.Check()
 
                         ## checking the requirements to generate new aliens
-                        if Flag_Game_Level == [1,4]:
+                        if Flag_Game_Level == [1,4] or Flag_Game_Level == [1,5]:
+
+                            ## generating the upper range
+                            upper_range = int(len(aliens)*4/5)
 
                             ## iterating through the aliens list
-                            for iteration in range(len(aliens) - 1,len(aliens) - 11,-1):
+                            for iteration in range(len(aliens) - 1,upper_range + 9,-1):
 
                                 ## adding the new alien to the game
                                 aliens[iteration].Copy_Alien()

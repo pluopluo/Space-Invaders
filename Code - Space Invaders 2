@@ -524,30 +524,19 @@ def MainGame():
         if Flag_Game_Level[0] > 0:
 
             ## preparing the level message
-            level_message = Words_And_Phrases(180,180,['LEVEL',Flag_Game_Level[0],Flag_Game_Level[1]])
+            level_message = Words_And_Phrases(180,180,'LEVEL ' + str(Flag_Game_Level[0]) + str(Flag_Game_Level[1]))
 
             ## checking if the level is 14 and also writing a message
             if Flag_Game_Level == [1,4]:
 
+                ## changing the level message's ypos because of the other message's
+                level_message.ypos = 120
+
                 ## preparing the message
-                game_completion_message_list_1 = ['C','O','N','G','R','A','T','S']
-                game_completion_message_list_2 = ['Y','O','U','space','B','A','S','I','C','A','L','L','Y','space','F','I','N','I','S','H','E','D']
-                game_completion_message_list_3 = ['T','H','E','space','G','A','M','E']
-                game_completion_message_list_4 = ['C','A','N','space','Y','O','U','space','S','T','I','L','L','space','B','E','A','T']
-                game_completion_message_list_5 = ['T','H','I','S','space','L','E','V','E','L','question_mark']
-                game_completion_message_1 = Words_And_Phrases(0,100,game_completion_message_list_1)
-                game_completion_message_2 = Words_And_Phrases(0,120,game_completion_message_list_2)
-                game_completion_message_3 = Words_And_Phrases(0,140,game_completion_message_list_3)
-                game_completion_message_4 = Words_And_Phrases(0,160,game_completion_message_list_4)                
-                game_completion_message_5 = Words_And_Phrases(0,180,game_completion_message_list_5)
-
-                ## drawing the message
-                game_completion_message_1.Draw()
-                game_completion_message_2.Draw()
-                game_completion_message_3.Draw()
-                game_completion_message_4.Draw()
-                game_completion_message_5.Draw()
-
+                game_completion_message_1 = Words_And_Phrases(75,160,'CONGRATS YOU BASICALLY')
+                game_completion_message_2 = Words_And_Phrases(113,195,'FINISHED THE GAME')
+                game_completion_message_3 = Words_And_Phrases(105,230,'CAN YOU STILL BEAT')
+                game_completion_message_4 = Words_And_Phrases(158,265,'THIS LEVEL?')           
         else:
 
             ## preparing the level for something that is less then 10
@@ -556,15 +545,23 @@ def MainGame():
         
         ## drawing the level
         level_message.Draw()
-        
+
+        def middle(pixels_of_object):
+            a = 480 - pixels_of_object*15
+            print(a/2)
+        middle(11)
+
+        ## drawing the message
+        game_completion_message_1.Draw(6)
+        game_completion_message_2.Draw(6)
+        game_completion_message_3.Draw(6)
+        game_completion_message_4.Draw(6)
+
         ## updating the game
         pygame.display.update()
 
-        ## checking how long to pause the screen
-        if Flag_Game_Level == [1,4] or Flag_Game_Level == [1,5]:
-            Pause(4)
-        else:
-            Pause(2)
+        ## pausing the screen
+        Pause(2000000)
 
         ## drawing a square to erase level message
         pygame.draw.rect(screen,black,(0,75,480,255))
@@ -648,7 +645,7 @@ def MainGame():
                 ## pausing if there is a delay
                 if delay != 0:
                     pygame.display.update()
-                    Pause(delay)
+                    Pause(delay/60)
 
     class Alien(Game_Element):                                                                                                                                                                                 
         ## movement
@@ -1420,13 +1417,13 @@ def MainGame():
 
         # setting up and drawing the words and messages
         play_message = Words_And_Phrases(210,150,'PLA')
-        play_message.Draw(10)
+        play_message.Draw(6)
 
         y_message = Words_And_Phrases(255,150,'yflip')
-        y_message.Draw(10)
+        y_message.Draw(6)
 
         Space_Invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
-        Space_Invaders_message.Draw(10)
+        Space_Invaders_message.Draw(6)
 
         Pause(0.5)
 
@@ -1450,16 +1447,16 @@ def MainGame():
 
         ## drawing the alien values
         mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
-        mystery_point_message.Draw(10)
+        mystery_point_message.Draw(6)
         
         thirty_points_message = Words_And_Phrases(180,320,'=30 POINTS')
-        thirty_points_message.Draw(10)
+        thirty_points_message.Draw(6)
 
         twenty_points_message = Words_And_Phrases(180,355,'=20 POINTS')
-        twenty_points_message.Draw(10)
+        twenty_points_message.Draw(6)
 
         ten_points_message = Words_And_Phrases(180,390,'=10 POINTS')
-        ten_points_message.Draw(10)
+        ten_points_message.Draw(6)
 
     ## setting up the short alien film
 

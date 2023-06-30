@@ -232,6 +232,10 @@ to add new aliens only when the aliens already moved down
     h) Time for the fun part. 
     I) I managed to get rid of all the message list and put it directly as the message
     J) I need to do that for both programs of code
+    K) I made sure to pause the drawing of the letters by a tenth of a second or 6 60th of a second
+    L) I made sure to only pause the computer for 2 seconds with level draw
+    M) I ridded the white box that used to surround it, and also changed the sentences
+
 
 
 

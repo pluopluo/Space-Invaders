@@ -236,6 +236,8 @@ to add new aliens only when the aliens already moved down
     L) I made sure to only pause the computer for 2 seconds with level draw
     M) I ridded the white box that used to surround it, and also changed the sentences
     N) Now, I just have to make sure that both of the codes are secure
+    O) I updated the game so that the there is no more yflip issue
+    P) There was also a bug in the original space invaders game. I had to add the sound to it as well.
 
 
 

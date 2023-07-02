@@ -948,6 +948,9 @@ def MainGame():
         Img = pygame.image.load(Game_Element.Basic_Url+'Alien Explosion\\alien explosion green.jpeg')
         Green_Image = pygame.transform.scale(Img,(20,13))
 
+        ## setting up it's sound
+        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'alien shot sound.wav')
+
         ## setting up the Existing_Timer
         Existing_Timer = 10
 

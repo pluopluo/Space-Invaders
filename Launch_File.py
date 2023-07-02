@@ -12,8 +12,8 @@ clock = pygame.time.Clock()
 while True:
     screen.fill(black)
 
-    ## displaying the space invaders 
-    show_text('Space Invaders',100,100,white,50)
+    ## displaying the space invaders logo 
+    Space_Invaders_Logo_Image = pygame.image.load('Space')
 
     ## drawing the boxes for the space invaders 1 and the space invaders 2
     rect_1 = pygame.draw.rect(screen,yellow,(150,200,100,50))

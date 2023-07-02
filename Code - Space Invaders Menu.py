@@ -1165,7 +1165,7 @@ def MainGame_1():
                     screen.blit(Mystery_Ship_Explosion.Score_200_Image,(self.xpos - 4,self.ypos))
 
     class Bullet_Explosion(Game_Element):
-        Img = pygame.image.load(Game_Element.Basic_Url+'Bullet_Explosions\\bullet and bullet explosion.jpeg')
+        Img = pygame.image.load(Game_Element.Basic_Url+'Bullet Explosions\\bullet and bullet explosion.jpeg')
         Image = pygame.transform.scale(Img,(12,16))
         Explosion_Timer = 4
         def Draw(self):
@@ -2842,7 +2842,7 @@ def MainGame_2():
                     screen.blit(Mystery_Ship_Explosion.Score_200_Image,(self.xpos - 4,self.ypos))
 
     class Bullet_Explosion(Game_Element):
-        Img = pygame.image.load(Game_Element.Basic_Url+'Bullet_Explosions\\bullet and bullet explosion.jpeg')
+        Img = pygame.image.load(Game_Element.Basic_Url+'Bullet Explosions\\bullet and bullet explosion.jpeg')
         Image = pygame.transform.scale(Img,(12,16))
         Explosion_Timer = 4
         def Draw(self):

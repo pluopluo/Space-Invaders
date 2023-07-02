@@ -520,42 +520,42 @@ def MainGame():
     ## drawing the level message
         nonlocal Flag_Game_Level
 
-        ## checking if the level is greater then 10 to display the level
+        ## checking if the level is greater then 10 to display a message
         if Flag_Game_Level[0] > 0:
 
-            ## preparing the level message
+            ## preparing the level message 
             level_message = Words_And_Phrases(180,180,'LEVEL ' + str(Flag_Game_Level[0]) + str(Flag_Game_Level[1]))
 
             ## checking if the level is 14 and also writing a message
             if Flag_Game_Level == [1,4]:
 
-                ## changing the level message's ypos because of the other message's
+                ## changing the level message's ypos clearing space for the other message
                 level_message.ypos = 120
 
-                ## preparing the message
+                ## preparing level 14's messages
                 game_completion_message_1 = Words_And_Phrases(75,160,'CONGRATS YOU BASICALLY')
                 game_completion_message_2 = Words_And_Phrases(113,195,'FINISHED THE GAME')
                 game_completion_message_3 = Words_And_Phrases(105,230,'CAN YOU STILL BEAT')
-                game_completion_message_4 = Words_And_Phrases(158,265,'THIS LEVEL?')           
+                game_completion_message_4 = Words_And_Phrases(158,265,'THIS LEVEL?')   
+
+        ## checking if the level is less then 10
         else:
 
-            ## preparing the level for something that is less then 10
+            ## preparing the level 
             level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[1]]
             level_message = Words_And_Phrases(187,180,level_message_list)
-        
-        ## drawing the level
+
+        ## drawing the level message
         level_message.Draw()
+        
+        ## checking if the level is 14 and drawing the game completion messages
+        if Flag_Game_Level == [1,4]:
+            game_completion_message_1.Draw(6)
+            game_completion_message_2.Draw(6)
+            game_completion_message_3.Draw(6)
+            game_completion_message_4.Draw(6)
 
-        def middle(pixels_of_object):
-            a = 480 - pixels_of_object*15
-            print(a/2)
-        middle(11)
 
-        ## drawing the message
-        game_completion_message_1.Draw(6)
-        game_completion_message_2.Draw(6)
-        game_completion_message_3.Draw(6)
-        game_completion_message_4.Draw(6)
 
         ## updating the game
         pygame.display.update()

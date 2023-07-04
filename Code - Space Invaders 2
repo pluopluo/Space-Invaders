@@ -173,7 +173,6 @@ def MainGame():
         pygame.display.update()
         Pause(2)
 
-
         if player == player_1:
             if len(player_1_backup) != 0:
 
@@ -191,7 +190,6 @@ def MainGame():
 
                 ## removing the player from the game
                 player_1 = None
-
 
         elif player == player_2:
             if len(player_2_backup) != 0:

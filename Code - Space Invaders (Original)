@@ -173,7 +173,6 @@ def MainGame():
         pygame.display.update()
         Pause(2)
 
-
         if player == player_1:
             if len(player_1_backup) != 0:
 
@@ -191,7 +190,6 @@ def MainGame():
 
                 ## removing the player from the game
                 player_1 = None
-
 
         elif player == player_2:
             if len(player_2_backup) != 0:
@@ -404,7 +402,7 @@ def MainGame():
                 ## pausing if there is a delay
                 if delay != 0:
                     pygame.display.update()
-                    Pause(delay)
+                    Pause(delay/60)
 
     class Alien(Game_Element):                                                                                                                                                                                 
         ## movement
@@ -1117,13 +1115,13 @@ def MainGame():
 
         # setting up and drawing the words and messages
         play_message = Words_And_Phrases(210,150,'PLA')
-        play_message.Draw(10)
+        play_message.Draw(6)
 
         y_message = Words_And_Phrases(255,150,['yflip'])
-        y_message.Draw(10)
+        y_message.Draw(6)
 
         Space_Invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
-        Space_Invaders_message.Draw(10)
+        Space_Invaders_message.Draw(6)
 
         Pause(0.5)
 
@@ -1147,16 +1145,16 @@ def MainGame():
 
         ## drawing the alien values
         mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
-        mystery_point_message.Draw(10)
+        mystery_point_message.Draw(6)
         
         thirty_points_message = Words_And_Phrases(180,320,'=30 POINTS')
-        thirty_points_message.Draw(10)
+        thirty_points_message.Draw(6)
 
         twenty_points_message = Words_And_Phrases(180,355,'=20 POINTS')
-        twenty_points_message.Draw(10)
+        twenty_points_message.Draw(6)
 
         ten_points_message = Words_And_Phrases(180,390,'=10 POINTS')
-        ten_points_message.Draw(10)
+        ten_points_message.Draw(6)
 
     ## setting up the short alien film
 
@@ -1318,6 +1316,7 @@ def MainGame():
                 only_one_player_button_message.Draw()
 
             ## drawing the message describing the two player buttons used
+            elif Flag_Game_Mode == 'two_player':
                 only_two_player_button_message = Words_And_Phrases(127,230,'2 PLAYER BUTTON')
                 only_two_player_button_message.Draw()
             

@@ -7,6 +7,7 @@ from pygame import mixer
 
 ## importing game files
 from Space_Invaders_2_Classes import *
+from Space_invaders_2_Functions import *
 
 ## setting up pygame, it's screen, caption, and clock
 pygame.init()

@@ -1533,22 +1533,26 @@ def MainGame():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
+
                 elif event.type == KEYDOWN:
                     if event.key == K_RIGHT:
                         if player_1 != None:
                             player_1.Flag_Movement_Direction = 'right'
                         else:
                             player_2.Flag_Movement_Direction = 'right'
+
                     elif event.key == K_LEFT:
                         if player_1 != None:
                             player_1.Flag_Movement_Direction = 'left'
                         else:
                             player_2.Flag_Movement_Direction = 'left'
+
                     elif event.key == K_a:
                         if player_2 != None:
                             player_2.Flag_Movement_Direction = 'left'
                         else:
                             player_1.Flag_Movement_Direction = 'left'
+
                     elif event.key == K_d:
                         if player_2 != None:
                             player_2.Flag_Movement_Direction = 'right'
@@ -1602,6 +1606,7 @@ def MainGame():
                         else:
                             if player_2.Flag_Movement_Direction == 'right':
                                 player_2.Flag_Movement_Direction = None
+
                     elif event.key == K_LEFT:
                         if player_1 != None:
                             if player_1.Flag_Movement_Direction == 'left':
@@ -1609,6 +1614,7 @@ def MainGame():
                         else:
                             if player_2.Flag_Movement_Direction == 'left':
                                 player_2.Flag_Movement_Direction = None
+
                     if event.key == K_a:
                         if player_2 != None:
                             if player_2.Flag_Movement_Direction == 'left':
@@ -1616,6 +1622,7 @@ def MainGame():
                         else:
                             if player_1.Flag_Movement_Direction == 'left':
                                 player_1.Flag_Movement_Direction = None
+                                
                     elif event.key == K_d:
                         if player_2 != None:
                             if player_2.Flag_Movement_Direction == 'right':

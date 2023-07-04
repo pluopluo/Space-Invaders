@@ -65,11 +65,13 @@ class Words_And_Phrases():
             screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
             Counter_Spacing = Counter_Spacing + 15
 
-## setting up the asterisk 
+## setting up the asterisk selection
 asterisk = Words_And_Phrases(90,225,'*')
 
 ## setting up the flag game mode
-Flag_Game_Mode == 'One_Player'
+Flag_Game_Selected = 1
+
+## menu loop
 while True:
     screen.fill(black)
 
@@ -77,11 +79,7 @@ while True:
     Space_Invaders_Logo_Image = pygame.image.load('Images/Space Invaders Logo.jpeg')
     screen.blit(Space_Invaders_Logo_Image,(120,100))
 
-    def middle(text):
-        a = 480 - 15*len(text)
-        print(a/2)
-
-    ## drawing the text for the Space Invaders 1 and the space invaders 2
+    ## drawing the text for the Space Invaders 1 
     Space_Invaders_Original_Message = Words_And_Phrases(120,225,'SPACE INVADERS')
     Space_Invaders_Original_Message.Draw()
 
@@ -91,28 +89,31 @@ while True:
 
     ## drawing the asterisk
     asterisk.Draw()
-    middle(Space_Invaders_Original_Message.phrase)
-    middle(Space_Invaders_2_Message.phrase)
+
+    ## key loope
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             exit()
+
         elif event.type == KEYDOWN:
             if event.key == K_DOWN:
                 ## changing the asterisk's position:
                 asterisk.ypos = 265
+                Flag_Game_Selected = 2
             
             elif event.key == K_UP:
                 ## changing the asterisk's position
                 asterisk.ypos = 225
+                Flag_Game_Selected = 1
 
             elif event.key == K_RETURN:
-                ## checking if the mouse button is clicked at the right area
-                if 150 < event.pos[0] < 250 and 200 < event.pos[1] < 250:
+                if Flag_Game_Selected == 1:
                     os.system('C:/Users/pluo0/AppData/Local/Programs/Python/Python311/python.exe "c:/Users/pluo0/OneDrive/Desktop/Space Invaders/Code - Space Invaders (Original)')
-                elif 150 < event.pos[0] < 250 and 300 < event.pos[1] < 350:
+                elif Flag_Game_Selected == 2:
                     os.system('C:/Users/pluo0/AppData/Local/Programs/Python/Python311/python.exe "c:/Users/pluo0/OneDrive/Desktop/Space Invaders/Code - Space Invaders 2')
-                 
-    clock.tick(60)
+   
+    ## updating the screen 
     pygame.display.update()
+    clock.tick(60)
 

@@ -431,21 +431,25 @@ def MainGame():
             alien_y_distance = 15
             alien_x_start_pos = 60
             alien_y_start_pos = 80
-            alien_layout = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
+            alien_layout = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
 
         ## filling the aliens
         for row in range(len(alien_layout) - 1,-1,-1):
             for column in range(len(alien_layout[row]) - 1,-1,-1):
                 if alien_layout[row][column] >= 1:
-                    ## adding the aliens to the group list
-                    if row > 3/5*len(alien_layout):
+                    ## checking if the level is 14 or if the level is 15 and adding only type 3 aliens
+                    if Flag_Game_Level == [1,4] or Flag_Game_Level == [1,5]:
+                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,3,alien_layout[row][column]))
+
+                    ## checking if otherwise and adding the aliens to the list
+                    elif row > 3/5*len(alien_layout):
                         aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,2,alien_layout[row][column]))
                     elif row > 1/5*len(alien_layout):
                         aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,1,alien_layout[row][column]))
@@ -523,7 +527,7 @@ def MainGame():
         
     ## drawing the level message
         nonlocal Flag_Game_Level
-                                 
+
         ## checking if the level is greater then 10 
         if Flag_Game_Level[0] > 0:
 
@@ -537,10 +541,24 @@ def MainGame():
                 level_message.ypos = 120
 
                 ## preparing level 14's other messages
-                game_completion_message_1 = Words_And_Phrases(75,160,'CONGRATS YOU BASICALLY')
-                game_completion_message_2 = Words_And_Phrases(113,195,'FINISHED THE GAME')
-                game_completion_message_3 = Words_And_Phrases(105,230,'CAN YOU STILL BEAT')
-                game_completion_message_4 = Words_And_Phrases(158,265,'THIS LEVEL?')   
+                game_completion_message = [Words_And_Phrases(75,160,'CONGRATS.YOU BASICALLY'),
+                                           Words_And_Phrases(105,195,'FINISHED THE GAME.'),
+                                           Words_And_Phrases(105,230,'CAN YOU STILL BEAT'),
+                                           Words_And_Phrases(60,265,'THIS LEVEL? IT GENERATES'), 
+                                           Words_And_Phrases(128,300,'LOTS OF POINTS.')]
+
+            ## checking if the level is 15 and also writing a message
+            elif Flag_Game_Level == [1,5]:
+
+                ## changing the level message's ypos and clearing space for the other message
+                level_message.ypos = 120
+
+                ## preparing level 15's other messages
+                final_level_message = [Words_And_Phrases(38,160,'YOU REACHED THE FINAL LEVEL'),
+                                       Words_And_Phrases(23,195,'OF THE ENTIRE GAME.IT IS LIKE'),
+                                       Words_And_Phrases(38,230,'LEVEL 14 BUT WITH MANY MORE'),
+                                       Words_And_Phrases(15,265,'ALIENS WHICH MAKES IT ALSO THE'),
+                                       Words_And_Phrases(60,300,'HARDEST LEVEL.GOOD LUCK.')]
 
         ## checking if the level is less then 10
         else:
@@ -553,10 +571,13 @@ def MainGame():
 
         ## checking if the level is 14 and drawing the other messages
         if Flag_Game_Level == [1,4]:
-            game_completion_message_1.Draw(6)
-            game_completion_message_2.Draw(6)
-            game_completion_message_3.Draw(6)
-            game_completion_message_4.Draw(6)
+            for line in game_completion_message:
+                line.Draw(6)
+        
+        ## checking if the level is 15 and drawing the message
+        if Flag_Game_Level == [1,5]:
+            for line in final_level_message:
+                line.Draw(6)
 
         ## updating the screen and pausing it
         pygame.display.update()
@@ -584,7 +605,7 @@ def MainGame():
         ## uploading all the character names
         Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z',0,1,2,
-                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip']
+                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip','period']
         
         ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
         Character_Dictionary = {}
@@ -631,6 +652,8 @@ def MainGame():
                     character = 'dash'
                 elif character == ' ':
                     character = 'space'
+                elif character == '.':
+                    character = 'period'
                 
                 ## checking if the character is a string number and changing it to an integar
                 string_number_list = ['0','1','2','3','4','5','6','7','8','9']
@@ -1674,7 +1697,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        Flag_Game_Level = [1,4]
+        Flag_Game_Level = [1,5]
         Flag_Gameover = False
 
         ## setting up the player, their backup, and their live 
@@ -1781,7 +1804,7 @@ def MainGame():
                             if Flag_Game_Level == [1,4]:
                                 upper_range = len(aliens) - 13
                             elif Flag_Game_Level == [1,5]:
-                                upper_range = len(aliens) - 15
+                                upper_range = len(aliens) - 17
 
                             ## iterating through the aliens list
                             for iteration in range(len(aliens) - 1,upper_range,-1):

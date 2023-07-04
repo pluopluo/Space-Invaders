@@ -238,6 +238,26 @@ to add new aliens only when the aliens already moved down
     N) Now, I just have to make sure that both of the codes are secure
     O) I updated the game so that the there is no more yflip issue
     P) There was also a bug in the original space invaders game. I had to add the sound to it as well.
+    Q) I changed all the words and pahrases for the space invaders original 
+    R) I also changed the pause time with the words and phrases so it is measured in 60 parts per second pause 
+31) For space invaders 2, I decided to 
+32) I also updated the matrix for the space invaders 2 game so that it became a little smaller
+33) I am now planning to add a message for the space invaders 2 game after level 15
+    a) to do that, I started with an iteration strategy that I iterate the lines and read them
+    b) I also made sure to add the actual text for the level 15 and also the periods
+    c) I frogot to also make sure that the text in space invaders 2 don't overlap
+    d) I also added the period sign to the words and phrases
+    e) I also made sure that the game pauses for a little while while drawing the alien's characters
+    f) I had to change the text many times before I am satisfied with the writing of it
+
+## middle function
+        def middle(phrase):
+            a = 480 - len(phrase)*15
+            print(a/2)   
+    
+    g) I also added only type 3 aliens for levels greater then 15
+    h) I also removed the middle function and added a little commentary
+
 
 
 

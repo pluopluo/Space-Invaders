@@ -6,63 +6,63 @@
 6) changed the for i to 31 for the score drawing before level draw
 7) changed the alien layout to layout level 1, level2, and level 3
 8) moved the alien layout part to alien refill and the alien layout is different now
-9) changed the iteration for the aliens through a variety of complicated steps.
+9) changed the iteration for the Alien_List through a variety of complicated steps.
 	1) I deleted the all the Alien.Counter_Movement to see what happens
-	2) I changed the layout for the aliens to only 2-D lists instaed of 3-D lists
-	3) I reverted how the aliens are filled by different ways by removing alien grou pand xpos
+	2) I changed the layout for the Alien_List to only 2-D lists instaed of 3-D lists
+	3) I reverted how the Alien_List are filled by different ways by removing alien grou pand xpos
 		a) I removed alien_group
             b) I changed the group iteration to column iteration 
             c) I changed the group* to the column*30
             d) I removed xpos counter
-      4) I changed how the aliens are iterated in player bullets check through a variety of steps
-            a) I changed the iteration strategy to directly aliens
-            b) instead of group.remove(aliens), I did aliens.remove(alien)
+      4) I changed how the Alien_List are iterated in player bullets check through a variety of steps
+            a) I changed the iteration strategy to directly Alien_List
+            b) instead of group.remove(Alien_List), I did Alien_List.remove(alien)
             c) I dedented everything
             d) I removed the counter movement variable position in iteration of no use
-      5) I changed how the aliens are iterated as all of them moving at the same time through a varity of steps
+      5) I changed how the Alien_List are iterated as all of them moving at the same time through a varity of steps
             a) I changed the alien timer to 40
             b) I used two for loops instead of the following lines of code in case for future importnat ref erence
 
 
                     if Alien.Flag_Down_Step == True:
-                        for i in range(len(aliens[])):
-                            aliens[][i].Move_Down()
-                            aliens[][i].Shoot()
-                            aliens[][i].Check()
-                    for i in range(len(aliens[])):
-                        aliens[][i].Move_Alien()
-                        aliens[][i].Shoot()
-                        aliens[][i].Check()
+                        for i in range(len(Alien_List[])):
+                            Alien_List[][i].Move_Down()
+                            Alien_List[][i].Shoot()
+                            Alien_List[][i].Check()
+                    for i in range(len(Alien_List[])):
+                        Alien_List[][i].Move_Alien()
+                        Alien_List[][i].Shoot()
+                        Alien_List[][i].Check()
                      =  + 1
             I also deleted the following lines of code form no use
               
-        ## checking if all the aliens have moved
-            if  == len(aliens):
+        ## checking if all the Alien_List have moved
+            if  == len(Alien_List):
                 
-            ## stoping the aliens from continously moving down
+            ## stoping the Alien_List from continously moving down
                 if Alien.Flag_Collide_Side != None and Alien.Flag_Down_Step == True:
                     Alien.Flag_Down_Step = False
                     Alien.Flag_Collide_Side = None
 
-            ## enabling the aliens to move down
+            ## enabling the Alien_List to move down
                 if Alien.Flag_Collide_Side != None:
                     Alien.Flag_Down_Step = True
-      6) I changed how the aliens are drawn either in the screen draw and in the game by directly iterationg through the aliens
+      6) I changed how the Alien_List are drawn either in the screen draw and in the game by directly iterationg through the Alien_List
       7) I changed how the background music is played
-      Bug Stop it the aliens are continuously moving down!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
+      Bug Stop it the Alien_List are continuously moving down!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
 	8) In order to fix it, I changed the alien xpos gap from 20 to 100 (To be changed)
-      Bug The aliens still continuously move down
-      9) In order to fix it, I made sure that the aliens.Flag_Collide Side reverts back to none after moving down
-          printedthe aliens' xpos)
+      Bug The Alien_List still continuously move down
+      9) In order to fix it, I made sure that the Alien_List.Flag_Collide Side reverts back to none after moving down
+          printedthe Alien_List' xpos)
       10) I also changed the place where the alien's xpos is checked to hit a certain cordinate to avoid being checked at unncessary times
       11) I made sure that the alien dies directly and removes from the alien list when the player bullets hit them
       12) To the exciting part!!!
       13) I checked if the alien type is greater then zero and placed the alien on the screen based on the type as a 1 is equivalent to a small alien adn
-      14) I made modifications to the alien images that includes different sizes for the different level of boss aliens 
+      14) I made modifications to the alien images that includes different sizes for the different level of boss Alien_List 
       15) I made sure that the size of the alien will be determined by it's attributes giving it a self variable and drawing it based on it's szie
-      16) I had the make the modifications for the start aliens and also the display aliens
+      16) I had the make the modifications for the start Alien_List and also the display Alien_List
       17) The alien's length and width are determined by it's size
-      19) I added the health for the aliens and that the health will dimish by one for every time the player bullet hits the aliens and that the alien                  
+      19) I added the health for the Alien_List and that the health will dimish by one for every time the player bullet hits the Alien_List and that the alien                  
           explosion only gets added to the alien when it disappears from the screen and that the player earns points only when the alien disappears from 	    the screen by repositioning various elements
       18) I added the function that made the alien split
       19) I repositioned whent the game destroys the alien and when the alien explosion gets placed inside the alien split function
@@ -72,34 +72,34 @@
       22) I deupgraded the alien so that it's health is decreased manually, and whenever it's health reaches zero, that's when the functions take place.
           I also made sure that is the cause because the player's score only updates when it's health decreases to zero
        Time for the ULTRA FUN AND EXCITING LEVEL PART
-      23) did This is the time when I began to add levels to the game. For level 3, I added a few big aliens didasdfjasldfja;lksdfja;lsdjf;asdjf;la
-      24) did I made the scalefactor for more TREMEMDOUS FUN positioning of the aliens and loaded the aliens based on the x and y scale factor. The aliens now
+      23) did This is the time when I began to add levels to the game. For level 3, I added a few big Alien_List didasdfjasldfja;lksdfja;lsdjf;asdjf;la
+      24) did I made the scalefactor for more TREMEMDOUS FUN positioning of the Alien_List and loaded the Alien_List based on the x and y scale factor. The Alien_List now
           looks like a giant ship
       25) did I updated the scale factor a little bit by making the size and the dimentions different from it creating many bugs. I also made sure that when
  the size is one, the size multipler is 1 using the recursive property
-      26) did I made the entire alien class have only one animation so that when I load new aliens, it will match all the other aliens
-      27) did  That just cause the entire alien class system to crash and the aliens do not change animation anymore. I instead only changed animations after all the aliens have moved
+      26) did I made the entire alien class have only one animation so that when I load new Alien_List, it will match all the other Alien_List
+      27) did  That just cause the entire alien class system to crash and the Alien_List do not change animation anymore. I instead only changed animations after all the Alien_List have moved
       28) did I uploaded all the alien images differently in a more structured and more organized manner having checked 3 times
       29)did  I upgraded the code so that I first transformed the image before appending the image into a list. I edited if self.size > 1 for splitting from	    if self.size != 1
       30) did I upgraded the alien's health to increase exponentially
       31) did I upgraded the timer so the timer is shorter as this makes the game a little more difficult
-      32) did I made the alien timer 30 now and I also made the bigger aliens move bigger steps then the smaller aliens
-      33)did  I made all the aliens move the same steps because previously, it was so difficult to arrange levels, and I also made a level with a big alien
-          did comprised of many small aliens
-      34) did I made sure to add the level every time the aliens refill and that it is equal to zero every time that the level restarts again.
-      35) did I added the yshift to the aliens so they know where to start by making it originally 120 and also added the xshift originally at 100
-      36) did I removed the aspect where the aliens move downwards after each level by removing every area where the alien counter position is
-      37)  did I made sure that the aliens are positioned out directly towards the alien x distance and the alien y distance fromt he alein x factor * 15 and 
+      32) did I made the alien timer 30 now and I also made the bigger Alien_List move bigger steps then the smaller Alien_List
+      33)did  I made all the Alien_List move the same steps because previously, it was so difficult to arrange levels, and I also made a level with a big alien
+          did comprised of many small Alien_List
+      34) did I made sure to add the level every time the Alien_List refill and that it is equal to zero every time that the level restarts again.
+      35) did I added the yshift to the Alien_List so they know where to start by making it originally 120 and also added the xshift originally at 100
+      36) did I removed the aspect where the Alien_List move downwards after each level by removing every area where the alien counter position is
+      37)  did I made sure that the Alien_List are positioned out directly towards the alien x distance and the alien y distance fromt he alein x factor * 15 and 
           did the alien y factor * 15 
-      38) did I made sure that the aliens do not have a backup xpos anymore of 100 pixels
-      39) did I increased it to 60 pixels so the aliens don't jump down uncessarily
-      40) did I made sure that the aliens shoot down at me or aim at me
+      38) did I made sure that the Alien_List do not have a backup xpos anymore of 100 pixels
+      39) did I increased it to 60 pixels so the Alien_List don't jump down uncessarily
+      40) did I made sure that the Alien_List shoot down at me or aim at me
       advice
       41) I added a monster and a dodge bullet 
       42) did I removed the player bullet in a different area to avoid the aspect where the player's score increases and removes only after checking if it is in player bullets and in the if conditions to incrase the score
-      43) did I made the aliens add an alien bullet in the right sport
+      43) did I made the Alien_List add an alien bullet in the right sport
 <<<<<<< HEAD
-      44) did I added a function to decipher how many aliens on the screen and how many shots neeeded as each level goes up
+      44) did I added a function to decipher how many Alien_List on the screen and how many shots neeeded as each level goes up
       45) did I made sure to level draw after every level. 
     
           
@@ -119,7 +119,7 @@ commented things using four hastags
                     Alien.Counter_Background_Sound = 1
                 ## refilling the alien timer
                 counter = 0
-                for alien in aliens:
+                for alien in Alien_List:
                     if alien.size == 2:
                         counter = counter + 4
                     elif alien.size == 3:
@@ -129,15 +129,15 @@ commented things using four hastags
 
                 ## checking if the alien should move down
                 if Alien.Flag_Collide_Side != None:
-                    for alien in aliens:
+                    for alien in Alien_List:
                         alien.Move_Down()
                         alien.Check()
                         alien.Shoot()
                     Alien.Flag_Collide_Side = None
                 
-                ## checking if the aliens should move horizontally instead
+                ## checking if the Alien_List should move horizontally instead
                 elif Alien.Flag_Collide_Side == None:
-                    for alien in aliens:
+                    for alien in Alien_List:
                         alien.Move_Alien()
                         alien.Check()
                         alien.Shoot()
@@ -149,7 +149,7 @@ commented things using four hastags
                     Alien.Current_Animation = 0
             
             ## updating the alien's timer
-            elif Alien.Timer > 0 and len(Alien_Explosion_List) == 0:
+            elif Alien.Timer > 0 and len(alien_explosion_list) == 0:
                 Alien.Timer = Alien.Timer - 1
 
 
@@ -171,15 +171,15 @@ instead, I changed it so that the alien changes animation whenever it moves
 8) I made sure to change the self.Animation only when it is a start alien
 by usign parameters
 9) I added all the parameters the start alien movements as true
-10) I made sure to call the function changing the alien's animation for the game aliens
+10) I made sure to call the function changing the alien's animation for the game Alien_List
 11) I repositioned the area where the alien's length and flag collide
 side is checked wheneer it is moved
 12) I added commentary for the alien move down function and the change animation function
 13) I made sure to avoid any spacing for the function call and the next line.
 
-## now, I will try to add a new level that has unlimited amount of aliens
+## now, I will try to add a new level that has unlimited amount of Alien_List
 1) In order to do this, I will have to generate the cordinates for a new level
-2) I created a function in the alien class that generates 10 more aliens when the aliens
+2) I created a function in the alien class that generates 10 more Alien_List when the Alien_List
 in the original layout gets down
 3) I changed the name of the function to copy alien and I called it if the level is 14
 and the alien is moving down 
@@ -189,26 +189,26 @@ Check to make sure the position is right, I made the xpos for it 400 and will ch
 6) I made sure to change the mystery ship's xpos back to 2500 from 
 7) I backspaced the Move Alien Bullet funciton in the original space invaders game
 8) I made sure to print 'here' in the copy alien function
-9) There is a bug where the aliens stop moving and the game crashes
+9) There is a bug where the Alien_List stop moving and the game crashes
 10) I made sure to stop that by nonlocalizing the flag game variable
 11) The bug is still there
-12) I decided to print the length of the aliens both in the function and in the game
-13) I decided to stop printing the length of the aliens in the middle of the game and instead utilize the function
-for printing the aliens in the function with a pause
-14) I found that the results were that the aliens kept getting bigger without stopping so I 
-15) I finally realized that with the new aliens, they were never iterated through so I made sure
-to add new aliens only when the aliens already moved down 
+12) I decided to print the length of the Alien_List both in the function and in the game
+13) I decided to stop printing the length of the Alien_List in the middle of the game and instead utilize the function
+for printing the Alien_List in the function with a pause
+14) I found that the results were that the Alien_List kept getting bigger without stopping so I 
+15) I finally realized that with the new Alien_List, they were never iterated through so I made sure
+to add new Alien_List only when the Alien_List already moved down 
 16) I deleted everything
-17) I changed how to add the new aliens to the lists in order to make it better
+17) I changed how to add the new Alien_List to the lists in order to make it better
 18) I changed my mind now!
-19) I continued the plan to fill the aliens
+19) I continued the plan to fill the Alien_List
 20) I only did it with certain if conditions
 21) I created the if condition of level 14 outside
 22) I added level 15
-23) I added the upper range as an iteration upper range based on the length of the aliens
+23) I added the upper range as an iteration upper range based on the length of the Alien_List
 24) I made sure to generate then with the number 3 as the type
 25) I made sure to add a message for level 14 and level 15
-26) I added spacing to the bullet draws for the aliens
+26) I added spacing to the bullet draws for the Alien_List
 27) I added messages showing the audience the new levels
 28) I increased the fill black screen by a large 
 
@@ -255,8 +255,13 @@ to add new aliens only when the aliens already moved down
             a = 480 - len(phrase)*15
             print(a/2)   
     
-    g) I also added only type 3 aliens for levels greater then 15
+    g) I also added only type 3 Alien_List for levels greater then 15
     h) I also removed the middle function and added a little commentary
     I) I also had to change the asterisks in the game
-    J) I also made sure to change only the asterisk's ypos not redefine the whole thing
+    J) I also made sure to change only the asterisk's ypos not redeine the whole thing
     K) I made sure to split up space invaders 2 so that it fits mulitple documents instead of only one
+    L) I made sure that when I pressed a button, it fired bullets at any time and adjusted the indentation
+    M) I changed the following variables: player_1_bullets, player_2_bullets, alien_list, alien_bullets, Player_2_Backup
+    , player_1_backup
+    N) I changed so that the variables don't change anymore and are all lowercase unless important class variables and game variables
+    O) I made sure to get rid of the shoot time from the bullet firing any time

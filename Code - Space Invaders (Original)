@@ -22,17 +22,17 @@ def MainGame():
             ## skipping if the enter key is pressed
             elif event.type == KEYDOWN:
                 if event.key == K_RETURN:              
-                    nonlocal Flag_Skip
-                    if Flag_Skip == False:
-                        Flag_Skip = True
+                    nonlocal flag_skip
+                    if flag_skip == False:
+                        flag_skip = True
     
     def Pause(time):
         num_of_time_units = int(time*60)
         for time_unit in range(0,num_of_time_units):
             ## checking if the player has pressed skip when the screen pauses
             Close_Or_Skip()
-            if Flag_Skip == True or Flag_Skip == 'stage_2':
-                if Flag_Skip == True:
+            if flag_skip == True or flag_skip == 'stage_2':
+                if flag_skip == True:
                     Fill_Black()
                 break
             clock.tick(60)
@@ -43,26 +43,26 @@ def MainGame():
                 return True
             
     def Alien_Barrier_Collision(alien,Barrier):
-        Barrier_Iteration_Counter = 0
-        Barrier_Struck = False
+        barrier_iteration_counter = 0
+        barrier_struck = False
 
         ## iterating through the barriers
         while True:
-            if Barrier_Iteration_Counter == len(Barrier):
+            if barrier_iteration_counter == len(Barrier):
                 break
 
             ## checking if a barrier block hit the alien
-            if alien.xpos + alien.length >= Barrier[Barrier_Iteration_Counter].xpos and alien.xpos <= Barrier[Barrier_Iteration_Counter].xpos + Barrier[Barrier_Iteration_Counter].length:
-                if alien.ypos + alien.height >= Barrier[Barrier_Iteration_Counter].ypos:
-                    Barrier_Struck = True
+            if alien.xpos + alien.length >= Barrier[barrier_iteration_counter].xpos and alien.xpos <= Barrier[barrier_iteration_counter].xpos + Barrier[barrier_iteration_counter].length:
+                if alien.ypos + alien.height >= Barrier[barrier_iteration_counter].ypos:
+                    barrier_struck = True
             
             ## destroying the barrier block
-            if Barrier_Struck == True:
-                Barrier.pop(Barrier_Iteration_Counter)
-                Barrier_Struck = False
+            if barrier_struck == True:
+                Barrier.pop(barrier_iteration_counter)
+                barrier_struck = False
             else:
                 ## updating the iteration counter only if the barrier isn't destroyed
-                Barrier_Iteration_Counter = Barrier_Iteration_Counter + 1
+                barrier_iteration_counter = barrier_iteration_counter + 1
 
     def Bullet_Barrier_Collision(Barrier,bullet):
         ## declaring nonlocals to the bullet lists and the bullet explosion list
@@ -81,16 +81,16 @@ def MainGame():
         else:
             divisor = 1
 
-        Target_Barrier = None
+        target_barrier = None
         ## checking the specific particle the bullet hits
         for i in range(Barrier_Iteration[0],Barrier_Iteration[1],Barrier_Iteration[2]):
             if Collide(bullet,Barrier[i]) == True:
-                Target_Barrier = Barrier[i]
-                Barrier_Iteration_Counter = 0
-                Barrier_Struck = False
+                target_barrier = Barrier[i]
+                barrier_iteration_counter = 0
+                barrier_struck = False
                 while True:
                     # breaking the bullet and the while loop
-                    if Barrier_Iteration_Counter >= len(Barrier):
+                    if barrier_iteration_counter >= len(Barrier):
                         if bullet in Alien_Bullets:
                             Alien_Bullets.remove(bullet)
                         if bullet in Player_1_Bullets:
@@ -100,29 +100,29 @@ def MainGame():
                         break
                 
                     ## checking if the xpos is correct
-                    if Barrier[Barrier_Iteration_Counter].xpos%(divisor*2) == 0:
+                    if Barrier[barrier_iteration_counter].xpos%(divisor*2) == 0:
                         ## checking if the Barrier particle is in close range of the area hit by the bullet
-                        if Target_Barrier.xpos - bullet.Dr[0]*2 < Barrier[Barrier_Iteration_Counter].xpos < Target_Barrier.xpos + Target_Barrier.length + bullet.Dr[0]:
-                            if Target_Barrier.ypos - bullet.Dr[1]*2 < Barrier[Barrier_Iteration_Counter].ypos < Target_Barrier.ypos + Target_Barrier.height + bullet.Dr[1]*2:
-                                Barrier_Struck = True
+                        if target_barrier.xpos - bullet.Dr[0]*2 < Barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.length + bullet.Dr[0]:
+                            if target_barrier.ypos - bullet.Dr[1]*2 < Barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[1]*2:
+                                barrier_struck = True
                             
                         ## checking if the Barrier particle is in far range of the area struck by the bullet
-                        if Target_Barrier.xpos - bullet.Dr[2]*2 < Barrier[Barrier_Iteration_Counter].xpos < Target_Barrier.xpos + Target_Barrier.height + bullet.Dr[2]*2:
-                            if Target_Barrier.ypos - bullet.Dr[3]*2 < Barrier[Barrier_Iteration_Counter].ypos < Target_Barrier.ypos + Target_Barrier.height + bullet.Dr[3]*2:
+                        if target_barrier.xpos - bullet.Dr[2]*2 < Barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.height + bullet.Dr[2]*2:
+                            if target_barrier.ypos - bullet.Dr[3]*2 < Barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[3]*2:
                                 # deciding how far it is and the chance of the Barrier being destroyed
-                                y_distance = abs(Target_Barrier.ypos - Barrier[Barrier_Iteration_Counter].ypos) + 1
-                                x_distance = abs(Target_Barrier.xpos - Barrier[Barrier_Iteration_Counter].xpos) + 1
+                                y_distance = abs(target_barrier.ypos - Barrier[barrier_iteration_counter].ypos) + 1
+                                x_distance = abs(target_barrier.xpos - Barrier[barrier_iteration_counter].xpos) + 1
                                 x_range = x_distance//(bullet.Dr[2])
                                 y_range = y_distance//(bullet.Dr[3])
                                 if random.randint(0,x_range) == 0 and random.randint(0,y_range) == 0:
-                                    Barrier_Struck = True
+                                    barrier_struck = True
 
                     ## destroying the Barrier partlce
-                    if Barrier_Struck == True:
-                        Barrier.pop(Barrier_Iteration_Counter)
-                        Barrier_Struck = False
+                    if barrier_struck == True:
+                        Barrier.pop(barrier_iteration_counter)
+                        barrier_struck = False
                     else:
-                        Barrier_Iteration_Counter = Barrier_Iteration_Counter + 1
+                        barrier_iteration_counter = barrier_iteration_counter + 1
                 break
             
     def Update_Score(score):            
@@ -139,7 +139,7 @@ def MainGame():
         ## nonlocal declaration to variables and lists
         nonlocal Alien_Bullets, Player_1_Bullets, Player_2_Bullets
         nonlocal player_1, player_2, player_1_life, player_2_life
-        nonlocal Flag_Gameover
+        nonlocal flag_gameover
  
         ## playing the sound
         Player_Explosion.Sound.play()                
@@ -209,7 +209,7 @@ def MainGame():
 
         ## checking if the game ends
         if player_1 == None and player_2 == None:
-            Flag_Gameover = True
+            flag_gameover = True
 
     def Fill_Alien(Start_Game=False):
 
@@ -278,9 +278,9 @@ def MainGame():
             clock.tick(40)
 
         ## making sure that the function doesn't happen again if the player has skipped
-        nonlocal Flag_Skip
-        if Flag_Skip == True:
-            Flag_Skip  = 'stage_2'
+        nonlocal flag_skip
+        if flag_skip == True:
+            flag_skip  = 'stage_2'
 
     def Screen_Draw(start_of_game = False):     
 
@@ -367,8 +367,8 @@ def MainGame():
 
                 ## checking if the player decides to skip
                 if Player_Selected == True:
-                    if Flag_Skip == True or Flag_Skip == 'stage_2':
-                        if Flag_Skip == True:
+                    if flag_skip == True or flag_skip == 'stage_2':
+                        if flag_skip == True:
                             Fill_Black()
                         break 
                 
@@ -511,8 +511,8 @@ def MainGame():
 
             # checking if the alien_list hit the invasion line or invade
             if self.ypos + self.height == 435:
-                nonlocal Flag_Gameover
-                Flag_Gameover = True
+                nonlocal flag_gameover
+                flag_gameover = True
 
         def Shoot(self):
             ## alien_list shooting a bullet
@@ -1047,7 +1047,7 @@ def MainGame():
         Player_Selected = False
 
         ## setting up the mode variable
-        Flag_Game_Mode = 'one_player'
+        flag_game_mode = 'one_player'
         
         ## setting up the player's score and the high score
         score_message = Words_And_Phrases(45,20,'SCORE<1> HI-SCORE SCORE<2>')
@@ -1082,12 +1082,12 @@ def MainGame():
                     if event.key == K_DOWN:
                         ## changing the asterik's position resetting the game mode
                         asterisk.ypos = 260
-                        Flag_Game_Mode = 'two_player'
+                        flag_game_mode = 'two_player'
 
                     elif event.key == K_UP:
                         ## changing the asterik's position resetting the game mode
                         asterisk.ypos = 220
-                        Flag_Game_Mode = 'one_player'
+                        flag_game_mode = 'one_player'
 
                     elif event.key == K_RETURN:
                         Player_Selected = True
@@ -1099,7 +1099,7 @@ def MainGame():
 
 ## setting up the menu 2
         ## flag skip variable
-        Flag_Skip = False
+        flag_skip = False
 
         ## emptying the screen
         screen.fill(black)
@@ -1128,7 +1128,7 @@ def MainGame():
         score_advance_table.Draw()
 
         ## drawing the alien display only if the player hasn't skipped
-        if Flag_Skip == False:
+        if flag_skip == False:
             mystery_ship_display = Mystery_Ship(144,285)
             mystery_ship_display.Draw()
                 
@@ -1165,8 +1165,8 @@ def MainGame():
 
             ## checking if the player decides to skip and the break the loop if that happens
             Close_Or_Skip()
-            if Flag_Skip == True or Flag_Skip == 'stage_2':
-                if Flag_Skip == True:
+            if flag_skip == True or flag_skip == 'stage_2':
+                if flag_skip == True:
                     Fill_Black()
                 break
 
@@ -1197,8 +1197,8 @@ def MainGame():
 
             ## checking if the player decides to skip and breaking the loop if the skip variable is true
             Close_Or_Skip()
-            if Flag_Skip == True or Flag_Skip == 'stage_2':
-                if Flag_Skip == True:
+            if flag_skip == True or flag_skip == 'stage_2':
+                if flag_skip == True:
                     Fill_Black()
                 break
             
@@ -1227,8 +1227,8 @@ def MainGame():
         while True:
             ## checking if the player decides to skip and breaking the loop if the skip variable is true
             Close_Or_Skip()
-            if Flag_Skip == True or Flag_Skip == 'stage_2':
-                if Flag_Skip == True:
+            if flag_skip == True or flag_skip == 'stage_2':
+                if flag_skip == True:
                     Fill_Black()
                 break
 
@@ -1263,8 +1263,8 @@ def MainGame():
 
             ## breaking the loop if the skip variable is true
             Close_Or_Skip()
-            if Flag_Skip == True or Flag_Skip == 'stage_2':
-                if Flag_Skip == True:
+            if flag_skip == True or flag_skip == 'stage_2':
+                if flag_skip == True:
                     Fill_Black()
                 break
 
@@ -1290,7 +1290,7 @@ def MainGame():
         del start_alien
 
     ## checking if the player hasn't skipped and setting up the menu 3 and menu 4
-        if Flag_Skip == False:
+        if flag_skip == False:
 
         ## setting up the menu 3
 
@@ -1309,12 +1309,12 @@ def MainGame():
             push_message.Draw()
 
             ## drawing the message describing the one player buttons used
-            if Flag_Game_Mode == 'one_player':
+            if flag_game_mode == 'one_player':
                 only_one_player_button_message = Words_And_Phrases(90,230,'ONLY 1 PLAYER BUTTON')
                 only_one_player_button_message.Draw()
 
             ## drawing the message describing the two player buttons used
-            elif Flag_Game_Mode == 'two_player':
+            elif flag_game_mode == 'two_player':
                 only_two_player_button_message = Words_And_Phrases(127,230,'2 PLAYER BUTTON')
                 only_two_player_button_message.Draw()
             
@@ -1331,19 +1331,19 @@ def MainGame():
 
                 ## checking if the player decides to skip and breaking from the for loop if it happened
                 Close_Or_Skip()
-                if Flag_Skip == True or Flag_Skip == 'stage_2':
-                    if Flag_Skip == True:
+                if flag_skip == True or flag_skip == 'stage_2':
+                    if flag_skip == True:
                         Fill_Black()
                     break
 
-                if Flag_Game_Mode == 'one_player':
+                if flag_game_mode == 'one_player':
                     ## drawing the play player 1 message and blinking the player 1 score
                     play_one_player_message = Words_And_Phrases(135,180,'PLAY PLAYER<1>')
                     play_one_player_message.Draw()
                     if time%2 == 0:
                         player_1_score.Draw()
 
-                if Flag_Game_Mode == 'two_player':
+                if flag_game_mode == 'two_player':
                     ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
                     play_two_player_message = Words_And_Phrases(135,220,'PLAY PLAYER<2>')
                     play_two_player_message.Draw()
@@ -1362,15 +1362,15 @@ def MainGame():
                 clock.tick(15)
 
         ## ending the flag skip
-        Flag_Skip = 'done'
+        flag_skip = 'done'
 
         ## changing the credit's xpos if the player mode is 2 player
-        if Flag_Game_Mode == 'two_player':
+        if flag_game_mode == 'two_player':
             credit_message.xpos = 173
 
 ## setting up the elements
         ## setting up the Gameover Flag Variable
-        Flag_Gameover = False
+        flag_gameover = False
 
         ## setting up the player, their backup, and their live 
         player_1 = None
@@ -1380,11 +1380,11 @@ def MainGame():
         player_1_life = Words_And_Phrases(10,456,[])
         player_2_life = Words_And_Phrases(460,456,[])
 
-        if Flag_Game_Mode == 'one_player' or Flag_Game_Mode == 'two_player':
+        if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
             player_1_backup = [Player(30,450),Player(70,450)]
             player_1_life.phrase = [2]
-        if Flag_Game_Mode == 'two_player':
+        if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
             Player_2_Backup = [Player(420,450),Player(380,450)]
             player_2_life.phrase = [2]
@@ -1684,7 +1684,7 @@ def MainGame():
                 
         ## drawing the player bullet with the specific color
             for bullet in Player_1_Bullets:
-                if Flag_Game_Mode == 'two_player':
+                if flag_game_mode == 'two_player':
                     bullet.Draw('green')
                 else:
                     bullet.Draw('white')
@@ -1752,7 +1752,7 @@ def MainGame():
                     Player_Explode(player_2)
 
         ## ending the game
-            if Flag_Gameover == True:
+            if flag_gameover == True:
                 ## drawing the Game Over Sign
                 game_over_message = Words_And_Phrases(180,120,'GAMEOVER')
                 game_over_message.Draw()

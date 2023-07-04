@@ -1881,7 +1881,7 @@ def MainGame():
                             player_2.Flag_Movement_Direction = 'left'
                         else:
                             player_1.Flag_Movement_Direction = 'left'
-                            
+
                     elif event.key == K_d:
                         if player_2 != None:
                             player_2.Flag_Movement_Direction = 'right'
@@ -1917,7 +1917,6 @@ def MainGame():
 
                             ## playing the sound
                             Player.Shoot_Sound.play()
-
 
                 ## checking if the keys are lifted
                 if event.type == KEYUP:

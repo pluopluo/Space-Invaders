@@ -1029,7 +1029,7 @@ def MainGame():
                 screen.blit(Player_Explosion.Image_List[1],(self.xpos,self.ypos))
             elif image_number == 3:
                 screen.blit(Player_Explosion.Image_List[2],(self.xpos,self.ypos))
-    
+
     ## The Game Loop
     while True:
 ## setting up the menu 1
@@ -1083,12 +1083,12 @@ def MainGame():
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
                         ## changing the asterik's position resetting the game mode
-                        asterisk = Words_And_Phrases(170,260,'*')
+                        asterisk.ypos = 260
                         Flag_Game_Mode = 'two_player'
 
                     elif event.key == K_UP:
                         ## changing the asterik's position resetting the game mode
-                        asterisk = Words_And_Phrases(170,220,'*')
+                        asterisk.ypos = 220
                         Flag_Game_Mode = 'one_player'
 
                     elif event.key == K_RETURN:

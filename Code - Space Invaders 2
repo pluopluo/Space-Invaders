@@ -1407,12 +1407,12 @@ def MainGame():
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
                         ## changing the asterik's position resetting the game mode
-                        asterisk = Words_And_Phrases(170,220,'asterisk')
+                        asterisk.ypos = 260
                         Flag_Game_Mode = 'two_player'
 
                     elif event.key == K_UP:
                         ## changing the asterik's position resetting the game mode
-                        asterisk = Words_And_Phrases(170,180,'asterisk')
+                        asterisk.ypos = 220
                         Flag_Game_Mode = 'one_player'
 
                     elif event.key == K_RETURN:

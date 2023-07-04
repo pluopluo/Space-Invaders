@@ -257,8 +257,5 @@ to add new aliens only when the aliens already moved down
     
     g) I also added only type 3 aliens for levels greater then 15
     h) I also removed the middle function and added a little commentary
-
-
-
-
-
+    I) I also had to change the asterisks in the game
+    J) I also made sure to change only the asterisk's ypos not redefine the whole thing

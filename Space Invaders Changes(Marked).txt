@@ -265,3 +265,4 @@ to add new alien_list only when the alien_list already moved down
     , player_1_backup
     N) I changed so that the variables don't change anymore and are all lowercase unless important class variables and game variables
     O) I made sure to get rid of the shoot time from the bullet firing any time
+    P) From now, on, I will only pose changes on github instead of on the documents.

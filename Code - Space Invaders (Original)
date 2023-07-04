@@ -1118,8 +1118,8 @@ def MainGame():
         y_message = Words_And_Phrases(255,150,['yflip'])
         y_message.Draw(6)
 
-        Space_Invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
-        Space_Invaders_message.Draw(6)
+        space_invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
+        space_invaders_message.Draw(6)
 
         Pause(0.5)
 

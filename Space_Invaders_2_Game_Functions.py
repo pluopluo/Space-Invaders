@@ -1,5 +1,6 @@
+## importing basic files just to rid errors
+from Spac
 ## space invaders game functions
-
 def Close_Or_Skip():
     for event in pygame.event.get():
         if event.type == QUIT:

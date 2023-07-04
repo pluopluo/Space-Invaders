@@ -259,3 +259,4 @@ to add new aliens only when the aliens already moved down
     h) I also removed the middle function and added a little commentary
     I) I also had to change the asterisks in the game
     J) I also made sure to change only the asterisk's ypos not redefine the whole thing
+    K) I made sure to split up space invaders 2 so that it fits mulitple documents instead of only one

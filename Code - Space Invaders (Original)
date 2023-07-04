@@ -1,17 +1,15 @@
-## basic python setup
+## importing files
 import random
 import pygame
 from pygame.locals import *
 from customcolors import *
 from pygame import mixer
-def show_text(msg, x, y, color, size):
-        fontobj= pygame.font.SysFont("freesans", size)
-        msgobj = fontobj.render(msg,False,color)
-        screen.blit(msgobj,(x, y))
+
+## setting up pygame, it's screen, caption, and clock
 pygame.init()
 screen = pygame.display.set_mode((480,480))
 pygame.display.set_caption('Space Invaders')
-clock = pygame.time.Clock()                         
+clock = pygame.time.Clock()                           
 
 ## setting up the game play
 def MainGame():

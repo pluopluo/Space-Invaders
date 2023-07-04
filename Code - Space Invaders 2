@@ -1819,15 +1819,15 @@ def MainGame():
                         Alien.Counter_Background_Sound = 1
 
         ## moving the alien bullets
-            alien_bullet_Iteration_Counter = 0
+            alien_bullet_iteration_counter = 0
             while True:
-                if alien_bullet_Iteration_Counter >= len(alien_bullets):
+                if alien_bullet_iteration_counter >= len(alien_bullets):
                     break
                 alien_bullets_length = len(alien_bullets)
-                alien_bullets[alien_bullet_Iteration_Counter].Move_Alien_Bullet()
-                alien_bullets[alien_bullet_Iteration_Counter].Check()
+                alien_bullets[alien_bullet_iteration_counter].Move_Alien_Bullet()
+                alien_bullets[alien_bullet_iteration_counter].Check()
                 if len(alien_bullets) == alien_bullets_length:
-                    alien_bullet_Iteration_Counter = alien_bullet_Iteration_Counter + 1
+                    alien_bullet_iteration_counter = alien_bullet_iteration_counter + 1
 
         ## moving the player bullets
             for bullet in player_1_bullets:

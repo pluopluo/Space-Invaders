@@ -1891,32 +1891,38 @@ def MainGame():
                 ## shooting bullets using space
                     if event.key == K_SPACE:
                         if player_1 != None:
-                            player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
-                            player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+                            if len(player_1_bullets) < player_1_score[0]:
+                                player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
+                                player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
-                            ## playing the sound
-                            Player.Shoot_Sound.play()
+                                ## playing the sound
+                                Player.Shoot_Sound.play()
                             
                         else:
-                            player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
-                            player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
+                            if len(player_2_bullets) < player_2_score[0]:
+                                player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
+                                player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
-                            ## playing the sound
-                            Player.Shoot_Sound.play()
+                                ## playing the sound
+                                Player.Shoot_Sound.play()
 
                 ## shooting bullets using x
                     if event.key == K_x: 
                         if player_2 != None:
-                            player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
+                            if len(player_2_bullets) < player_2_score[0]:
+                                player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
+                                player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
-                            ## playing the sound
-                            Player.Shoot_Sound.play()
+                                ## playing the sound
+                                Player.Shoot_Sound.play()
 
                         else:
-                            player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+                            if len(player_1_bullets) < player_1_score[0]:
+                                player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
+                                player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
-                            ## playing the sound
-                            Player.Shoot_Sound.play()
+                                ## playing the sound
+                                Player.Shoot_Sound.play()
 
                 ## checking if the keys are lifted
                 if event.type == KEYUP:

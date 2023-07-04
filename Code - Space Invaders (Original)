@@ -298,18 +298,18 @@ def MainGame():
             credit_message.Draw()
 
             ## drawing the floor
-            for Barrier_particle in alien_invasion_line:
-                Barrier_particle.Draw()
+            for barrier_particle in alien_invasion_line:
+                barrier_particle.Draw()
 
             ## drawing the Barrier
-            for Barrier_particle in barrier1:
-                Barrier_particle.Draw()
-            for Barrier_particle in barrier2:
-                Barrier_particle.Draw()
-            for Barrier_particle in barrier3:
-                Barrier_particle.Draw()
-            for Barrier_particle in barrier4:
-                Barrier_particle.Draw()
+            for barrier_particle in barrier1:
+                barrier_particle.Draw()
+            for barrier_particle in barrier2:
+                barrier_particle.Draw()
+            for barrier_particle in barrier3:
+                barrier_particle.Draw()
+            for barrier_particle in barrier4:
+                barrier_particle.Draw()
             
             ## drawing the players 
             player_1.Draw('green')
@@ -1633,8 +1633,8 @@ def MainGame():
 
     ## drawing things 
         ## drawing the alien invasion line
-            for Barrier_particle in alien_invasion_line:
-                Barrier_particle.Draw()
+            for barrier_particle in alien_invasion_line:
+                barrier_particle.Draw()
 
         ## drawing the score and the credits
             score_message.Draw()
@@ -1656,14 +1656,14 @@ def MainGame():
                 player.Draw('blue')
             
         ## drawing the Barriers
-            for Barrier_particle in barrier1:
-                Barrier_particle.Draw()
-            for Barrier_particle in barrier2:
-                Barrier_particle.Draw()
-            for Barrier_particle in barrier3:
-                Barrier_particle.Draw()
-            for Barrier_particle in barrier4:
-                Barrier_particle.Draw()
+            for barrier_particle in barrier1:
+                barrier_particle.Draw()
+            for barrier_particle in barrier2:
+                barrier_particle.Draw()
+            for barrier_particle in barrier3:
+                barrier_particle.Draw()
+            for barrier_particle in barrier4:
+                barrier_particle.Draw()
                 
         ## drawing the Mystery_Ship
             mystery_ship.Draw()

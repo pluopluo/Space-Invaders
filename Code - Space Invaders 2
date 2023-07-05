@@ -573,12 +573,12 @@ def MainGame():
                                        Words_And_Phrases(38,195,'LEVEL 14 BUT WITH MANY MORE'),
                                        Words_And_Phrases(15,220,'ALIENS WHICH MAKES IT ALSO THE'),
                                        Words_And_Phrases(60,245,'HARDEST LEVEL.GOOD LUCK.')]
-
+            
         ## checking if the game started and drawing the message
         if flag_game_level == [0,1]:
             for line in starter_message:
                 line.Draw()
-
+                
         ## checking if the level is 14 and drawing the other messages
         elif flag_game_level == [1,4]:
             for line in game_completion_message:

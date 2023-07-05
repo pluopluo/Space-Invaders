@@ -578,7 +578,6 @@ def MainGame():
         if flag_game_level == [0,1]:
             for line in starter_message:
                 line.Draw()
-                middle(line.phrase)
 
         ## checking if the level is 14 and drawing the other messages
         elif flag_game_level == [1,4]:

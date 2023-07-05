@@ -839,9 +839,13 @@ def MainGame():
             ## checking if the alien should explode
             if self.size == 1:
                     
-                    ## adding the explosion to the explosion list
-                    alien_explosion_list.append(Alien_Explosion(self.xpos,self.ypos))
-            
+                    ## checking where to add the alien explosion based on the alien type
+                    if self.type == 3:
+                        alien_explosion_list.append(Alien_Explosion(self.xpos,self.ypos))
+                    
+                    else:
+                        alien_explosion_list.append(Alien_Explosion(self.xpos - 3,self.ypos))
+                    
             ## checking if the size is greater then 1 and making it split
             elif self.size > 1:
                     
@@ -1914,7 +1918,7 @@ def MainGame():
                     if event.key == K_SPACE:
                         if player_1 != None:
 
-                            if len(player_1_bullets) < player_1_score.phrase[0]:
+                            if len(player_1_bullets) <= player_1_score.phrase[0]:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
@@ -1922,8 +1926,8 @@ def MainGame():
                                 Player.Shoot_Sound.play()
                             
                         else:
-                            
-                            if len(player_2_bullets) < player_2_score.phrase[0]:
+
+                            if len(player_2_bullets) <= player_2_score.phrase[0]:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 

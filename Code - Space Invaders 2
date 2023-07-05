@@ -522,7 +522,11 @@ def MainGame():
                 player.Draw('green')
             for player in player_2_backup:
                 player.Draw('blue')
-        
+
+        def middle(phrase):
+            a = 480 - len(phrase)*15
+            print(a/2)  
+
     ## drawing the level message
         nonlocal flag_game_level
 
@@ -536,12 +540,13 @@ def MainGame():
             if flag_game_level == [0,1]:
 
                 ## preparing the starter message
-                starter_mesasge = [Words_And_Phrases(0,120,'THERE ARE MANY LEVELS IN THIS GAME'),
-                                   Words_And_Phrases(0,195,'UNLIKE THE ORIGNAL SPACE INVADERS.'),
-                                   Words_And_Phrases(0,195,'EACH PLAYER STARTS BY FIRING ONLY'),
-                                   Words_And_Phrases(0,160,'ONE BULLET ONTO THE SCREEN AT A TIME.'),
-                                   Words_And_Phrases(0,160,'YOU CAN FIRE AN ADDITIONAL BULLET'),
-                                   Words_And_Phrases(0,160,'FOR EVERY 1000 POINTS EARNED')]
+                starter_message = [Words_And_Phrases(38,120,'THIS GAME IS SPACE INVADERS'),
+                                   Words_And_Phrases(23,145,'WITH LEVELS AND UPGRADES.EACH'),
+                                   Words_And_Phrases(37,170,'PLAYER BEGINS BY HAVING THE'),
+                                   Words_And_Phrases(8,195,'ABILITY TO FIRE ONLY ONE BULLET'),
+                                   Words_And_Phrases(23,220,'ONTO THE SCREEN AT A TIME.YOU'),
+                                   Words_And_Phrases(23,245,'CAN FIRE AN ADDITIONAL BULLET'),
+                                   Words_And_Phrases(30,270,'FOR EVERY 1000 POINTS EARNED.')]
 
         ## checking if the level is greater then 10 
         if flag_game_level[0] > 0:
@@ -553,48 +558,53 @@ def MainGame():
             if flag_game_level == [1,4]:
 
                 ## preparing level 14's other messages
-                game_completion_message = [Words_And_Phrases(75,120,'CONGRATS.YOU BASICALLY'),
-                                           Words_And_Phrases(105,155,'FINISHED THE GAME.'),
-                                           Words_And_Phrases(105,190,'CAN YOU STILL BEAT'),
-                                           Words_And_Phrases(60,225,'THIS LEVEL? IT GENERATES'), 
-                                           Words_And_Phrases(128,260,'LOTS OF POINTS.')]
+                game_completion_message = [Words_And_Phrases(75,145,'CONGRATS.YOU BASICALLY'),
+                                           Words_And_Phrases(105,170,'FINISHED THE GAME.'),
+                                           Words_And_Phrases(105,195,'CAN YOU STILL BEAT'),
+                                           Words_And_Phrases(60,220,'THIS LEVEL? IT GENERATES'), 
+                                           Words_And_Phrases(128,245,'LOTS OF POINTS.')]
 
             ## checking if the level is 15 and also writing an additional melssage
             elif flag_game_level == [1,5]:
 
                 ## preparing level 15's other messages
-                final_level_message = [Words_And_Phrases(38,120,'YOU REACHED THE FINAL LEVEL'),
-                                       Words_And_Phrases(23,155,'OF THE ENTIRE GAME.IT IS LIKE'),
-                                       Words_And_Phrases(38,190,'LEVEL 14 BUT WITH MANY MORE'),
-                                       Words_And_Phrases(15,225,'ALIENS WHICH MAKES IT ALSO THE'),
-                                       Words_And_Phrases(60,260,'HARDEST LEVEL.GOOD LUCK.')]
+                final_level_message = [Words_And_Phrases(38,145,'YOU REACHED THE FINAL LEVEL'),
+                                       Words_And_Phrases(23,170,'OF THE ENTIRE GAME.IT IS LIKE'),
+                                       Words_And_Phrases(38,195,'LEVEL 14 BUT WITH MANY MORE'),
+                                       Words_And_Phrases(15,220,'ALIENS WHICH MAKES IT ALSO THE'),
+                                       Words_And_Phrases(60,245,'HARDEST LEVEL.GOOD LUCK.')]
 
         ## checking if the game started and drawing the message
         if flag_game_level == [0,1]:
-            for line in game_completion_message:
-                line.Draw(6)
-                
+            for line in starter_message:
+                line.Draw()
+                middle(line.phrase)
+
         ## checking if the level is 14 and drawing the other messages
-        if flag_game_level == [1,4]:
+        elif flag_game_level == [1,4]:
             for line in game_completion_message:
-                line.Draw(6)
+                line.Draw()
         
         ## checking if the level is 15 and drawing the message
-        if flag_game_level == [1,5]:
+        elif flag_game_level == [1,5]:
             for line in final_level_message:
-                line.Draw(6)
+                line.Draw()
 
         ## updating the screen and pausing it
         pygame.display.update()
         Pause(1)
 
-        ## drawing a square to erase all messages
+        ## drawing a rectangle to erase all messages
         pygame.draw.rect(screen,black,(0,75,480,255))
 
-        ## drawing the level message and erasing it
+        ## drawing the level message
         level_message.Draw()
+
+        ## updating the screen and pausing it
         pygame.display.update()
         Pause(1)
+
+        ## erasing the level message by drawing a rectangle
         pygame.draw.rect(screen,black,(180,180,120,15))
 
     ## drawing the aliens and closing the screen if the quit button is pressed
@@ -1702,7 +1712,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        flag_game_level = [1,5]
+        flag_game_level = [1,4]
         flag_gameover = False
 
         ## setting up the player, their backup, and their live 

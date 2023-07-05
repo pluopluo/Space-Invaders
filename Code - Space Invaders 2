@@ -564,7 +564,7 @@ def MainGame():
                                            Words_And_Phrases(60,220,'THIS LEVEL? IT GENERATES'), 
                                            Words_And_Phrases(128,245,'LOTS OF POINTS.')]
 
-            ## checking if the level is 15 and also writing an additional melssage
+            ## checking if the level is 15 and also writing an additional message
             elif flag_game_level == [1,5]:
 
                 ## preparing level 15's other messages
@@ -577,17 +577,17 @@ def MainGame():
         ## checking if the game started and drawing the message
         if flag_game_level == [0,1]:
             for line in starter_message:
-                line.Draw()
-                
+                line.Draw(6)
+
         ## checking if the level is 14 and drawing the other messages
         elif flag_game_level == [1,4]:
             for line in game_completion_message:
-                line.Draw()
+                line.Draw(6)
         
         ## checking if the level is 15 and drawing the message
         elif flag_game_level == [1,5]:
             for line in final_level_message:
-                line.Draw()
+                line.Draw(6)
 
         ## updating the screen and pausing it
         pygame.display.update()
@@ -1913,7 +1913,8 @@ def MainGame():
                 ## shooting bullets using space
                     if event.key == K_SPACE:
                         if player_1 != None:
-                            if len(player_1_bullets) < player_1_score[0]:
+
+                            if len(player_1_bullets) < player_1_score.phrase[0]:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
@@ -1921,7 +1922,8 @@ def MainGame():
                                 Player.Shoot_Sound.play()
                             
                         else:
-                            if len(player_2_bullets) < player_2_score[0]:
+                            
+                            if len(player_2_bullets) < player_2_score.phrase[0]:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 

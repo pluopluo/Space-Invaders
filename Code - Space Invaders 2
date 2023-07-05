@@ -540,13 +540,31 @@ def MainGame():
             if flag_game_level == [0,1]:
 
                 ## preparing the starter message
-                starter_message = [Words_And_Phrases(38,120,'THIS GAME IS SPACE INVADERS'),
-                                   Words_And_Phrases(23,145,'WITH LEVELS AND UPGRADES.EACH'),
-                                   Words_And_Phrases(37,170,'PLAYER BEGINS BY HAVING THE'),
-                                   Words_And_Phrases(8,195,'ABILITY TO FIRE ONLY ONE BULLET'),
-                                   Words_And_Phrases(23,220,'ONTO THE SCREEN AT A TIME.YOU'),
-                                   Words_And_Phrases(23,245,'CAN FIRE AN ADDITIONAL BULLET'),
-                                   Words_And_Phrases(30,270,'FOR EVERY 1000 POINTS EARNED.')]
+                starter_message = [Words_And_Phrases(38,170,'THIS GAME IS SPACE INVADERS 2 OR'),
+                                   Words_And_Phrases(23,195,'AN EXTENSION TO THE ORIGINAL'),
+                                   Words_And_Phrases(38,220,'SPACE INVADERS WITH 15 LEVELS.'),
+                                   Words_And_Phrases(8,245,'YOU ALSO CAN UPGRADE BASED ON THE'),
+                                   Words_And_Phrases(23,270,'AMOUNT OF POINTS YOU COLLECT.')]
+            
+                ## preparing the second starter message
+                starter_message_two = [Words_And_Phrases(38,120,'FIRST UPGRADE IS THAT EVERY'),
+                                       Words_And_Phrases(38,120,'500 POINTS YOU GET GAINS YOU'),
+                                       Words_And_Phrases(38,120,'A NEW LIFE. MAX IS 3 LIVES')]
+
+                starter_message_three = [Words_And_Phrases(38,120,'SECOND UPGRADE IS THAT EVERY'),
+                                         Words_And_Phrases(38,120,'2000 POINTS ALLOWS YOU TO'),
+                                         Words_And_Phrases(38,120,'FIRE AN ADDITIONAL BULLET'),
+                                         Words_And_Phrases(38,120,'FROM EACH PLAYER ONTO THE'),
+                                         Words_And_Phrases(38,120,'SCREEN BEGINNING WITH ONE'),
+                                         Words_And_Phrases(38,120,'BULLET.')]
+
+                starter_message_four = [Words_And_Phrases(38,120,'LASTLY'),
+                                         Words_And_Phrases(38,120,'2000 POINTS ALLOWS YOU TO'),
+                                         Words_And_Phrases(38,120,'FIRE AN ADDITIONAL BULLET'),
+                                         Words_And_Phrases(38,120,'FROM EACH PLAYER ONTO THE'),
+                                         Words_And_Phrases(38,120,'SCREEN BEGINNING WITH ONE'),
+                                         Words_And_Phrases(38,120,'BULLET.')]
+                                                         
 
         ## checking if the level is greater then 10 
         if flag_game_level[0] > 0:
@@ -561,7 +579,7 @@ def MainGame():
                 game_completion_message = [Words_And_Phrases(75,145,'CONGRATS.YOU BASICALLY'),
                                            Words_And_Phrases(105,170,'FINISHED THE GAME.'),
                                            Words_And_Phrases(105,195,'CAN YOU STILL BEAT'),
-                                           Words_And_Phrases(60,220,'THIS LEVEL? IT GENERATES'), 
+                                           Words_And_Phrases(60,220,'LEVEL 14? IT GENERATES'), 
                                            Words_And_Phrases(128,245,'LOTS OF POINTS.')]
 
             ## checking if the level is 15 and also writing an additional message
@@ -577,7 +595,8 @@ def MainGame():
         ## checking if the game started and drawing the message
         if flag_game_level == [0,1]:
             for line in starter_message:
-                line.Draw(6)
+                line.Draw()
+                middle(line.phrase)
 
         ## checking if the level is 14 and drawing the other messages
         elif flag_game_level == [1,4]:
@@ -625,7 +644,8 @@ def MainGame():
         ## uploading all the character names
         Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z',0,1,2,
-                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip','period']
+                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark',
+                                'dash','space','yflip','period','colon']
         
         ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
         Character_Dictionary = {}
@@ -674,6 +694,8 @@ def MainGame():
                     character = 'space'
                 elif character == '.':
                     character = 'period'
+                elif character == ':':
+                    character = 'colon'
                 
                 ## checking if the character is a string number and changing it to an integar
                 string_number_list = ['0','1','2','3','4','5','6','7','8','9']
@@ -1395,7 +1417,7 @@ def MainGame():
 
         ## setting up the player's score and the high score
         score_message = Words_And_Phrases(45,20,'SCORE<1> HI-SCORE SCORE<2>')
-        player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
+        player_1_score = Words_And_Phrases(60,60,[1,0,0,0])
         player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
         high_score = Words_And_Phrases(200,60,[0,0,0,0])
 
@@ -1715,7 +1737,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        flag_game_level = [1,4]
+        flag_game_level = [0,1]
         flag_gameover = False
 
         ## setting up the player, their backup, and their live 

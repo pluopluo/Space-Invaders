@@ -266,3 +266,8 @@ to add new alien_list only when the alien_list already moved down
     N) I changed so that the variables don't change anymore and are all lowercase unless important class variables and game variables
     O) I made sure to get rid of the shoot time from the bullet firing any time
     P) From now, on, I will only pose changes on github instead of on the documents.
+100) i AM GOING TO start by changing the words and phrases class and extending it continuously
+1) To do this, I am going to have to first change the five words so there is an option of middle
+2) I changed many of the words and phrases so that they are all in the middle of the screen
+3) I cancelled it, and now I am going to wokr on something else
+4) I am going ot begin to better set up the menu

@@ -182,7 +182,7 @@ def MainGame():
 
                 ## changing the player's lives
                 player_1_backup.pop(-1)
-                player_1_life.phrase[0] = player_1_life.phrase[0] - 1
+                player_1_life.phrase = player_1_life.phrase - 1
 
             elif len(player_1_backup) == 0:
 
@@ -200,7 +200,7 @@ def MainGame():
                 
                 ## changing the player's lives
                 player_2_backup.pop(-1)
-                player_2_life.phrase[0] = player_2_life.phrase[0] - 1
+                player_2_life.phrase = player_2_life.phrase - 1
 
             elif len(player_2_backup) == 0:
 
@@ -631,11 +631,21 @@ def MainGame():
             ## drawing the message
             Draw_Game_Text(final_level_message)
 
-        ## checking if everything should be drawn again
-        if Flag_Skip == False:
-            ## redrawing everything
-        ## ending flag skip until the game restarts
+    ## checking if everything should be drawn again
+
+        ## globalizing flag skip
         nonlocal flag_skip
+
+        ## checking process
+        if flag_skip == 'stage_2':
+
+            ## ending flag skip until the game restarts
+            flag_skip = 'done'
+
+            ## redrawing everything
+            Draw_Elements_Except_Aliens()
+
+        ## ending flag skip until the game restarts
         flag_skip = 'done'
 
         ## drawing the level message
@@ -938,6 +948,9 @@ def MainGame():
         ## setting up the counter variables
         Shoot_Iteration_Counter = 0
         Lucky_Shot = False
+
+        ## upgrade counter variable
+        Counter_Upgrade_Life = 0
         
         ## setting up the player's image
         Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')
@@ -1082,6 +1095,18 @@ def MainGame():
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
+                        
+                        ## checking if the player has 3 lives or less
+                        if player_1_life.phrase < 3:
+
+                            ## upgrading the player's counter life upgrade
+                            player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life + increment*10
+
+                            ## checking when to upgrade the player's life
+                            if player_1.Counter_Upgrade_Life >= 500:
+
+                                ## upgrading the player's life
+                                player_1_life.phrase = player_1_life.phrase + 1
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment
@@ -1764,7 +1789,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        flag_game_level = [0,1]
+        flag_game_level = [1,4]
         flag_gameover = False
 
         ## setting up the player, their backup, and their live 
@@ -1778,11 +1803,11 @@ def MainGame():
         if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
             player_1_backup = [Player(30,450),Player(70,450)]
-            player_1_life.phrase = [2]
+            player_1_life.phrase = 2
         if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
             player_2_backup = [Player(420,450),Player(380,450)]
-            player_2_life.phrase = [2]
+            player_2_life.phrase = 2
             
         aliens = []
         Fill_Alien()
@@ -1967,7 +1992,7 @@ def MainGame():
                     if event.key == K_SPACE:
                         if player_1 != None:
 
-                            if len(player_1_bullets) <= player_1_score.phrase[0]:
+                            if len(player_1_bullets) <= max_player_1_bullets:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
@@ -1976,7 +2001,7 @@ def MainGame():
                             
                         else:
 
-                            if len(player_2_bullets) <= player_2_score.phrase[0]:
+                            if len(player_2_bullets) <= max_player_1_bullets:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
@@ -1986,7 +2011,7 @@ def MainGame():
                 ## shooting bullets using x
                     if event.key == K_x: 
                         if player_2 != None:
-                            if len(player_2_bullets) < player_2_score[0]:
+                            if len(player_2_bullets) <= max_player_2_bullets:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
@@ -1994,7 +2019,7 @@ def MainGame():
                                 Player.Shoot_Sound.play()
 
                         else:
-                            if len(player_1_bullets) < player_1_score[0]:
+                            if len(player_1_bullets) <= nax_player_2_bullets:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 

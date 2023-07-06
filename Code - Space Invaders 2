@@ -182,7 +182,7 @@ def MainGame():
 
                 ## changing the player's lives
                 player_1_backup.pop(-1)
-                player_1_life.phrase = player_1_life.phrase - 1
+                player_1_life.phrase[0] = player_1_life.phrase[0] - 1
 
             elif len(player_1_backup) == 0:
 
@@ -200,7 +200,7 @@ def MainGame():
                 
                 ## changing the player's lives
                 player_2_backup.pop(-1)
-                player_2_life.phrase = player_2_life.phrase - 1
+                player_2_life.phrase[0] = player_2_life.phrase[0] - 1
 
             elif len(player_2_backup) == 0:
 
@@ -1088,25 +1088,52 @@ def MainGame():
                         elif alien.type == 3:
                             increment = 3
 
-                        ## updating the player scores and removing the player's bullet
+                        ## removing the player bullets, updating the player scores, and checking for upgrades.
                         if self in player_1_bullets:
                             player_1_bullets.remove(self)
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
+
+                            ## updating the player's life counter
+                            player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life + 1
+
+                            ## checking if there is enough points to generate a new life and subtracting the cost
+                            if player_1.Counter_Upgrade_Life >= 500:
+                                player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life - 500
+
+                                ## checking if the player hasn't reached the max lives
+                                if player_1_life.phrase < 3:
+
+                                    ## step 1: updating the life phrase
+                                    player_1_life.phrase = player_1_life.phrase + 1
+                                        
+                                    ## step 2: deciding what xpos to place the new life in
+                                    new_player_backup_xpos = 30 + len(player_1_backup)*40
+    
+                                    ## step 3: adding an new player or life to the player's backup list
+                                    player_1_backup.append(Player(new_player_backup_xpos,450))
+
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
-                        
-                        ## checking if the player has 3 lives or less
-                        if player_1_life.phrase < 3:
 
-                            ## upgrading the player's counter life upgrade
-                            player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life + increment*10
+                            ## updating the player's life counter
+                            player_2.Counter_Upgrade_Life = player_2.Counter_Upgrade_Life + 1
 
-                            ## checking when to upgrade the player's life
-                            if player_1.Counter_Upgrade_Life >= 500:
+                            ## checking if there is enough points to generate a new life and subtracting the cost
+                            if player_2.Counter_Upgrade_Life >= 500:
+                                player_2.Counter_Upgrade_Life = player_2.Counter_Upgrade_Life - 500
 
-                                ## upgrading the player's life
-                                player_1_life.phrase = player_1_life.phrase + 1
+                                ## checking if the player hasn't reached the max lives
+                                if player_2_life.phrase < 3:
+
+                                    ## step 1: updating the life phrase
+                                    player_2_life.phrase = player_2_life.phrase + 1
+                                        
+                                    ## step 2: deciding what xpos to place the new life in
+                                    new_player_backup_xpos = 30 + len(player_2_backup)*40
+    
+                                    ## step 3: adding an new player or life to the player's backup list
+                                    player_2_backup.append(Player(new_player_backup_xpos,450))
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment
@@ -1803,11 +1830,11 @@ def MainGame():
         if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
             player_1_backup = [Player(30,450),Player(70,450)]
-            player_1_life.phrase = 2
+            player_1_life.phrase.append(2)
         if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
             player_2_backup = [Player(420,450),Player(380,450)]
-            player_2_life.phrase = 2
+            player_2_life.phrase.append(2)
             
         aliens = []
         Fill_Alien()
@@ -1992,7 +2019,7 @@ def MainGame():
                     if event.key == K_SPACE:
                         if player_1 != None:
 
-                            if len(player_1_bullets) <= max_player_1_bullets:
+                            if len(player_1_bullets) <= 10:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
@@ -2001,7 +2028,7 @@ def MainGame():
                             
                         else:
 
-                            if len(player_2_bullets) <= max_player_1_bullets:
+                            if len(player_2_bullets) <= 10:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
@@ -2011,7 +2038,7 @@ def MainGame():
                 ## shooting bullets using x
                     if event.key == K_x: 
                         if player_2 != None:
-                            if len(player_2_bullets) <= max_player_2_bullets:
+                            if len(player_2_bullets) <= 10:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
@@ -2019,7 +2046,7 @@ def MainGame():
                                 Player.Shoot_Sound.play()
 
                         else:
-                            if len(player_1_bullets) <= nax_player_2_bullets:
+                            if len(player_1_bullets) <= 10:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 

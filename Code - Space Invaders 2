@@ -483,12 +483,12 @@ def MainGame():
         ## making sure that the function doesn't happen again if the player has skipped
         nonlocal flag_skip
         if flag_skip == True:
-            flag_skip  = 'stage_2'
+            flag_skip = 'stage_2'
 
     def Screen_Draw(start_of_game = False): 
-
-    ## limiting the process of drawing everything to be only at the start of the game 
-        if start_of_game == True:
+        ## defining a function to draw everything but the aliens
+        def Draw_Elements_Except_Aliens():
+            ## filling the screen black
             screen.fill(black)
 
             ## drawing the score
@@ -521,7 +521,11 @@ def MainGame():
             for player in player_1_backup:
                 player.Draw('green')
             for player in player_2_backup:
-                player.Draw('blue') 
+                player.Draw('blue')
+
+    ## limiting the process of drawing everything but aliens to be only at the start of the game 
+        if start_of_game == True:
+            Draw_Elements_Except_Aliens()
 
     ## drawing the level message
         nonlocal flag_game_level
@@ -532,28 +536,28 @@ def MainGame():
         ## checking if the player started and writing a starter message
         if flag_game_level == [0,1]:
 
-            ## preparing the starter message
+            ## preparing the first starter message
             starter_message_one = [Game_Text('middle',120,'WELCOME TO SPACE INVADERS 2.'),
-                                    Game_Text('middle',145,'IT IS AN EXTENSION TO THE'),
-                                    Game_Text('middle',170,'ORIGIANL SPACE INVADERS'),
-                                    Game_Text('middle',195,'SO LOOK ON WEB HOW TO PLAY'),
-                                    Game_Text('middle',220,'SPACE INVADERS IF YOU HAVE'),
-                                    Game_Text('middle',245,'NOT ALREDY PLAYED IT.')]
+                                   Game_Text('middle',145,'IT IS AN EXTENSION TO THE'),
+                                   Game_Text('middle',170,'ORIGIANL SPACE INVADERS'),
+                                   Game_Text('middle',195,'SO LOOK ON WEB HOW TO PLAY'),
+                                   Game_Text('middle',220,'SPACE INVADERS IF YOU HAVE'),
+                                   Game_Text('middle',245,'NOT ALREDY PLAYED IT.')]
         
             ## preparing the second starter message
             starter_message_two = [Game_Text('middle',120,'THE DIFFERENCES IN THIS'),
-                                    Game_Text('middle',145,'GAME AND THE ORIGINAL GAME'),
-                                    Game_Text('middle',170,'IS THAT THIS GAME HAS 15'),
-                                    Game_Text('middle',195,'GAME LEVELS AND MANY'),
-                                    Game_Text('middle',220,'UPGRADES BASED ON THE AMOUNT'),
-                                    Game_Text('middle',245,'OF POINTS YOU HAVE.')]
+                                   Game_Text('middle',145,'GAME AND THE ORIGINAL GAME'),
+                                   Game_Text('middle',170,'IS THAT THIS GAME HAS 15'),
+                                   Game_Text('middle',195,'GAME LEVELS AND MANY'),
+                                   Game_Text('middle',220,'UPGRADES BASED ON THE AMOUNT'),
+                                   Game_Text('middle',245,'OF POINTS YOU HAVE.')]
 
             ## preparing the third starter message
             starter_message_three = [Game_Text('middle',120,'FIRST UPGRADE:YOU START'),
-                                        Game_Text('middle',145,'WITH TWO LIVES AND GAIN'),
-                                        Game_Text('middle',170,'AN ADDITIONAL LIFE FOR'),
-                                        Game_Text('middle',195,'EVERY 500 POINTS YOU'),
-                                        Game_Text('middle',220,'GET.MAX:3 LIVES.')]
+                                     Game_Text('middle',145,'WITH TWO LIVES AND GAIN'),
+                                     Game_Text('middle',170,'AN ADDITIONAL LIFE FOR'),
+                                     Game_Text('middle',195,'EVERY 500 POINTS YOU'),
+                                     Game_Text('middle',220,'GET.MAX:3 LIVES.')]
 
             ## preparing the fourth starter message
             starter_message_four = [Game_Text('middle',120,'SECOND UPGRADE:YOU GAIN AN'),
@@ -588,11 +592,12 @@ def MainGame():
                                     Game_Text(15,220,'ALIENS WHICH MAKES IT ALSO THE'),
                                     Game_Text(60,245,'HARDEST LEVEL.GOOD LUCK.')]
             
-        ## defining the function that pauses and erases the screen
+        ## defining the function that draws, pauses and erases the screen
         def Draw_Game_Text(game_text):
-
+            
+            ## drawing the game text
             for line in game_text:
-                line.Draw(3)
+                line.Draw(6)
             
             ## pausing and erasing the screen by drawing a big rectangle
             Pause(2)
@@ -625,6 +630,13 @@ def MainGame():
 
             ## drawing the message
             Draw_Game_Text(final_level_message)
+
+        ## checking if everything should be drawn again
+        if Flag_Skip == False:
+            ## redrawing everything
+        ## ending flag skip until the game restarts
+        nonlocal flag_skip
+        flag_skip = 'done'
 
         ## drawing the level message
         Draw_Game_Text(level_message)
@@ -1743,8 +1755,8 @@ def MainGame():
                 pygame.display.update()
                 clock.tick(15)
 
-        ## ending the flag skip
-        flag_skip = 'done'
+        ## restarting the flag skip for the screen draw
+        flag_skip = False
 
         ## changing the credit's xpos if the player mode is 2 player
         if flag_game_mode == 'two_player':

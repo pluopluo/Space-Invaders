@@ -941,13 +941,14 @@ def MainGame():
         ## setting up the shoot sound
         Shoot_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player shoot sound.wav')
 
-        ## setting up the flag variables
+        ## setting up the flag 
+        Lucky_Shot = False
         Flag_Struck = False
         Flag_Movement_Direction = None
 
         ## setting up the counter variables
-        Shoot_Iteration_Counter = 0
-        Lucky_Shot = False
+        Counter_Shoot_Iteration = 0
+        Counter_Lucky_Shot = 0
 
         ## upgrade counter variable
         Counter_Upgrade_Life = 0
@@ -976,6 +977,45 @@ def MainGame():
                 self.xpos = 410
             elif self.xpos < 35:
                 self.xpos = 35
+        
+        def Upgrade(self,points):
+            ## nonlocalizing player 1's life and backup
+            nonlocal player_1_life, player_1_backup
+            
+            ## nonlocalizing player 2's life and backup
+            nonlocal player_2_life, player_2_backup
+
+            ## updating the player's life counter and checking if there is enough points to upgrade
+            self.Counter_Upgrade_Life = self.Counter_Upgrade_Life + points
+            if self.Counter_Upgrade_Life >= 500:
+
+                ## paying the cost 
+                self.Counter_Upgrade_Life = self.Counter_Upgrade_Life - 500
+
+            ## checking who's turn is it to upgrade and checking only of that player has less then 3 lives
+                if self == player_1:
+                    if player_1_life.phrase < 3:
+
+                        ## updating the life phrase, deciding the xpos of the new life, and placing the new life
+                        player_1_life.phrase[0] = player_1_life.phrase[0] + 1
+                        new_player_backup_xpos = 30 + len(player_1_backup)*40
+                        player_1_backup.append(Player(new_player_backup_xpos,450))
+                
+                elif self == player_2:
+                    if player_2_life.phrase < 3:
+
+                        ## updating the life phrase, deciding the xpos of the new life, and placing the new life
+                        player_2_life.phrase[0] = player_2_life.phrase[0] + 1
+                        new_player_backup_xpos = 30 + len(player_2_backup)*40
+                        player_2_backup.append(Player(new_player_backup_xpos,450))
+            
+            ## updating the player's bullet counter and checking if there is enough points to upgrade
+            self.Counter_Upgrade_Bullet = self.Counter_Upgrade_Bullet + points
+            if self.Counter_Upgrade_Bullet >= 2000:
+
+                ## paying the cost and enabing another bullet to be added onto the screen
+                self.Counter_Upgrade_Bullet = self.Counter_Upgrade_Bullet - 2000
+                self.Counter_Max_Bullets = self.Counter_Max_Bullets + 1
         
         def Draw(self,color='green'):
             if color == 'green':
@@ -1094,59 +1134,12 @@ def MainGame():
                         if self in player_1_bullets:
                             player_1_bullets.remove(self)
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
-
-                            ## updating the player's life counter and checking if there is enough points to upgrade
-                            player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life + increment*10
-                            if player_1.Counter_Upgrade_Life >= 500:
-
-                                ## paying the cost and adding another life only if the player has less then 3
-                                player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life - 500
-
-                                ## checking if the player hasn't reached the max lives
-                                if player_1_life.phrase[0] < 3:
-
-                                    ## updating the life phrase, deciding the xpos of the new life, and placing the new life
-                                    player_1_life.phrase[0] = player_1_life.phrase[0] + 1
-                                    new_player_backup_xpos = 30 + len(player_1_backup)*40
-                                    player_1_backup.append(Player(new_player_backup_xpos,450))
-                            
-                            ## updating the player's bullet counter and checking if there is enough points to upgrade
-                            player_1.Counter_Upgrade_Bullet = player_1.Counter_Upgrade_Bullet + increment*10
-                            if player_1.Counter_Upgrade_Bullet >= 2000:
-
-                                ## paying the cost and enabing another bullet to be added onto the screen
-                                player_1.Counter_Upgrade_Bullet = player_1.Counter_Upgrade_Bullet - 2000
-                                player_1.Counter_Max_Bullets = player_1.Counter_Max_Bullets + 1
+                            player_1.Upgrade(increment*10)
 
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
                             player_2_score.phrase[2] = player_2_score.phrase[2] + increment
-
-                            ## updating the player's life counter
-                            player_2.Counter_Upgrade_Life = player_2.Counter_Upgrade_Life + 1
-
-                            ## checking if there is enough points to generate a new life and subtracting the cost
-                            if player_2.Counter_Upgrade_Life >= 500:
-                                player_2.Counter_Upgrade_Life = player_2.Counter_Upgrade_Life - 500
-
-                                ## checking if the player hasn't reached the max lives
-                                if player_2_life.phrase < 3:
-
-                                    ## step 1: updating the life phrase
-                                    player_2_life.phrase = player_2_life.phrase + 1
-                                        
-                                    ## step 2: deciding what xpos to place the new life in
-                                    new_player_backup_xpos = 30 + len(player_2_backup)*40
-    
-                                    ## step 3: adding an new player or life to the player's backup list
-                                    player_2_backup.append(Player(new_player_backup_xpos,450))
-
-                            ## checking if there is enough points to fit another bullet onto the screen and subtracting the cost
-                            if player_2.Counter_Upgrade_Bullet >= 2000:
-                                player_2.Counter_Upgrade_Bullet = player_2.Counter_Upgrade_Bullet - 2000
-
-                                ## enabling another bullet to be fired at a time
-                                player_2.Counter_Max_Bullets = player_2.Counter_Max_Bullets + 1
+                            player_2.Upgrade(increment*10)
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment
@@ -1159,6 +1152,13 @@ def MainGame():
             ## checking if the bullet hits the mystery ship
             if self in player_1_bullets:
                 if Collide(self,mystery_ship) == True:
+
+                    ## removing the bullet from the bullet list and relocating or removing the mystery ship
+                        player_1_bullets.remove(self)
+                        mystery_ship.xpos = 2500
+
+                    ## playing the mystery ship's explosion sound
+                        Mystery_Ship_Explosion.Sound.play()
 
                     ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
                         if player_1.Lucky_Shot == True:
@@ -1179,14 +1179,7 @@ def MainGame():
                         if player_1.Shoot_Iteration_Counter == 23:
                             player_1.Lucky_Shot = True
 
-                    ## relocating the mystery ship
-                        mystery_ship.xpos = 2500
 
-                    ## removing the bullet from the bullet list
-                        player_1_bullets.remove(self)
-
-                    ## playing the mystery ship's explosion sound
-                        Mystery_Ship_Explosion.Sound.play()
 
             elif self in player_2_bullets:
                 if Collide(self,mystery_ship) == True:
@@ -2052,7 +2045,7 @@ def MainGame():
                 ## shooting bullets using x
                     if event.key == K_x: 
                         if player_2 != None:
-                            if len(player_2_bullets) <= 10:
+                            if len(player_2_bullets) < player_2.Counter_Max_Bullets:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
@@ -2060,7 +2053,7 @@ def MainGame():
                                 Player.Shoot_Sound.play()
 
                         else:
-                            if len(player_1_bullets) <= 10:
+                            if len(player_1_bullets) < player_2.Counter_Max_Bullets:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
@@ -2175,7 +2168,7 @@ def MainGame():
 
         ## updating the windo
             pygame.display.update()
-            clock.tick(60)
+            clock.tick(120)
 
             ## checking if all the aliens are shot
             if len(aliens) == 0 and len(alien_explosion_list) == 0:

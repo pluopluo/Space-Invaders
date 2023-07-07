@@ -951,6 +951,8 @@ def MainGame():
 
         ## upgrade counter variable
         Counter_Upgrade_Life = 0
+        Counter_Upgrade_Bullet = 1999
+        Counter_Max_Bullets = 1
         
         ## setting up the player's image
         Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')
@@ -1088,33 +1090,37 @@ def MainGame():
                         elif alien.type == 3:
                             increment = 3
 
-                        ## removing the player bullets, updating the player scores, and checking for upgrades.
+                    ## removing the player bullets, updating the player scores, and checking for upgrades.
                         if self in player_1_bullets:
                             player_1_bullets.remove(self)
                             player_1_score.phrase[2] = player_1_score.phrase[2] + increment
 
-                            ## updating the player's life counter
-                            player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life + 1
-
-                            ## checking if there is enough points to generate a new life and subtracting the cost
+                            ## updating the player's life counter and checking if there is enough points to upgrade
+                            player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life + increment*10
                             if player_1.Counter_Upgrade_Life >= 500:
+
+                                ## paying the cost and adding another life only if the player has less then 3
                                 player_1.Counter_Upgrade_Life = player_1.Counter_Upgrade_Life - 500
 
                                 ## checking if the player hasn't reached the max lives
-                                if player_1_life.phrase < 3:
+                                if player_1_life.phrase[0] < 3:
 
-                                    ## step 1: updating the life phrase
-                                    player_1_life.phrase = player_1_life.phrase + 1
-                                        
-                                    ## step 2: deciding what xpos to place the new life in
+                                    ## updating the life phrase, deciding the xpos of the new life, and placing the new life
+                                    player_1_life.phrase[0] = player_1_life.phrase[0] + 1
                                     new_player_backup_xpos = 30 + len(player_1_backup)*40
-    
-                                    ## step 3: adding an new player or life to the player's backup list
                                     player_1_backup.append(Player(new_player_backup_xpos,450))
+                            
+                            ## updating the player's bullet counter and checking if there is enough points to upgrade
+                            player_1.Counter_Upgrade_Bullet = player_1.Counter_Upgrade_Bullet + increment*10
+                            if player_1.Counter_Upgrade_Bullet >= 2000:
+
+                                ## paying the cost and enabing another bullet to be added onto the screen
+                                player_1.Counter_Upgrade_Bullet = player_1.Counter_Upgrade_Bullet - 2000
+                                player_1.Counter_Max_Bullets = player_1.Counter_Max_Bullets + 1
 
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
-                            player_1_score.phrase[2] = player_1_score.phrase[2] + increment
+                            player_2_score.phrase[2] = player_2_score.phrase[2] + increment
 
                             ## updating the player's life counter
                             player_2.Counter_Upgrade_Life = player_2.Counter_Upgrade_Life + 1
@@ -1134,6 +1140,13 @@ def MainGame():
     
                                     ## step 3: adding an new player or life to the player's backup list
                                     player_2_backup.append(Player(new_player_backup_xpos,450))
+
+                            ## checking if there is enough points to fit another bullet onto the screen and subtracting the cost
+                            if player_2.Counter_Upgrade_Bullet >= 2000:
+                                player_2.Counter_Upgrade_Bullet = player_2.Counter_Upgrade_Bullet - 2000
+
+                                ## enabling another bullet to be fired at a time
+                                player_2.Counter_Max_Bullets = player_2.Counter_Max_Bullets + 1
 
                         ## updating the high score
                         high_score.phrase[2] = high_score.phrase[2] + increment
@@ -1496,7 +1509,7 @@ def MainGame():
 
         ## setting up the player's score and the high score
         score_message = Game_Text('middle',20,'SCORE<1> HI-SCORE SCORE<2>')
-        player_1_score = Game_Text(60,60,[1,0,0,0])
+        player_1_score = Game_Text(60,60,[0,0,0,0])
         player_2_score = Game_Text(320,60,[0,0,0,0])
         high_score = Game_Text(200,60,[0,0,0,0])
 
@@ -1816,8 +1829,9 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        flag_game_level = [1,4]
+        flag_game_level = [0,1]
         flag_gameover = False
+        flag_game_won = False
 
         ## setting up the player, their backup, and their live 
         player_1 = None
@@ -2019,7 +2033,7 @@ def MainGame():
                     if event.key == K_SPACE:
                         if player_1 != None:
 
-                            if len(player_1_bullets) <= 10:
+                            if len(player_1_bullets) < player_1.Counter_Max_Bullets:
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
@@ -2028,7 +2042,7 @@ def MainGame():
                             
                         else:
 
-                            if len(player_2_bullets) <= 10:
+                            if len(player_2_bullets) < player_1.Counter_Max_Bullets:
                                 player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
                                 player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
@@ -2183,6 +2197,10 @@ def MainGame():
                 if flag_game_level[1] > 9:
                     flag_game_level[0] = flag_game_level[0] + 1
                     flag_game_level[1] = flag_game_level[1] - 10
+                
+                ## checking if the player won
+                if flag_game_level == [1,6]:
+                    flag_game_won = True
 
                 ## Refilling Aliens and Barriers
                 Fill_Alien()
@@ -2205,6 +2223,15 @@ def MainGame():
                 ## drawing the Game Over Sign
                 game_over_message = Game_Text('middle',120,'GAMEOVER')
                 game_over_message.Draw()
+                pygame.display.update()
+                Pause(2)
+                break
+        
+        ## ending the game if the player won
+            if flag_game_won == True:
+                ## drawing the win sign
+                win_message = Game_Text('middle',120,'YOU WON')
+                win_message.Draw()
                 pygame.display.update()
                 Pause(2)
                 break

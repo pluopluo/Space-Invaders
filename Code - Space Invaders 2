@@ -951,7 +951,7 @@ def MainGame():
 
         ## upgrade counter variable
         Counter_Upgrade_Life = 0
-        Counter_Upgrade_Bullet = 1999
+        Counter_Upgrade_Bullet = 0
         Counter_Max_Bullets = 1
         
         ## setting up the player's image

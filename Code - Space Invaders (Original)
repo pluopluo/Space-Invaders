@@ -125,7 +125,11 @@ def MainGame():
                         barrier_iteration_counter = barrier_iteration_counter + 1
                 break
             
-    def Update_Score(score):            
+    def Update_Score(score,points,place_value):    
+        ## updating the score
+        score.phrase[place_value] = score.phrase[place_value] + points    
+
+        ## regrouping the score    
         if score.phrase[2] >= 10:
             score.phrase[1] = score.phrase[1] + 1
             score.phrase[2] = score.phrase[2] - 10
@@ -669,11 +673,11 @@ def MainGame():
 
                             ## updating the player scores
                             if self in Player_1_Bullets:
-                                player_1_score.phrase[2] = player_1_score.phrase[2] + increment
                                 Player_1_Bullets.remove(self)
+                                Update_Score(player_1_score,increment,2)
                             elif self in Player_2_Bullets:
-                                player_2_score.phrase[2] = player_2_score.phrase[2] + increment
                                 Player_2_Bullets.remove(self)
+                                Update_Score(player_2_score,increment,2)
 
                             ## updating the high score
                             high_score.phrase[2] = high_score.phrase[2] + increment
@@ -698,34 +702,33 @@ def MainGame():
             ## checking if the bullet hits the mystery ship
             if self in Player_1_Bullets:
                 if Collide(self,mystery_ship) == True:
+                    ## removing the bullet from the bullet list and relocating or removing the mystery ship
+                        Player_1_Bullets.remove(self)
+                        mystery_ship.xpos = 2500
+
+                    ## playing the mystery ship's explosion sound
+                        Mystery_Ship_Explosion.Sound.play()
 
                     ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
                         if player_1.Lucky_Shot == True:
                             if (player_1.Shoot_Iteration_Counter - 23)%15 == 0:
                                 mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
-                                player_1_score.phrase[1] = player_1_score.phrase[1] + 3
-                                high_score.phrase[1] = high_score.phrase[1] + 3
+                                Update_Score(player_1_score,3,1)
+                                Update_Score(high_score,3,1)
+                            
+                            ## missing the chance for the lucky shot
                             else:
                                 player_1.Lucky_Shot = False
 
                     ## checking if otherwise and making it worth 200 points
                         if player_1.Lucky_Shot == False:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                            player_1_score.phrase[1] = player_1_score.phrase[1] + 2
-                            high_score.phrase[1] = high_score.phrase[1] + 2
+                            Update_Score(player_1_score,2,1)
+                            Update_Score(high_score,2,1)
 
                     ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
                         if player_1.Shoot_Iteration_Counter == 23:
                             player_1.Lucky_Shot = True
-
-                    ## relocating the mystery ship
-                        mystery_ship.xpos = 2500
-
-                    ## removing the bullet from the bullet list
-                        Player_1_Bullets.remove(self)
-
-                    ## playing the mystery ship's explosion sound
-                        Mystery_Ship_Explosion.Sound.play()
 
             elif self in Player_2_Bullets:
                 if Collide(self,mystery_ship) == True:
@@ -734,16 +737,18 @@ def MainGame():
                         if player_2.Lucky_Shot == True:
                             if (player_2.Shoot_Iteration_Counter - 23)%15 == 0:
                                 mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
-                                player_2_score.phrase[1] = player_1_score.phrase[1] + 3
-                                high_score.phrase[1] = high_score.phrase[1] + 3
+                                Update_Score(player_2_score,3,1)
+                                Update_Score(high_score,3,1)
+                            
+                            ## missing the change for the lucky shot
                             else:
                                 player_2.Lucky_Shot = False
 
                     ## checking if otherwise and making it worth 200 points
                         if player_2.Lucky_Shot == False:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                            player_2_score.phrase[1] = player_2_score.phrase[1] + 2
-                            high_score.phrase[1] = high_score.phrase[1] + 2
+                            Update_Score(player_2_score,2,1)
+                            Update_Score(high_score,2,1)
                             
                     ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
                         if player_2.Shoot_Iteration_Counter == 23:
@@ -757,11 +762,6 @@ def MainGame():
 
                     ## playing the mystery ship's explosion sound
                         Mystery_Ship_Explosion.Sound.play()
-   
-            ## checking if the hundreads or thousands place in the scores should be updated
-            Update_Score(player_1_score)
-            Update_Score(player_2_score)
-            Update_Score(high_score)
 
             ## checking if the player bullet hits the top of the screen
             if self in Player_1_Bullets or self in Player_2_Bullets:

@@ -271,3 +271,9 @@ to add new alien_list only when the alien_list already moved down
 2) I changed many of the words and phrases so that they are all in the middle of the screen
 3) I cancelled it, and now I am going to wokr on something else
 4) I am going ot begin to better set up the menu
+5) I checked if the length of the player 2 bullets is less then how many bullets can fit there with max bullet
+6) I decided to start a new function called upgrade that checks if the player's scores fit enough to actually upgrade it, and does everything regarding upgrading it's 
+abilities
+7) Now I am going to have a process in the update score from hitting the mystery ship and hitting the alien. (BOTH PROGRAMS REQUIRED TO UPGRADE IT)
+10) I am also going to have a function called update score. this is going to have a value put in and update the scores entirely based on it
+11) I am going to have a function that checks for the mystery ship's points in the player class with the lucky shot and everything(BOTH PROGRAMS REQUIRED IN THIS FUNCTION)

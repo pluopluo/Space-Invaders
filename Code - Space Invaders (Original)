@@ -546,7 +546,7 @@ def MainGame():
         Flag_Movement_Direction = None
 
         ## setting up the counter variables
-        Shoot_Iteration_Counter = 0
+        Counter_Shoot = 0
         Lucky_Shot = False
         
         ## setting up the player's image
@@ -565,10 +565,7 @@ def MainGame():
             self.height = 20
 
         def Move_Player(self):
-            ## updating the shoot timer
-            if self.Shoot_Timer > 0:
-                self.Shoot_Timer = self.Shoot_Timer - 1
-            
+            ## checking for movements
             if self.Flag_Movement_Direction == 'left':
                 self.xpos = self.xpos - 3
             elif self.Flag_Movement_Direction == 'right':
@@ -711,7 +708,7 @@ def MainGame():
 
                     ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
                         if player_1.Lucky_Shot == True:
-                            if (player_1.Shoot_Iteration_Counter - 23)%15 == 0:
+                            if (player_1.Counter_Shoot - 23)%15 == 0:
                                 mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
                                 Update_Score(player_1_score,3,1)
                                 Update_Score(high_score,3,1)
@@ -727,7 +724,7 @@ def MainGame():
                             Update_Score(high_score,2,1)
 
                     ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
-                        if player_1.Shoot_Iteration_Counter == 23:
+                        if player_1.Counter_Shoot == 23:
                             player_1.Lucky_Shot = True
 
             elif self in Player_2_Bullets:
@@ -735,7 +732,7 @@ def MainGame():
 
                     ## checking if the player 2's bullets hits the mystery ship at the 15th shot and making it worth 300 points
                         if player_2.Lucky_Shot == True:
-                            if (player_2.Shoot_Iteration_Counter - 23)%15 == 0:
+                            if (player_2.Counter_Shoot - 23)%15 == 0:
                                 mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
                                 Update_Score(player_2_score,3,1)
                                 Update_Score(high_score,3,1)
@@ -751,7 +748,7 @@ def MainGame():
                             Update_Score(high_score,2,1)
                             
                     ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
-                        if player_2.Shoot_Iteration_Counter == 23:
+                        if player_2.Counter_Shoot == 23:
                             player_2.Lucky_Shot = True
 
                     ## relocating the mystery ship
@@ -1564,17 +1561,8 @@ def MainGame():
                         if player_1 != None:
                             if player_1.Shoot_Timer <= 0 and len(Player_1_Bullets) == 0:
                                 player_1.Shoot_Timer = 60
-                                player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
+                                player_1.Counter_Shoot = player_1.Counter_Shoot + 1
                                 Player_1_Bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
-
-
-                                ## playing the sound
-                                Player.Shoot_Sound.play()
-                        else:
-                            if player_2.Shoot_Timer <= 0 and len(Player_2_Bullets) == 0:
-                                player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
-                                player_2.Shoot_Timer = 60
-                                Player_2_Bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
 
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
@@ -1588,14 +1576,6 @@ def MainGame():
 
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
-                        else:
-                            if player_1.Shoot_Timer <= 0 and len(Player_1_Bullets) == 0:
-                                player_1.Shoot_Timer = 60
-                                Player_1_Bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
-
-                                ## playing the sound
-                                Player.Shoot_Sound.play()
-
 
                 ## checking if the keys are lifted
                 if event.type == KEYUP:

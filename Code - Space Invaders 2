@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((480,480))
 pygame.display.set_caption('Space Invaders')
 clock = pygame.time.Clock()                         
 
-## setting up the game play
+## setting up the game play 
 def MainGame():
 
     def Close_Or_Skip():
@@ -946,12 +946,13 @@ def MainGame():
         Shoot_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player shoot sound.wav')
 
         ## setting up the flag variables
+        Flag_Lucky_Shot = False
         Flag_Struck = False
         Flag_Movement_Direction = None
 
         ## setting up the counter variables
-        Shoot_Iteration_Counter = 0
-        Lucky_Shot = False
+        Counter_Shoot = 0
+        Counter_Lucky_Shot = 0
 
         ## upgrade counter variable
         Counter_Upgrade_Life = 0
@@ -971,7 +972,7 @@ def MainGame():
             self.height = 20
 
         def Move_Player(self):
-            
+            ## checking for movements
             if self.Flag_Movement_Direction == 'left':
                 self.xpos = self.xpos - 3
             elif self.Flag_Movement_Direction == 'right':
@@ -981,6 +982,31 @@ def MainGame():
             elif self.xpos < 35:
                 self.xpos = 35
         
+        def Shoot(self,bullet_list):
+            ## checking if the max amount of bullets hasn't been reached and adding the bullet to the list
+            if len(bullet_list) < self.Counter_Max_Bullets:
+                bullet_list.append(Player_Bullet(self.xpos + 14,self.ypos - 10))
+
+                ## checking if the lucky shot is false and upgrading counter shoot
+                if self.Flag_Lucky_Shot == False:
+                    self.Counter_Shoot = self.Counter_Shoot + 1
+                    ## checking when to reset the counter shoot
+                    if self.Counter_Shoot - len(bullet_list) >= 23:
+                        self.Counter_Shoot = 0
+
+                ## checking if the lucky shot is true and upgrading lucky shot counter
+                elif self.Flag_Lucky_Shot == True:
+                    self.Counter_Lucky_Shot = self.Counter_Lucky_Shot + 1
+
+                    ## checking when the player missed the lucky shot's chance and resetting everything
+                    if self.Counter_Lucky_Shot - len(bullet_list) >= 15:
+                        self.Counter_Shoot = 0
+                        self.Counter_Lucky_Shot = 0
+                        self.Flag_Lucky_Shot = False
+                
+                ## playing the shot sound
+                self.Shoot_Sound.play()
+
         def Upgrade(self,points):
             ## nonlocalizing player 1's life and backup
             nonlocal player_1_life, player_1_backup
@@ -997,7 +1023,7 @@ def MainGame():
 
             ## checking who's turn is it to upgrade and checking only of that player has less then 3 lives
                 if self == player_1:
-                    if player_1_life.phrase < 3:
+                    if player_1_life.phrase[0] < 3:
 
                         ## updating the life phrase, deciding the xpos of the new life, and placing the new life
                         player_1_life.phrase[0] = player_1_life.phrase[0] + 1
@@ -1020,10 +1046,26 @@ def MainGame():
                 self.Counter_Upgrade_Bullet = self.Counter_Upgrade_Bullet - 2000
                 self.Counter_Max_Bullets = self.Counter_Max_Bullets + 1
         
-        def Check_Mystery_Ship_Value(self):
-            ## checking it's counter bulelt iteration
-            asdf
+        def Find_Mystery_Ship_Value(self):
+            ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points and returning the rare event
+            if self.Flag_Lucky_Shot == True:
+                if self.Counter_Lucky_Shot == 15:
+                    return 3
             
+                ## missing the chance for the lucky shot and resetting everything
+                else:
+                    self.Counter_Lucky_Shot = 0
+                    self.Flag_Lucky_Shot = False
+
+            ## checking if otherwise and making it worth 200 points
+            elif self.Flag_Lucky_Shot == False:
+                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
+                return 2
+
+            ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
+            if self.Counter_Shoot == 23:
+                self.Flag_Lucky_Shot = True
+
         def Draw(self,color='green'):
             if color == 'green':
                 return screen.blit(Player.Green_Image,(self.xpos,self.ypos))
@@ -1102,7 +1144,7 @@ def MainGame():
                 elif self.xpos + self.length > 372 and self.xpos < 432:
                     Bullet_Barrier_Collision(barrier4,self)
 
-            ## checking if the bullets hit the alien
+            ## iterating through the bullets for alien collision
             if self in player_1_bullets or self in player_2_bullets:
                 for alien in aliens:
                     if Collide(alien,self) == True:
@@ -1155,72 +1197,44 @@ def MainGame():
                     if self not in player_1_bullets and self not in player_2_bullets:
                         break
 
-            ## checking if the bullet hits the mystery ship
-            if self in player_1_bullets:
-                if Collide(self,mystery_ship) == True:
+            ## iterating through the bullets for the mystery ship collision
+            if self in player_1_bullets or self in player_2_bullets:
+                if Collide(mystery_ship,self) == True:
 
-                    ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
-                        if player_1.Lucky_Shot == True:
-                            if (player_1.Shoot_Iteration_Counter - 23)%15 == 0:
-                                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
-                                Update_Score(player_2_score,3,1)
-                                Update_Score(high_score,3,1)
-                            
-                            ## missing the chance for the lucky shot
-                            else:
-                                player_1.Lucky_Shot = False
+                    ## playing the explosion sound, then removing the bullet
+                    Mystery_Ship_Explosion.Sound.play()
+                    mystery_ship.xpos = 2500
 
-                    ## checking if otherwise and making it worth 200 points
-                        if player_1.Lucky_Shot == False:
+                    ## checking if the bullet is in the player 1 bullets list
+                    if self in player_1_bullets:
+                        value = player_1.Find_Mystery_Ship_Value()
+
+                        ## checking if the value is 3 or 2 and adding the corrosponding explosion 
+                        if value == 2:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                            Update_Score(player_2_score,2,1)
-                            Update_Score(high_score,2,1)
+                        elif value == 3:
+                            mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
 
-                    ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
-                        if player_1.Shoot_Iteration_Counter == 23:
-                            player_1.Lucky_Shot = True
-
-                    ## relocating the mystery ship
-                        mystery_ship.xpos = 2500
-
-                    ## removing the bullet from the bullet list
+                        ## updating the scores, then removing the bullets from the screen
+                        Update_Score(player_2_score,value,1)
+                        Update_Score(high_score,value,1)
                         player_1_bullets.remove(self)
 
-                    ## playing the mystery ship's explosion sound
-                        Mystery_Ship_Explosion.Sound.play()
 
-            elif self in player_2_bullets:
-                if Collide(self,mystery_ship) == True:
+                    elif self in player_2_bullets:
 
-                    ## checking if the player 2's bullets hits the mystery ship at the 15th shot and making it worth 300 points
-                        if player_2.Lucky_Shot == True:
-                            if (player_2.Shoot_Iteration_Counter - 23)%15 == 0:
-                                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
-                                Update_Score(player_2_score,3,1)
-                                Update_Score(high_score,3,1)
-                            
-                            ## missing the chance for the lucky shot
-                            else:
-                                player_2.Lucky_Shot = False
+                        value = player_1.Find_Mystery_Ship_Value()
 
-                    ## checking if otherwise and making it worth 200 points
-                        if player_2.Lucky_Shot == False:
+                        ## checking if the value is 3 or 2 and adding the corrosponding explosion 
+                        if value == 2:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                            Update_Score(player_2_score,2,1)
-                            Update_Score(high_score,2,1)
-                            
-                    ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
-                        if player_2.Shoot_Iteration_Counter == 23:
-                            player_2.Lucky_Shot = True
+                        elif value == 3:
+                            mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
 
-                    ## relocating the mystery ship
-                        mystery_ship.xpos = 2500
-
-                    ## removing the bullet from the bullet list
+                        ## updating the scores, then removing the bullets from the screen
+                        Update_Score(player_2_score,value,1)
+                        Update_Score(high_score,value,1)
                         player_2_bullets.remove(self)
-
-                    ## playing the mystery ship's explosion sound
-                        Mystery_Ship_Explosion.Sound.play()
 
             ## checking if the player bullet hits the top of the screen
             if self in player_1_bullets or self in player_2_bullets:
@@ -1745,41 +1759,9 @@ def MainGame():
         ## deleting the start alien from no use
         del start_alien
         
-    ## checking if the player hasn't skipped and setting up the menu 3 and menu 4
+    ## checking if the player hasn't skipped and setting up the menu 3 
         if flag_skip == False:
-
         ## setting up the menu 3
-
-            ## filling the screen black quickly but not directly
-            Fill_Black()
-
-            ## drawing the scores
-            score_message.Draw()
-            player_1_score.Draw()
-            player_2_score.Draw()
-            high_score.Draw()
-            credit_message.Draw()
-
-            ## drawing the buttons
-            push_message = Game_Text('middle',180,'PUSH')
-            push_message.Draw()
-
-            ## drawing the message describing the one player buttons used
-            if flag_game_mode == 'one_player':
-                only_one_player_button_message = Game_Text('middle',230,'ONLY 1 PLAYER BUTTON')
-                only_one_player_button_message.Draw()
-
-            ## drawing the message describing the two player buttons used
-            elif flag_game_mode == 'two_player':
-                only_two_player_button_message = Game_Text('middle',230,'2 PLAYER BUTTON')
-                only_two_player_button_message.Draw()
-            
-            ## updating the screen only without the flagskip variable
-            pygame.display.update()
-            Pause(2)
-
-    
-        ## setting up menu 4
             ## filling the screen black quickly but not directly
             Fill_Black()
 
@@ -1827,7 +1809,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        flag_game_level = [0,1]
+        flag_game_level = [0,6]
         flag_gameover = False
         flag_game_won = False
 
@@ -2030,40 +2012,16 @@ def MainGame():
                 ## shooting bullets using space
                     if event.key == K_SPACE:
                         if player_1 != None:
-
-                            if len(player_1_bullets) < player_1.Counter_Max_Bullets:
-                                player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
-                                player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
-
-                                ## playing the sound
-                                Player.Shoot_Sound.play()
-                            
+                            player_1.Shoot(player_1_bullets)   
                         else:
-
-                            if len(player_2_bullets) < player_1.Counter_Max_Bullets:
-                                player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
-                                player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
-
-                                ## playing the sound
-                                Player.Shoot_Sound.play()
+                            player_2.Shoot(player_2_bullets)
 
                 ## shooting bullets using x
                     if event.key == K_x: 
                         if player_2 != None:
-                            if len(player_2_bullets) < player_2.Counter_Max_Bullets:
-                                player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
-                                player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
-
-                                ## playing the sound
-                                Player.Shoot_Sound.play()
-
+                            player_2.Shoot(player_2_bullets)
                         else:
-                            if len(player_1_bullets) < player_2.Counter_Max_Bullets:
-                                player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
-                                player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
-
-                                ## playing the sound
-                                Player.Shoot_Sound.play()
+                            player_1.Shoot(player_1_bullets)
 
                 ## checking if the keys are lifted
                 if event.type == KEYUP:

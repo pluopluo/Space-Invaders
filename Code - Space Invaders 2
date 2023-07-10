@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((480,480))
 pygame.display.set_caption('Space Invaders')
 clock = pygame.time.Clock()                         
 
-## setting up the game play 
+## setting up the game play
 def MainGame():
 
     def Close_Or_Skip():
@@ -125,11 +125,7 @@ def MainGame():
                         barrier_iteration_counter = barrier_iteration_counter + 1
                 break
             
-    def Update_Score(score,points,place_value):
-        ## updating the score
-        score.phrase[place_value] = score.phrase[place_value] + points
-
-        ## regroupint
+    def Update_Score(score):            
         if score.phrase[2] >= 10:
             score.phrase[1] = score.phrase[1] + 1
             score.phrase[2] = score.phrase[2] - 10
@@ -487,12 +483,12 @@ def MainGame():
         ## making sure that the function doesn't happen again if the player has skipped
         nonlocal flag_skip
         if flag_skip == True:
-            flag_skip = 'stage_2'
+            flag_skip  = 'stage_2'
 
     def Screen_Draw(start_of_game = False): 
-        ## defining a function to draw everything but the aliens
-        def Draw_Elements_Except_Aliens():
-            ## filling the screen black
+
+    ## limiting the process of drawing everything to be only at the start of the game 
+        if start_of_game == True:
             screen.fill(black)
 
             ## drawing the score
@@ -526,135 +522,68 @@ def MainGame():
                 player.Draw('green')
             for player in player_2_backup:
                 player.Draw('blue')
-
-    ## limiting the process of drawing everything but aliens to be only at the start of the game 
-        if start_of_game == True:
-            Draw_Elements_Except_Aliens()
-
+        
     ## drawing the level message
         nonlocal flag_game_level
 
-        ## preparing the level message
-        level_message = [Game_Text('middle',180,'LEVEL ' + str(flag_game_level[0]) + str(flag_game_level[1]))]
-        
-        ## checking if the player started and writing a starter message
-        if flag_game_level == [0,1]:
+        ## checking if the level is greater then 10 
+        if flag_game_level[0] > 0:
 
-            ## preparing the first starter message
-            starter_message_one = [Game_Text('middle',120,'WELCOME TO SPACE INVADERS 2.'),
-                                   Game_Text('middle',145,'IT IS AN EXTENSION TO THE'),
-                                   Game_Text('middle',170,'ORIGIANL SPACE INVADERS'),
-                                   Game_Text('middle',195,'SO LOOK ON WEB HOW TO PLAY'),
-                                   Game_Text('middle',220,'SPACE INVADERS IF YOU HAVE'),
-                                   Game_Text('middle',245,'NOT ALREDY PLAYED IT.')]
-        
-            ## preparing the second starter message
-            starter_message_two = [Game_Text('middle',120,'THE DIFFERENCES IN THIS'),
-                                   Game_Text('middle',145,'GAME AND THE ORIGINAL GAME'),
-                                   Game_Text('middle',170,'IS THAT THIS GAME HAS 15'),
-                                   Game_Text('middle',195,'GAME LEVELS AND MANY'),
-                                   Game_Text('middle',220,'UPGRADES BASED ON THE AMOUNT'),
-                                   Game_Text('middle',245,'OF POINTS YOU HAVE.')]
+            ## preparing the level message 
+            level_message = Words_And_Phrases(180,180,'LEVEL ' + str(flag_game_level[0]) + str(flag_game_level[1]))
 
-            ## preparing the third starter message
-            starter_message_three = [Game_Text('middle',120,'FIRST UPGRADE:YOU START'),
-                                     Game_Text('middle',145,'WITH TWO LIVES AND GAIN'),
-                                     Game_Text('middle',170,'AN ADDITIONAL LIFE FOR'),
-                                     Game_Text('middle',195,'EVERY 500 POINTS YOU'),
-                                     Game_Text('middle',220,'GET.MAX:3 LIVES.')]
+            ## checking if the level is 14 and also writing a message
+            if flag_game_level == [1,4]:
 
-            ## preparing the fourth starter message
-            starter_message_four = [Game_Text('middle',120,'SECOND UPGRADE:YOU GAIN AN'),
-                                    Game_Text('middle',145,'ADDITIONAL BULLET THAT'),
-                                    Game_Text('middle',170,'YOU CAN SHOOT ONTO THE'),
-                                    Game_Text('middle',195,'ALIENS AT A TIME FOR EVERY'),
-                                    Game_Text('middle',220,'2000 POINTS YOU GET.THERE'),
-                                    Game_Text('middle',245,'IS NO UPPER LIMIT.')]
+                ## changing the level message's ypos and clearing space for the other message
+                level_message.ypos = 120
 
-            ## preparing the fifth starter message
-            starter_message_five = [Game_Text('middle',120,'LASTLY:MORE AND MORE ALIENS'),
-                                    Game_Text('middle',145,'WILL APPEAR AS THE LEVELS'),
-                                    Game_Text('middle',170,'GETS HIGHER AND HIGHER.')]
+                ## preparing level 14's other messages
+                game_completion_message = [Words_And_Phrases(75,160,'CONGRATS.YOU BASICALLY'),
+                                           Words_And_Phrases(105,195,'FINISHED THE GAME.'),
+                                           Words_And_Phrases(105,230,'CAN YOU STILL BEAT'),
+                                           Words_And_Phrases(60,265,'THIS LEVEL? IT GENERATES'), 
+                                           Words_And_Phrases(128,300,'LOTS OF POINTS.')]
 
-        ## checking if the player reached level 14 and writing an additional message
-        elif flag_game_level == [1,4]:
+            ## checking if the level is 15 and also writing a message
+            elif flag_game_level == [1,5]:
 
-            ## preparing level 14's other messages
-            game_completion_message = [Game_Text(75,145,'CONGRATS.YOU BASICALLY'),
-                                       Game_Text(105,170,'FINISHED THE GAME.'),
-                                       Game_Text(105,195,'CAN YOU STILL BEAT'),
-                                       Game_Text(60,220,'LEVEL 14? IT GENERATES'), 
-                                       Game_Text(128,245,'LOTS OF POINTS.')]
+                ## changing the level message's ypos and clearing space for the other message
+                level_message.ypos = 120
 
-        ## checking if the player reached level 15 and also writing an additional message
-        elif flag_game_level == [1,5]:
+                ## preparing level 15's other messages
+                final_level_message = [Words_And_Phrases(38,160,'YOU REACHED THE FINAL LEVEL'),
+                                       Words_And_Phrases(23,195,'OF THE ENTIRE GAME.IT IS LIKE'),
+                                       Words_And_Phrases(38,230,'LEVEL 14 BUT WITH MANY MORE'),
+                                       Words_And_Phrases(15,265,'ALIENS WHICH MAKES IT ALSO THE'),
+                                       Words_And_Phrases(60,300,'HARDEST LEVEL.GOOD LUCK.')]
 
-            ## preparing level 15's other messages
-            final_level_message = [Game_Text(38,145,'YOU REACHED THE FINAL LEVEL'),
-                                    Game_Text(23,170,'OF THE ENTIRE GAME.IT IS LIKE'),
-                                    Game_Text(38,195,'LEVEL 14 BUT WITH MANY MORE'),
-                                    Game_Text(15,220,'ALIENS WHICH MAKES IT ALSO THE'),
-                                    Game_Text(60,245,'HARDEST LEVEL.GOOD LUCK.')]
-            
-        ## defining the function that draws, pauses and erases the screen
-        def Draw_Game_Text(game_text):
-            
-            ## drawing the game text
-            for line in game_text:
-                line.Draw(6)
-            
-            ## pausing and erasing the screen by drawing a big rectangle
-            Pause(2)
-            pygame.draw.rect(screen,black,(0,75,480,255))
+        ## checking if the level is less then 10
+        else:
 
-            ## updating the screen
-            pygame.display.update()
-
-            ## pausing a short time making more breathing space
-            Pause(0.5)
-            
-        ## checking if the game started and drawing the message
-        if flag_game_level == [0,1]:
-
-            ## drawing the message
-            Draw_Game_Text(starter_message_one)
-            Draw_Game_Text(starter_message_two)
-            Draw_Game_Text(starter_message_three)
-            Draw_Game_Text(starter_message_four)
-            Draw_Game_Text(starter_message_five)
-        
-        ## checking if the level is 14 and drawing a message
-        if flag_game_level == [1,4]:
-
-            ## drawing the message
-            Draw_Game_Text(game_completion_message)
-        
-        ## checking if the level is 15 and drawing the message
-        elif flag_game_level == [1,5]:
-
-            ## drawing the message
-            Draw_Game_Text(final_level_message)
-
-    ## checking if everything should be drawn again
-
-        ## globalizing flag skip
-        nonlocal flag_skip
-
-        ## checking process
-        if flag_skip == 'stage_2':
-
-            ## ending flag skip until the game restarts
-            flag_skip = 'done'
-
-            ## redrawing everything
-            Draw_Elements_Except_Aliens()
-
-        ## ending flag skip until the game restarts
-        flag_skip = 'done'
+            ## preparing the level 
+            level_message = Words_And_Phrases(187,180,'LEVEL ' + str(flag_game_level[0]) + str(flag_game_level[1]))
 
         ## drawing the level message
-        Draw_Game_Text(level_message)
+        level_message.Draw()
 
+        ## checking if the level is 14 and drawing the other messages
+        if flag_game_level == [1,4]:
+            for line in game_completion_message:
+                line.Draw(6)
+        
+        ## checking if the level is 15 and drawing the message
+        if flag_game_level == [1,5]:
+            for line in final_level_message:
+                line.Draw(6)
+
+        ## updating the screen and pausing it
+        pygame.display.update()
+        Pause(2)
+
+        ## drawing a square to erase all messages
+        pygame.draw.rect(screen,black,(0,75,480,255))
+        
     ## drawing the aliens and closing the screen if the quit button is pressed
         for alien in aliens:
             alien.Draw('white')
@@ -670,12 +599,11 @@ def MainGame():
             self.xpos = xpos
             self.ypos = ypos
 
-    class Game_Text(Game_Element):
+    class Words_And_Phrases(Game_Element):
         ## uploading all the character names
         Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z',0,1,2,
-                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark',
-                                'dash','space','yflip','period','colon']
+                                3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip','period']
         
         ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
         Character_Dictionary = {}
@@ -688,20 +616,9 @@ def MainGame():
             
         def __init__(self,xpos,ypos,phrase):
 
-            ## setting up the phrase of the class
+            ## setting up the xpos, ypos and phrase
+            super().__init__(xpos,ypos)
             self.phrase = phrase
-
-            ## setting up the ypos
-            self.ypos = ypos
-
-            ## checking if the xpos is used as the middle of the screen
-            if xpos == 'middle':
-                twice_middle = 480 - len(phrase)*15
-                self.xpos = twice_middle/2
-            
-            ## checking if else:
-            else:
-                self.xpos = xpos
 
         def Draw(self,delay=0):
 
@@ -735,8 +652,6 @@ def MainGame():
                     character = 'space'
                 elif character == '.':
                     character = 'period'
-                elif character == ':':
-                    character = 'colon'
                 
                 ## checking if the character is a string number and changing it to an integar
                 string_number_list = ['0','1','2','3','4','5','6','7','8','9']
@@ -744,7 +659,7 @@ def MainGame():
                     character = int(character)
                 
                 ## drawing the letter and increasing the counter spacing
-                screen.blit(Game_Text.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
+                screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
                 Counter_Spacing = Counter_Spacing + 15
 
                 ## pausing if there is a delay
@@ -902,13 +817,9 @@ def MainGame():
             ## checking if the alien should explode
             if self.size == 1:
                     
-                    ## checking where to add the alien explosion based on the alien type
-                    if self.type == 3:
-                        alien_explosion_list.append(Alien_Explosion(self.xpos,self.ypos))
-                    
-                    else:
-                        alien_explosion_list.append(Alien_Explosion(self.xpos - 3,self.ypos))
-                    
+                    ## adding the explosion to the explosion list
+                    alien_explosion_list.append(Alien_Explosion(self.xpos,self.ypos))
+            
             ## checking if the size is greater then 1 and making it split
             elif self.size > 1:
                     
@@ -946,18 +857,12 @@ def MainGame():
         Shoot_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player shoot sound.wav')
 
         ## setting up the flag variables
-        Flag_Lucky_Shot = False
         Flag_Struck = False
         Flag_Movement_Direction = None
 
         ## setting up the counter variables
-        Counter_Shoot = 0
-        Counter_Lucky_Shot = 0
-
-        ## upgrade counter variable
-        Counter_Upgrade_Life = 0
-        Counter_Upgrade_Bullet = 0
-        Counter_Max_Bullets = 1
+        Shoot_Iteration_Counter = 0
+        Lucky_Shot = False
         
         ## setting up the player's image
         Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')
@@ -972,7 +877,7 @@ def MainGame():
             self.height = 20
 
         def Move_Player(self):
-            ## checking for movements
+            
             if self.Flag_Movement_Direction == 'left':
                 self.xpos = self.xpos - 3
             elif self.Flag_Movement_Direction == 'right':
@@ -982,90 +887,6 @@ def MainGame():
             elif self.xpos < 35:
                 self.xpos = 35
         
-        def Shoot(self,bullet_list):
-            ## checking if the max amount of bullets hasn't been reached and adding the bullet to the list
-            if len(bullet_list) < self.Counter_Max_Bullets:
-                bullet_list.append(Player_Bullet(self.xpos + 14,self.ypos - 10))
-
-                ## checking if the lucky shot is false and upgrading counter shoot
-                if self.Flag_Lucky_Shot == False:
-                    self.Counter_Shoot = self.Counter_Shoot + 1
-                    ## checking when to reset the counter shoot
-                    if self.Counter_Shoot - len(bullet_list) >= 23:
-                        self.Counter_Shoot = 0
-
-                ## checking if the lucky shot is true and upgrading lucky shot counter
-                elif self.Flag_Lucky_Shot == True:
-                    self.Counter_Lucky_Shot = self.Counter_Lucky_Shot + 1
-
-                    ## checking when the player missed the lucky shot's chance and resetting everything
-                    if self.Counter_Lucky_Shot - len(bullet_list) >= 15:
-                        self.Counter_Shoot = 0
-                        self.Counter_Lucky_Shot = 0
-                        self.Flag_Lucky_Shot = False
-                
-                ## playing the shot sound
-                self.Shoot_Sound.play()
-
-        def Upgrade(self,points):
-            ## nonlocalizing player 1's life and backup
-            nonlocal player_1_life, player_1_backup
-            
-            ## nonlocalizing player 2's life and backup
-            nonlocal player_2_life, player_2_backup
-
-            ## updating the player's life counter and checking if there is enough points to upgrade
-            self.Counter_Upgrade_Life = self.Counter_Upgrade_Life + points
-            if self.Counter_Upgrade_Life >= 500:
-
-                ## paying the cost 
-                self.Counter_Upgrade_Life = self.Counter_Upgrade_Life - 500
-
-            ## checking who's turn is it to upgrade and checking only of that player has less then 3 lives
-                if self == player_1:
-                    if player_1_life.phrase[0] < 3:
-
-                        ## updating the life phrase, deciding the xpos of the new life, and placing the new life
-                        player_1_life.phrase[0] = player_1_life.phrase[0] + 1
-                        new_player_backup_xpos = 30 + len(player_1_backup)*40
-                        player_1_backup.append(Player(new_player_backup_xpos,450))
-                
-                elif self == player_2:
-                    if player_2_life.phrase < 3:
-
-                        ## updating the life phrase, deciding the xpos of the new life, and placing the new life
-                        player_2_life.phrase[0] = player_2_life.phrase[0] + 1
-                        new_player_backup_xpos = 30 + len(player_2_backup)*40
-                        player_2_backup.append(Player(new_player_backup_xpos,450))
-            
-            ## updating the player's bullet counter and checking if there is enough points to upgrade
-            self.Counter_Upgrade_Bullet = self.Counter_Upgrade_Bullet + points
-            if self.Counter_Upgrade_Bullet >= 2000:
-
-                ## paying the cost and enabing another bullet to be added onto the screen
-                self.Counter_Upgrade_Bullet = self.Counter_Upgrade_Bullet - 2000
-                self.Counter_Max_Bullets = self.Counter_Max_Bullets + 1
-        
-        def Find_Mystery_Ship_Value(self):
-            ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points and returning the rare event
-            if self.Flag_Lucky_Shot == True:
-                if self.Counter_Lucky_Shot == 15:
-                    return 3
-            
-                ## missing the chance for the lucky shot and resetting everything
-                else:
-                    self.Counter_Lucky_Shot = 0
-                    self.Flag_Lucky_Shot = False
-
-            ## checking if otherwise and making it worth 200 points
-            elif self.Flag_Lucky_Shot == False:
-                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                return 2
-
-            ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
-            if self.Counter_Shoot == 23:
-                self.Flag_Lucky_Shot = True
-
         def Draw(self,color='green'):
             if color == 'green':
                 return screen.blit(Player.Green_Image,(self.xpos,self.ypos))
@@ -1144,7 +965,7 @@ def MainGame():
                 elif self.xpos + self.length > 372 and self.xpos < 432:
                     Bullet_Barrier_Collision(barrier4,self)
 
-            ## iterating through the bullets for alien collision
+            ## checking if the bullets hit the alien
             if self in player_1_bullets or self in player_2_bullets:
                 for alien in aliens:
                     if Collide(alien,self) == True:
@@ -1179,62 +1000,89 @@ def MainGame():
                         elif alien.type == 3:
                             increment = 3
 
-                    ## removing the player bullets, updating the player scores, and checking for upgrades.
+                        ## updating the player scores and removing the player's bullet
                         if self in player_1_bullets:
                             player_1_bullets.remove(self)
-                            Update_Score(player_1_score,increment,2)
-                            player_1.Upgrade(increment*10)
+                            player_1_score.phrase[2] = player_1_score.phrase[2] + increment
                         elif self in player_2_bullets:
                             player_2_bullets.remove(self)
-                            Update_Score(player_1_score,increment,2)
-                            player_2.Upgrade(increment*10)
+                            player_1_score.phrase[2] = player_1_score.phrase[2] + increment
 
                         ## updating the high score
-                        Update_Score(high_score,increment,2)
+                        high_score.phrase[2] = high_score.phrase[2] + increment
                         break 
 
                     ## ending the iteration if the bullet is removed
                     if self not in player_1_bullets and self not in player_2_bullets:
                         break
 
-            ## iterating through the bullets for the mystery ship collision
-            if self in player_1_bullets or self in player_2_bullets:
-                if Collide(mystery_ship,self) == True:
+            ## checking if the bullet hits the mystery ship
+            if self in player_1_bullets:
+                if Collide(self,mystery_ship) == True:
 
-                    ## playing the explosion sound, then removing the bullet
-                    Mystery_Ship_Explosion.Sound.play()
-                    mystery_ship.xpos = 2500
+                    ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
+                        if player_1.Lucky_Shot == True:
+                            if (player_1.Shoot_Iteration_Counter - 23)%15 == 0:
+                                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                                player_1_score.phrase[1] = player_1_score.phrase[1] + 3
+                                high_score.phrase[1] = high_score.phrase[1] + 3
+                            else:
+                                player_1.Lucky_Shot = False
 
-                    ## checking if the bullet is in the player 1 bullets list
-                    if self in player_1_bullets:
-                        value = player_1.Find_Mystery_Ship_Value()
-
-                        ## checking if the value is 3 or 2 and adding the corrosponding explosion 
-                        if value == 2:
+                    ## checking if otherwise and making it worth 200 points
+                        if player_1.Lucky_Shot == False:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                        elif value == 3:
-                            mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                            player_1_score.phrase[1] = player_1_score.phrase[1] + 2
+                            high_score.phrase[1] = high_score.phrase[1] + 2
 
-                        ## updating the scores, then removing the bullets from the screen
-                        Update_Score(player_2_score,value,1)
-                        Update_Score(high_score,value,1)
+                    ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
+                        if player_1.Shoot_Iteration_Counter == 23:
+                            player_1.Lucky_Shot = True
+
+                    ## relocating the mystery ship
+                        mystery_ship.xpos = 2500
+
+                    ## removing the bullet from the bullet list
                         player_1_bullets.remove(self)
 
+                    ## playing the mystery ship's explosion sound
+                        Mystery_Ship_Explosion.Sound.play()
 
-                    elif self in player_2_bullets:
+            elif self in player_2_bullets:
+                if Collide(self,mystery_ship) == True:
 
-                        value = player_1.Find_Mystery_Ship_Value()
+                    ## checking if the player 2's bullets hits the mystery ship at the 15th shot and making it worth 300 points
+                        if player_2.Lucky_Shot == True:
+                            if (player_2.Shoot_Iteration_Counter - 23)%15 == 0:
+                                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                                player_2_score.phrase[1] = player_1_score.phrase[1] + 3
+                                high_score.phrase[1] = high_score.phrase[1] + 3
+                            else:
+                                player_2.Lucky_Shot = False
 
-                        ## checking if the value is 3 or 2 and adding the corrosponding explosion 
-                        if value == 2:
+                    ## checking if otherwise and making it worth 200 points
+                        if player_2.Lucky_Shot == False:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                        elif value == 3:
-                            mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                            player_2_score.phrase[1] = player_2_score.phrase[1] + 2
+                            high_score.phrase[1] = high_score.phrase[1] + 2
+                            
+                    ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
+                        if player_2.Shoot_Iteration_Counter == 23:
+                            player_2.Lucky_Shot = True
 
-                        ## updating the scores, then removing the bullets from the screen
-                        Update_Score(player_2_score,value,1)
-                        Update_Score(high_score,value,1)
+                    ## relocating the mystery ship
+                        mystery_ship.xpos = 2500
+
+                    ## removing the bullet from the bullet list
                         player_2_bullets.remove(self)
+
+                    ## playing the mystery ship's explosion sound
+                        Mystery_Ship_Explosion.Sound.play()
+   
+            ## checking if the hundreads or thousands place in the scores should be updated
+            Update_Score(player_1_score)
+            Update_Score(player_2_score)
+            Update_Score(high_score)
 
             ## checking if the player bullet hits the top of the screen
             if self in player_1_bullets or self in player_2_bullets:
@@ -1502,16 +1350,16 @@ def MainGame():
     while True:
 ## setting up the menu 1
         ## setting up the words and messages
-        please_select_message = Game_Text('middle',140,'PLEASE SELECT')
-        one_or_two_players_message = Game_Text('middle',180,'<1 OR 2 PLAYERS>')
-        one_player_message = Game_Text(190,220,'1PLAYER')
-        two_player_message = Game_Text(190,260,'2PLAYER')
+        please_select_message = Words_And_Phrases(140,140,'PLEASE SELECT')
+        one_or_two_players_message = Words_And_Phrases(120,180,'<1 OR 2 PLAYERS>')
+        one_player_message = Words_And_Phrases(190,220,'1PLAYER')
+        two_player_message = Words_And_Phrases(190,260,'2PLAYER')
 
         ## setting up the select asterisk
-        asterisk = Game_Text(170,220,'*')
+        asterisk = Words_And_Phrases(170,220,'*')
 
         ## setting up the important credit message
-        credit_message = Game_Text(340,456,'CREDIT 00')
+        credit_message = Words_And_Phrases(340,456,'CREDIT 00')
 
         ## setting up the flag variable to begin the game
         Player_Selected = False
@@ -1520,10 +1368,10 @@ def MainGame():
         flag_game_mode = 'one_player'
 
         ## setting up the player's score and the high score
-        score_message = Game_Text('middle',20,'SCORE<1> HI-SCORE SCORE<2>')
-        player_1_score = Game_Text(60,60,[0,0,0,0])
-        player_2_score = Game_Text(320,60,[0,0,0,0])
-        high_score = Game_Text(200,60,[0,0,0,0])
+        score_message = Words_And_Phrases(45,20,'SCORE<1> HI-SCORE SCORE<2>')
+        player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
+        player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
+        high_score = Words_And_Phrases(200,60,[0,0,0,0])
 
         while True:
             screen.fill(black)
@@ -1582,19 +1430,19 @@ def MainGame():
         credit_message.Draw()
 
         # setting up and drawing the words and messages
-        play_message = Game_Text(210,150,'PLA')
+        play_message = Words_And_Phrases(210,150,'PLA')
         play_message.Draw(6)
 
-        y_message = Game_Text(255,150,['yflip'])
+        y_message = Words_And_Phrases(255,150,['yflip'])
         y_message.Draw(6)
 
-        space_invaders_message = Game_Text('middle',190,'SPACE INVADERS')
+        space_invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
         space_invaders_message.Draw(6)
 
         Pause(0.5)
 
         ## drawing the score_advance_table
-        score_advance_table = Game_Text('middle',250,'*SCORE ADVANCE TABLE*')
+        score_advance_table = Words_And_Phrases(80,250,'*SCORE ADVANCE TABLE*')
         score_advance_table.Draw()
 
         ## drawing the alien display only if the player hasn't skipped
@@ -1612,16 +1460,16 @@ def MainGame():
             alien_2_display.Draw('white')
 
         ## drawing the alien values
-        mystery_point_message = Game_Text(180,285,'=? MYSTERY')
+        mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
         mystery_point_message.Draw(6)
         
-        thirty_points_message = Game_Text(180,320,'=30 POINTS')
+        thirty_points_message = Words_And_Phrases(180,320,'=30 POINTS')
         thirty_points_message.Draw(6)
 
-        twenty_points_message = Game_Text(180,355,'=20 POINTS')
+        twenty_points_message = Words_And_Phrases(180,355,'=20 POINTS')
         twenty_points_message.Draw(6)
 
-        ten_points_message = Game_Text(180,390,'=10 POINTS')
+        ten_points_message = Words_And_Phrases(180,390,'=10 POINTS')
         ten_points_message.Draw(6)
 
     ## setting up the short alien film
@@ -1713,7 +1561,7 @@ def MainGame():
             if start_alien.xpos == 260:
 
                 # flipping the letter
-                y_message = Game_Text(255,150,'Y')
+                y_message = Words_And_Phrases(255,150,'Y')
 
                 ## changing the alien speed
                 start_alien.Speed = 5
@@ -1757,11 +1605,43 @@ def MainGame():
             clock.tick(30)
 
         ## deleting the start alien from no use
-        del start_alien 
+        del start_alien
         
-    ## checking if the player hasn't skipped and setting up the menu 3 
+    ## checking if the player hasn't skipped and setting up the menu 3 and menu 4
         if flag_skip == False:
+
         ## setting up the menu 3
+
+            ## filling the screen black quickly but not directly
+            Fill_Black()
+
+            ## drawing the scores
+            score_message.Draw()
+            player_1_score.Draw()
+            player_2_score.Draw()
+            high_score.Draw()
+            credit_message.Draw()
+
+            ## drawing the buttons
+            push_message = Words_And_Phrases(210,180,'PUSH')
+            push_message.Draw()
+
+            ## drawing the message describing the one player buttons used
+            if flag_game_mode == 'one_player':
+                only_one_player_button_message = Words_And_Phrases(90,230,'ONLY 1 PLAYER BUTTON')
+                only_one_player_button_message.Draw()
+
+            ## drawing the message describing the two player buttons used
+            elif flag_game_mode == 'two_player':
+                only_two_player_button_message = Words_And_Phrases(127,230,'2 PLAYER BUTTON')
+                only_two_player_button_message.Draw()
+            
+            ## updating the screen only without the flagskip variable
+            pygame.display.update()
+            Pause(2)
+
+    
+        ## setting up menu 4
             ## filling the screen black quickly but not directly
             Fill_Black()
 
@@ -1777,14 +1657,14 @@ def MainGame():
 
                 if flag_game_mode == 'one_player':
                     ## drawing the play player 1 message and blinking the player 1 score
-                    play_one_player_message = Game_Text('middle',180,'PLAY PLAYER<1>')
+                    play_one_player_message = Words_And_Phrases(135,180,'PLAY PLAYER<1>')
                     play_one_player_message.Draw()
                     if time%2 == 0:
                         player_1_score.Draw()
 
                 if flag_game_mode == 'two_player':
                     ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
-                    play_two_player_message = Game_Text('middle',220,'PLAY PLAYER<2>')
+                    play_two_player_message = Words_And_Phrases(135,220,'PLAY PLAYER<2>')
                     play_two_player_message.Draw()
                     if time%2 == 0:
                         player_2_score.Draw()
@@ -1800,8 +1680,8 @@ def MainGame():
                 pygame.display.update()
                 clock.tick(15)
 
-        ## restarting the flag skip for the screen draw
-        flag_skip = False
+        ## ending the flag skip
+        flag_skip = 'done'
 
         ## changing the credit's xpos if the player mode is 2 player
         if flag_game_mode == 'two_player':
@@ -1811,24 +1691,23 @@ def MainGame():
         ## setting up the Flag Game Level and Gameover FLag Variable
         flag_game_level = [1,5]
         flag_gameover = False
-        flag_game_won = False
 
         ## setting up the player, their backup, and their live 
         player_1 = None
         player_2 = None
         player_1_backup = []
         player_2_backup = []
-        player_1_life = Game_Text(10,456,[])
-        player_2_life = Game_Text(460,456,[])
+        player_1_life = Words_And_Phrases(10,456,[])
+        player_2_life = Words_And_Phrases(460,456,[])
 
         if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
             player_1_backup = [Player(30,450),Player(70,450)]
-            player_1_life.phrase.append(2)
+            player_1_life.phrase = [2]
         if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
             player_2_backup = [Player(420,450),Player(380,450)]
-            player_2_life.phrase.append(2)
+            player_2_life.phrase = [2]
             
         aliens = []
         Fill_Alien()
@@ -2012,16 +1891,32 @@ def MainGame():
                 ## shooting bullets using space
                     if event.key == K_SPACE:
                         if player_1 != None:
-                            player_1.Shoot(player_1_bullets)   
+                            player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
+                            player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+
+                            ## playing the sound
+                            Player.Shoot_Sound.play()
+                            
                         else:
-                            player_2.Shoot(player_2_bullets)
+                            player_2.Shoot_Iteration_Counter = player_2.Shoot_Iteration_Counter + 1
+                            player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
+
+                            ## playing the sound
+                            Player.Shoot_Sound.play()
 
                 ## shooting bullets using x
                     if event.key == K_x: 
                         if player_2 != None:
-                            player_2.Shoot(player_2_bullets)
+                            player_2_bullets.append(Player_Bullet(player_2.xpos + 14,player_2.ypos - 10))
+
+                            ## playing the sound
+                            Player.Shoot_Sound.play()
+
                         else:
-                            player_1.Shoot(player_1_bullets)
+                            player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+
+                            ## playing the sound
+                            Player.Shoot_Sound.play()
 
                 ## checking if the keys are lifted
                 if event.type == KEYUP:
@@ -2077,7 +1972,7 @@ def MainGame():
                 player.Draw('green')
             for player in player_2_backup:
                 player.Draw('blue')
-            player_1_bullets.append(Player_Bullet(player_1.xpos,player_1.ypos))
+            
         ## drawing the Barriers
             for barrier_particle in barrier1:
                 barrier_particle.Draw()
@@ -2153,10 +2048,6 @@ def MainGame():
                 if flag_game_level[1] > 9:
                     flag_game_level[0] = flag_game_level[0] + 1
                     flag_game_level[1] = flag_game_level[1] - 10
-                
-                ## checking if the player won
-                if flag_game_level == [1,6]:
-                    flag_game_won = True
 
                 ## Refilling Aliens and Barriers
                 Fill_Alien()
@@ -2177,17 +2068,8 @@ def MainGame():
         ## ending the game
             if flag_gameover == True:
                 ## drawing the Game Over Sign
-                game_over_message = Game_Text('middle',120,'GAMEOVER')
+                game_over_message = Words_And_Phrases(180,120,'GAMEOVER')
                 game_over_message.Draw()
-                pygame.display.update()
-                Pause(2)
-                break
-        
-        ## ending the game if the player won
-            if flag_game_won == True:
-                ## drawing the win sign
-                win_message = Game_Text('middle',120,'YOU WON')
-                win_message.Draw()
                 pygame.display.update()
                 Pause(2)
                 break

@@ -1757,7 +1757,7 @@ def MainGame():
             clock.tick(30)
 
         ## deleting the start alien from no use
-        del start_alien
+        del start_alien 
         
     ## checking if the player hasn't skipped and setting up the menu 3 
         if flag_skip == False:
@@ -1809,7 +1809,7 @@ def MainGame():
 
 ## setting up the elements
         ## setting up the Flag Game Level and Gameover FLag Variable
-        flag_game_level = [0,6]
+        flag_game_level = [1,5]
         flag_gameover = False
         flag_game_won = False
 
@@ -2077,7 +2077,7 @@ def MainGame():
                 player.Draw('green')
             for player in player_2_backup:
                 player.Draw('blue')
-            
+            player_1_bullets.append(Player_Bullet(player_1.xpos,player_1.ypos))
         ## drawing the Barriers
             for barrier_particle in barrier1:
                 barrier_particle.Draw()

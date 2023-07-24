@@ -14,20 +14,40 @@ clock = pygame.time.Clock()
 ## setting up the game play
 def MainGame():
 
-    def Close_Skip_Check():
+    def Close_Check():            
+        ## checking if the player decides to quit
         for event in pygame.event.get():
-
-            ## checking if the player decides to quit
             if event.type == QUIT:
                 pygame.quit()
                 exit()
+    
+    def Skip_Check():
+        nonlocal flag_skip
 
-            ## checking if the player decides to skip
-            elif event.type == KEYDOWN:
-                if event.key == K_RETURN:              
-                    nonlocal flag_skip
+        ## checking if the player has pressed the skip button
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN: 
+
+                    ## checking if the player has not already skipped
+                    if flag_skip == False:
+
+                        ## filling the screen quickly but not directly
+                        for xpos in range(0,480,60):
+                            pygame.draw.rect(screen,black,(xpos,0,60,480))
+                            Close_Check()
+                            pygame.display.update()
+                            clock.tick(40)
+
+                    ## activating the flag skip variable
                     if flag_skip == False:
                         flag_skip = True
+                    
+                    ## returning the true varable
+                    return True
+        
+        ## returning the false variable
+        return False
     
     def Pause(time):
         ## defining the number of time units
@@ -95,47 +115,61 @@ def MainGame():
     ## checking the specific particle the bullet hits by running through the barrier
         for barrier_num in range(barrier_iteration[0],barrier_iteration[1],barrier_iteration[2]):
             if Collide(bullet,barrier[barrier_num]) == True:
+
+                ## removing the bullet from the lists
+                if bullet in alien_bullets:
+                    alien_bullets.remove(bullet)
+                if bullet in player_1_bullets:
+                    player_1_bullets.remove(bullet)
+                if bullet in player_2_bullets:
+                    player_2_bullets.remove(bullet)
+
+                ## setting up the counter and the flag variables
                 target_barrier = barrier[barrier_num]
                 barrier_iteration_counter = 0
-                barrier_struck = False
+                flag_barrier_struck = False
+
+                ## running through the barrier and checking which ones should disappear
                 while True:
-                    # breaking the bullet and the while loop
+
+                    # breaking the while loop when the iteration process is done
                     if barrier_iteration_counter >= len(barrier):
-                        if bullet in alien_bullets:
-                            alien_bullets.remove(bullet)
-                        if bullet in player_1_bullets:
-                            player_1_bullets.remove(bullet)
-                        if bullet in player_2_bullets:
-                            player_2_bullets.remove(bullet)
                         break
                 
-                    ## checking if the xpos is correct and if the barrier particle is in close range of the area hit by the bullet
+                    ## checking if the xpos is correct
                     if barrier[barrier_iteration_counter].xpos%(divisor*2) == 0:
-                        ## checking if the Barrier particle is in close range of the area hit by the bullet
+
+                        ## checking if the barrier particle is in close range of the area hit by the bullet
                         if target_barrier.xpos - bullet.Dr[0]*2 < barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.length + bullet.Dr[0]:
                             if target_barrier.ypos - bullet.Dr[1]*2 < barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[1]*2:
-                                barrier_struck = True
+                                flag_barrier_struck = True
                             
-                        ## checking if the Barrier particle is in far range of the area struck by the bullet
+                        ## checking if the barrier particle is in far range of the area struck by the bullet
                         if target_barrier.xpos - bullet.Dr[2]*2 < barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.height + bullet.Dr[2]*2:
                             if target_barrier.ypos - bullet.Dr[3]*2 < barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[3]*2:
+
                                 # deciding how far it is and the chance of the Barrier being destroyed
                                 y_distance = abs(target_barrier.ypos - barrier[barrier_iteration_counter].ypos) + 1
                                 x_distance = abs(target_barrier.xpos - barrier[barrier_iteration_counter].xpos) + 1
                                 x_range = x_distance//(bullet.Dr[2])
                                 y_range = y_distance//(bullet.Dr[3])
                                 if random.randint(0,x_range) == 0 and random.randint(0,y_range) == 0:
-                                    barrier_struck = True
+                                    flag_barrier_struck = True
 
-                    ## destroying the Barrier partlce
-                    if barrier_struck == True:
+                    ## destroying the barrier partlce
+                    if flag_barrier_struck == True:
                         barrier.pop(barrier_iteration_counter)
-                        barrier_struck = False
+                        flag_barrier_struck = False
+                    
+                    ## otherwise updating the barrier iteration counter
                     else:
                         barrier_iteration_counter = barrier_iteration_counter + 1
+                
+                ## breaking the for loop from no use
                 break
             
-    def Update_Score(score):            
+    def Update_Score(score):      
+        ## updating the player's score by hundreads, thousands, or reset      
         if score.phrase[2] >= 10:
             score.phrase[1] = score.phrase[1] + 1
             score.phrase[2] = score.phrase[2] - 10
@@ -168,7 +202,11 @@ def MainGame():
         ## emptying the player explosion from the screen by drawing a black rectangle
         player_explosion.Draw(3)
         
-        ## drawing the player afterwards
+        ## drawing all the aliens so they don't appear covered
+        for alien in alien_list:
+            alien.Draw()
+
+        ## drawing the player so they don't appear covered
         if player == player_1:
             if player_2 != None:
                 player_2.Draw('blue')
@@ -178,43 +216,42 @@ def MainGame():
                 player_1.Draw('green')
                 player_1.Flag_Movement_Direction = None
         
+        ## updating and pausing the screen
         pygame.display.update()
         Pause(2)
 
+        ## checking if the player is 1 and if the list is not empty
         if player == player_1:
             if len(player_1_backup) != 0:
 
-                ## resetting the player's attributes
+                ## resetting the player's attributes and xpos
                 player_1.Flag_Movement_Direction = None
                 player_1.Flag_Struck = False
-                player_1.ypos = 400
                 player_1.xpos = 50
 
-                ## changing the player's lives
+                ## changing the player's lives and backup
                 player_1_backup.pop(-1)
                 player_1_life.phrase[0] = player_1_life.phrase[0] - 1
 
+            ## checking elsewise if the list is empty and removing the player from the game
             elif len(player_1_backup) == 0:
-
-                ## removing the player from the game
                 player_1 = None
-
+        
+        ## checking if the player is 2 and the list is not empty
         elif player == player_2:
-            if len(Player_2_Backup) != 0:
+            if len(player_2_backup) != 0:
 
-                ## resetting the player's attributes
+                ## resetting the player's attributes and xpos
                 player_2.Flag_Movement_Direction = None
                 player_2.Flag_Struck = False
-                player_2.ypos = 400
                 player_2.xpos = 90
                 
                 ## changing the player's lives
-                Player_2_Backup.pop(-1)
+                player_2_backup.pop(-1)
                 player_2_life.phrase[0] = player_2_life.phrase[0] - 1
 
-            elif len(Player_2_Backup) == 0:
-
-                ## removing the player from the game
+            ## checking elsewise if the list is empty and removing the player from the game
+            elif len(player_2_backup) == 0:
                 player_2 = None
 
         ## checking if the game ends
@@ -222,7 +259,6 @@ def MainGame():
             flag_gameover = True
 
     def Fill_Alien(Start_Game=False):
-
         ## nonlocal declaration to the lists and variables
         nonlocal alien_list
         
@@ -232,16 +268,18 @@ def MainGame():
         Alien.Flag_Collide_Side = None
         Alien.Flag_Down_Step = None
         Alien.Speed = 5
-
-        ## resetting the alien movement iteration and sounds
         Alien.Counter_Movement  = 0
         Alien.Counter_Background_Sound = 1 
+
+        ## resetting the alien's counter position if the game just started
         if Start_Game == True:
             Alien.Counter_Position = 0
 
         ## filling the alien_list
         for row in range(len(Alien.layout) - 1,-1,-1):
             for group in range(len(Alien.layout[row]) - 1,-1,-1):
+
+                ## setting up and filling the alien group
                 alien_group = []
                 for alien in range(len(Alien.layout[row][group]),0,-1):
                     ## checking the x-value to place the alien because the lists are uneven
@@ -250,7 +288,7 @@ def MainGame():
                     else:
                         xpos = alien*30
 
-                    ## adding the alien_list to the group list
+                    ## adding the alien to the group list
                     if row == 4 or row == 3:
                         alien_group.append(Alien(group*60 + xpos + 20,row*30 + 120 + 6*Alien.Counter_Position,2))
                     elif row == 2 or row == 1:
@@ -293,7 +331,6 @@ def MainGame():
             flag_skip  = 'stage_2'
 
     def Screen_Draw(start_of_game = False):     
-
     ## limiting the process of drawing everything to be only at the start of the game 
         if start_of_game == True:
             screen.fill(black)
@@ -327,14 +364,16 @@ def MainGame():
                 player_2.Draw('blue')
             for player in player_1_backup:
                 player.Draw('green')
-            for player in Player_2_Backup:
+            for player in player_2_backup:
                 player.Draw('blue')
         
-        ## drawing the alien_list and closing the screen if the quit button is pressed
+        ## drawing the aliens and closing the screen if the quit button is pressed
         for group in alien_list:
             for alien in group:
-                alien.Draw('white')
+                alien.Draw()
                 Close_Skip_Check()
+
+                ## updating the screen and pausing it
                 pygame.display.update()
                 clock.tick(60)
 
@@ -352,25 +391,21 @@ def MainGame():
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z',0,1,2,
                                 3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip']
         
-        ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
+        ## uploading all the character images, transforming it, and storing it in a dictionary with the respective name
         Character_Dictionary = {}
         for character_name in Character_Name_List:
-
-            ## loading the image, transforming it, then storing it
             img = pygame.image.load(Game_Element.Basic_Url+'letters\\'+str(character_name)+'.jpeg')
             img = pygame.transform.scale(img,(10,14))
             Character_Dictionary[character_name] = img
             
         def __init__(self,xpos,ypos,phrase):
-
             ## setting up the xpos, ypos and phrase
             super().__init__(xpos,ypos)
             self.phrase = phrase
 
         def Draw(self,delay=0):
-
             ## setting up the counter spacing used for drawing 
-            Counter_Spacing = 0
+            counter_spacing = 0
 
             ## iteration process
             for character in self.phrase:
@@ -404,8 +439,8 @@ def MainGame():
                     character = int(character)
                 
                 ## drawing the letter and increasing the counter spacing
-                screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
-                Counter_Spacing = Counter_Spacing + 15
+                screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + counter_spacing,self.ypos))
+                counter_spacing = counter_spacing + 15
 
                 ## pausing if there is a delay
                 if delay != 0:
@@ -529,14 +564,13 @@ def MainGame():
             if random.randint(1,100) == 1:
                 alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
 
-        def Draw(self,color='white'):
-            ## drawing the alien based on the color selected
-            if color == 'white':
+        def Draw(self,display_alien = False):
+            ## drawing the alien white if the alien xpos is less then 315 or if the alien is a display alien
+            if self.ypos < 315:
                 return screen.blit(Alien.Image_List[0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
-            elif color == 'green':
+            ## drawing the alien red if the alien xpos is greater or equal to 315
+            else:
                 return screen.blit(Alien.Image_List[1][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
-            elif color == 'red':
-                return screen.blit(Alien.Image_List[2][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
 
         def Draw_Letter_Take(self):
             return screen.blit(Alien.Letter_Flip_Image_List[self.Current_Animation],(self.xpos - 8,self.ypos))
@@ -1137,19 +1171,19 @@ def MainGame():
         score_advance_table = Words_And_Phrases(80,250,'*SCORE ADVANCE TABLE*')
         score_advance_table.Draw()
 
-        ## drawing the alien display only if the player hasn't skipped
+        ## drawing the alien display only if the player hasn't skipped 
         if flag_skip == False:
             mystery_ship_display = Mystery_Ship(144,285)
             mystery_ship_display.Draw()
-                
+            
             alien_3_display = Alien(153,320,3)
-            alien_3_display.Draw('white')
+            alien_3_display.Draw(True)
 
             alien_1_display = Alien(150,355,1)
-            alien_1_display.Draw('white')
+            alien_1_display.Draw(True)
 
             alien_2_display = Alien(150,390,2)
-            alien_2_display.Draw('white')
+            alien_2_display.Draw(True)
 
         ## drawing the alien values
         mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
@@ -1386,7 +1420,7 @@ def MainGame():
         player_1 = None
         player_2 = None
         player_1_backup = []
-        Player_2_Backup = []
+        player_2_backup = []
         player_1_life = Words_And_Phrases(10,456,[])
         player_2_life = Words_And_Phrases(460,456,[])
 
@@ -1396,7 +1430,7 @@ def MainGame():
             player_1_life.phrase = [2]
         if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
-            Player_2_Backup = [Player(420,450),Player(380,450)]
+            player_2_backup = [Player(420,450),Player(380,450)]
             player_2_life.phrase = [2]
             
         alien_list = []
@@ -1662,7 +1696,7 @@ def MainGame():
                 player_2.Draw('blue')
             for player in player_1_backup:
                 player.Draw('green')
-            for player in Player_2_Backup:
+            for player in player_2_backup:
                 player.Draw('blue')
             
         ## drawing the Barriers
@@ -1678,13 +1712,10 @@ def MainGame():
         ## drawing the Mystery_Ship
             mystery_ship.Draw()
 
-        ## drawing the alien_list
+        ## drawing the alien
             for group in alien_list:
                 for alien in group:
-                    if alien.ypos >= 315:
-                        alien.Draw('green')
-                    else:
-                        alien.Draw('white')
+                    alien.Draw()
 
         ## drawing the Alien_Explosion and Mystery Ship Explosion
             for explosion in alien_explosion_list:

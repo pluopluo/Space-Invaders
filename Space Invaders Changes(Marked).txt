@@ -268,3 +268,9 @@ to add new alien_list only when the alien_list already moved down
     P) From now, on, I will only pose changes on github instead of on the documents.
     Q) I am going to change all the indentation and commentary process for both filess and variables and oraniztion and debugging
     R) I started with the barrier now. 
+    S) I decided to put the function of which color to draw the alien inside the laien calss
+34) switched first checking if the level is greater then ten, instead, I first checked if the level is greater then 10
+35) I changed the COunter SPacing to counter spacing
+36) This is going to be a big project. I am going to check for keys either close or skip check in two functions
+    a) I started to make the close and skip function in two different parts
+    b) I 

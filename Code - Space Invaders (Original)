@@ -13,59 +13,66 @@ clock = pygame.time.Clock()
 
 ## setting up the game play
 def MainGame():
+    def Close_Skip_Check(): 
+        nonlocal flag_skip    
 
-    def Close_Check():            
-        ## checking if the player decides to quit
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
-    
-    def Skip_Check():
-        nonlocal flag_skip
-
-        ## checking if the player has pressed the skip button
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                if event.key == K_RETURN: 
-
-                    ## checking if the player has not already skipped
-                    if flag_skip == False:
-
-                        ## filling the screen quickly but not directly
-                        for xpos in range(0,480,60):
-                            pygame.draw.rect(screen,black,(xpos,0,60,480))
-                            Close_Check()
-                            pygame.display.update()
-                            clock.tick(40)
-
-                    ## activating the flag skip variable
+            
+            ## checking if the player decides to skip
+            elif event.type == KEYDOWN:
+                if event.key == K_RETURN:
                     if flag_skip == False:
                         flag_skip = True
-                    
-                    ## returning the true varable
-                    return True
         
-        ## returning the false variable
-        return False
-    
-    def Pause(time):
-        ## defining the number of time units
-        num_of_time_units = int(time*60)
-
-        ## running through process
-        for time_unit in range(0,num_of_time_units):
-            Close_Skip_Check()
-            if flag_skip == True or flag_skip == 'stage_2':
-
-                ## checking if the screen has not filled black yet
-                if flag_skip == True:
-                    Fill_Black()
-                break
+        ## checking if the player has skipped
+        if flag_skip == True:
             clock.tick(60)
 
+            ## filling the screen quickly but not directly
+            for xpos in range(0,480,60):
+                pygame.draw.rect(screen,black,(xpos,0,60,480))
+
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        pygame.quit()
+                        exit()
+
+                pygame.display.update()
+                clock.tick(40)
+            
+            ## setting flag skip with a new value showing the player already skipped
+            flag_skip = 'stage_2'
+    
+    def Pause(time):
+        ## time units
+        num_of_time_units = int(time*60)
+
+        ## iteration process
+        for time_unit in range(0,num_of_time_units):
+            
+            ## checking if the player closes or skips
+            Close_Skip_Check()
+            if flag_skip == True or flag_skip == 'stage_2':
+                break
+
+            pygame.display.update()
+            clock.tick(60)
+
+    def Fill_Screen_Black():
+        for xpos in range(0,480,60):
+            pygame.draw.rect(screen,black,(xpos,0,60,480))
+
+            Close_Skip_Check()
+            if flag_skip == True or flag_skip == 'stage_2':
+                break
+            
+            pygame.display.update()
+            clock.tick(40)
+
     def Collide(object_1,object_2):
-        ## checking if the objects collide
         if object_1.xpos + object_1.length > object_2.xpos and object_2.xpos + object_2.length > object_1.xpos:
             if object_1.ypos + object_1.height > object_2.ypos and object_2.ypos + object_2.height > object_1.ypos:
                 return True
@@ -317,7 +324,7 @@ def MainGame():
             for column in range(0,480):
                 alien_invasion_line.append(Barrier(column*2,row*2 + 435))
 
-    def Fill_Black():
+    def Fill_Screen_Black():
         ## filling the screen quickly but not directly
         for xpos in range(0,480,60):
             pygame.draw.rect(screen,black,(xpos,0,60,480))
@@ -385,53 +392,62 @@ def MainGame():
             self.xpos = xpos
             self.ypos = ypos
 
-    class Words_And_Phrases(Game_Element):
-        ## uploading all the character names
+    class Game_Text(Game_Element):
+        ## symbol dictionary to convert symbols to words
+        Symbol_Dictionary = {'<':'left','>':'right','=':'equal','*':'asterisk',
+                             '?':'question_mark','-':'dash',' ':'space'}
+        
+        ## list with character names to load images
         Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z',0,1,2,
                                 3,4,5,6,7,8,9,'left','right','equal','asterisk','question_mark','dash','space','yflip']
         
-        ## uploading all the character images, transforming it, and storing it in a dictionary with the respective name
+        ## uploading all the character images
         Character_Dictionary = {}
         for character_name in Character_Name_List:
             img = pygame.image.load(Game_Element.Basic_Url+'letters\\'+str(character_name)+'.jpeg')
             img = pygame.transform.scale(img,(10,14))
             Character_Dictionary[character_name] = img
             
-        def __init__(self,xpos,ypos,phrase):
-            ## setting up the xpos, ypos and phrase
-            super().__init__(xpos,ypos)
-            self.phrase = phrase
+        def __init__(self,ypos,text,xpos = 'middle',
+                     multiline = False,
+                     line_spacing = 30):
+            
+            ## setting up all the attributes
+            self.ypos = ypos
+            self.text = text
+            self.multiline = multiline
+            self.xpos = xpos
+            self.line_spacing = line_spacing
 
-        def Draw(self,delay=0):
-            ## setting up the counter spacing used for drawing 
-            counter_spacing = 0
+        def Draw(self,delay = 0):
+            flag_breakloop = False  ## flag variable to break the loop
 
-            ## iteration process
-            for character in self.phrase:
+            ## setting up the counter xpos based on self.xpos
+            if self.xpos == 'middle':
+                counter_xpos = 480 - len(self.text)*15
+                counter_xpos = counter_xpos/2
+            else:
+                counter_xpos = self.xpos
+
+            ## setting up the counter ypos based on self.ypos
+            counter_ypos = self.ypos
+
+            def Draw_Symbol(character):
+                nonlocal delay, flag_breakloop
+                nonlocal counter_xpos, counter_ypos
 
                 ## checking if the player decides to skip
                 if Player_Selected == True:
                     if flag_skip == True or flag_skip == 'stage_2':
                         if flag_skip == True:
-                            Fill_Black()
-                        break 
-                
-                ## checking if the character is a symbol and changing it to words
-                if character == '<':
-                    character = 'left'
-                elif character == '>':
-                    character = 'right'
-                elif character == '=':
-                    character = 'equal'
-                elif character == '*':
-                    character = 'asterisk'
-                elif character == '?':
-                    character = 'question_mark'
-                elif character == '-':
-                    character = 'dash'
-                elif character == ' ':
-                    character = 'space'
+                            Fill_Screen_Black()
+                        flag_breakloop = True
+                        return() ## endign the function
+
+                ## checking any symbol characters to words usign the symbol dictionary
+                if character in Game_Text.Symbol_Dictionary:
+                    character = Game_Text.Symbol_Dictionary[character]
                 
                 ## checking if the character is a string number and changing it to an integar
                 string_number_list = ['0','1','2','3','4','5','6','7','8','9']
@@ -439,13 +455,30 @@ def MainGame():
                     character = int(character)
                 
                 ## drawing the letter and increasing the counter spacing
-                screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + counter_spacing,self.ypos))
-                counter_spacing = counter_spacing + 15
+                screen.blit(Game_Text.Character_Dictionary[character],(counter_xpos,counter_ypos))
+                counter_xpos = counter_xpos + 15
 
                 ## pausing if there is a delay
                 if delay != 0:
                     pygame.display.update()
                     Pause(delay/60)
+
+            ## performing the iteration process
+            for iteration in self.text:
+
+                if self.multiline == True:
+                    for character in iteration:
+                        Draw_Symbol(character)
+
+                        ## changing the counter ypos
+                        counter_ypos = counter_ypos + self.line_spacing
+                        
+                elif self.multiline == False:
+                    Draw_Symbol(iteration)
+                
+                ## breaking the loop if the player decides to skip
+                if flag_breakloop == True:
+                    break
 
     class Alien(Game_Element):                                                                                                                                                                                 
         ## movement
@@ -1076,16 +1109,16 @@ def MainGame():
     while True:
 ## setting up the menu 1
         ## setting up the words and messages
-        please_select_message = Words_And_Phrases(140,140,'PLEASE SELECT')
-        one_or_two_players_message = Words_And_Phrases(120,180,'<1 OR 2 PLAYERS>')
-        one_player_message = Words_And_Phrases(190,220,'1PLAYER')
-        two_player_message = Words_And_Phrases(190,260,'2PLAYER')
+        please_select_message = Game_Text(140,'PLEASE SELECT')
+        one_or_two_players_message = Game_Text(180,'<1 OR 2 PLAYERS>')
+        one_player_message = Game_Text(220,'1PLAYER')
+        two_player_message = Game_Text(260,'2PLAYER')
 
         ## setting up the select asterisk
-        asterisk = Words_And_Phrases(170,220,'*')
+        asterisk = Game_Text(220,'*',xpos = 170)
 
         ## setting up the important credit message
-        credit_message = Words_And_Phrases(340,456,'CREDIT 00')
+        credit_message = Game_Text(456,'CREDIT 00',xpos = 340)
 
         ## setting up the flag variable to begin the game
         Player_Selected = False
@@ -1094,10 +1127,10 @@ def MainGame():
         flag_game_mode = 'one_player'
         
         ## setting up the player's score and the high score
-        score_message = Words_And_Phrases(45,20,'SCORE<1> HI-SCORE SCORE<2>')
-        player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
-        player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
-        high_score = Words_And_Phrases(200,60,[0,0,0,0])
+        score_message = Game_Text(20,'SCORE<1> HI-SCORE SCORE<2>',xpos = 45)
+        player_1_score = Game_Text(60,[0,0,0,0],xpos = 60)
+        player_2_score = Game_Text(60,[0,0,0,0],xpos = 320)
+        high_score = Game_Text(60,[0,0,0,0],xpos = 200)
 
         while True:
             screen.fill(black)
@@ -1156,19 +1189,19 @@ def MainGame():
         credit_message.Draw()
 
         # setting up and drawing the words and messages
-        play_message = Words_And_Phrases(210,150,'PLA')
+        play_message = Game_Text(150,'PLA',xpos = 210)
         play_message.Draw(6)
 
-        y_message = Words_And_Phrases(255,150,['yflip'])
+        y_message = Game_Text(150,['yflip'],xpos = 255)
         y_message.Draw(6)
 
-        space_invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
+        space_invaders_message = Game_Text(190,'SPACE INVADERS')
         space_invaders_message.Draw(6)
 
         Pause(0.5)
 
         ## drawing the score_advance_table
-        score_advance_table = Words_And_Phrases(80,250,'*SCORE ADVANCE TABLE*')
+        score_advance_table = Game_Text(250,'*SCORE ADVANCE TABLE*')
         score_advance_table.Draw()
 
         ## drawing the alien display only if the player hasn't skipped 
@@ -1186,16 +1219,16 @@ def MainGame():
             alien_2_display.Draw(True)
 
         ## drawing the alien values
-        mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
+        mystery_point_message = Game_Text(180,285,'=? MYSTERY')
         mystery_point_message.Draw(6)
         
-        thirty_points_message = Words_And_Phrases(180,320,'=30 POINTS')
+        thirty_points_message = Game_Text(180,320,'=30 POINTS')
         thirty_points_message.Draw(6)
 
-        twenty_points_message = Words_And_Phrases(180,355,'=20 POINTS')
+        twenty_points_message = Game_Text(180,355,'=20 POINTS')
         twenty_points_message.Draw(6)
 
-        ten_points_message = Words_And_Phrases(180,390,'=10 POINTS')
+        ten_points_message = Game_Text(180,390,'=10 POINTS')
         ten_points_message.Draw(6)
 
     ## setting up the short alien film
@@ -1211,7 +1244,7 @@ def MainGame():
             Close_Skip_Check()
             if flag_skip == True or flag_skip == 'stage_2':
                 if flag_skip == True:
-                    Fill_Black()
+                    Fill_Screen_Black()
                 break
 
             ## drawing the words
@@ -1243,7 +1276,7 @@ def MainGame():
             Close_Skip_Check()
             if flag_skip == True or flag_skip == 'stage_2':
                 if flag_skip == True:
-                    Fill_Black()
+                    Fill_Screen_Black()
                 break
             
             ## drawing the words
@@ -1273,7 +1306,7 @@ def MainGame():
             Close_Skip_Check()
             if flag_skip == True or flag_skip == 'stage_2':
                 if flag_skip == True:
-                    Fill_Black()
+                    Fill_Screen_Black()
                 break
 
             ## drawing the words
@@ -1287,7 +1320,7 @@ def MainGame():
             if start_alien.xpos == 260:
 
                 # flipping the letter
-                y_message = Words_And_Phrases(255,150,'Y')
+                y_message = Game_Text(255,150,'Y')
 
                 ## changing the alien speed
                 start_alien.Speed = 5
@@ -1309,7 +1342,7 @@ def MainGame():
             Close_Skip_Check()
             if flag_skip == True or flag_skip == 'stage_2':
                 if flag_skip == True:
-                    Fill_Black()
+                    Fill_Screen_Black()
                 break
 
             ## drawing the words
@@ -1339,7 +1372,7 @@ def MainGame():
         ## setting up the menu 3
 
             ## filling the screen black quickly but not directly
-            Fill_Black()
+            Fill_Screen_Black()
 
             ## drawing the scores
             score_message.Draw()
@@ -1349,17 +1382,17 @@ def MainGame():
             credit_message.Draw()
 
             ## drawing the buttons
-            push_message = Words_And_Phrases(210,180,'PUSH')
+            push_message = Game_Text(210,180,'PUSH')
             push_message.Draw()
 
             ## drawing the message describing the one player buttons used
             if flag_game_mode == 'one_player':
-                only_one_player_button_message = Words_And_Phrases(90,230,'ONLY 1 PLAYER BUTTON')
+                only_one_player_button_message = Game_Text(90,230,'ONLY 1 PLAYER BUTTON')
                 only_one_player_button_message.Draw()
 
             ## drawing the message describing the two player buttons used
             elif flag_game_mode == 'two_player':
-                only_two_player_button_message = Words_And_Phrases(127,230,'2 PLAYER BUTTON')
+                only_two_player_button_message = Game_Text(127,230,'2 PLAYER BUTTON')
                 only_two_player_button_message.Draw()
             
             ## updating the screen only without the flagskip variable
@@ -1368,7 +1401,7 @@ def MainGame():
 
         ## setting up menu 4
             ## filling the screen black quickly but not directly
-            Fill_Black()
+            Fill_Screen_Black()
 
             for time in range(1,30):
                 screen.fill(black)
@@ -1377,19 +1410,19 @@ def MainGame():
                 Close_Skip_Check()
                 if flag_skip == True or flag_skip == 'stage_2':
                     if flag_skip == True:
-                        Fill_Black()
+                        Fill_Screen_Black()
                     break
 
                 if flag_game_mode == 'one_player':
                     ## drawing the play player 1 message and blinking the player 1 score
-                    play_one_player_message = Words_And_Phrases(135,180,'PLAY PLAYER<1>')
+                    play_one_player_message = Game_Text(135,180,'PLAY PLAYER<1>')
                     play_one_player_message.Draw()
                     if time%2 == 0:
                         player_1_score.Draw()
 
                 if flag_game_mode == 'two_player':
                     ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
-                    play_two_player_message = Words_And_Phrases(135,220,'PLAY PLAYER<2>')
+                    play_two_player_message = Game_Text(135,220,'PLAY PLAYER<2>')
                     play_two_player_message.Draw()
                     if time%2 == 0:
                         player_2_score.Draw()
@@ -1421,8 +1454,8 @@ def MainGame():
         player_2 = None
         player_1_backup = []
         player_2_backup = []
-        player_1_life = Words_And_Phrases(10,456,[])
-        player_2_life = Words_And_Phrases(460,456,[])
+        player_1_life = Game_Text(10,456,[])
+        player_2_life = Game_Text(460,456,[])
 
         if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
@@ -1480,7 +1513,7 @@ def MainGame():
         bullet_explosion_list = []
         
     # setting up the screen
-        Fill_Black()
+        Fill_Screen_Black()
         Screen_Draw(True)
 
     ## starting the game
@@ -1795,9 +1828,9 @@ def MainGame():
         ## ending the game
             if flag_gameover == True:
                 ## drawing the Game Over Sign
-                game_over_message = Words_And_Phrases(180,120,'GAMEOVER')
+                game_over_message = Game_Text(180,120,'GAMEOVER')
                 game_over_message.Draw()
                 pygame.display.update()
                 Pause(2)
                 break
-MainGame()
+MainGame() 

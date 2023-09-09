@@ -273,4 +273,13 @@ to add new alien_list only when the alien_list already moved down
 35) I changed the COunter SPacing to counter spacing
 36) This is going to be a big project. I am going to check for keys either close or skip check in two functions
     a) I started to make the close and skip function in two different parts
-    b) I 
+    b) I made it to one function and fill black in another, but the skip function incldues skip and skip2 
+37) I am now going to update all the aliens
+
+
+38) This is how the commenting in my space invaders will work.
+With the multiline, it will be a tuple with the first value of the amoutn of spacing
+
+39) I added the multiline charactersitics with several steps
+    1) I began adding the init function attributes with multiline options\
+    2) I bagan adding an new draw function that include a sub function to d raw a letter

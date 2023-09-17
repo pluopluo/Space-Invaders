@@ -261,7 +261,7 @@ to add new alien_list only when the alien_list already moved down
     J) I also made sure to change only the asterisk's ypos not redeine the whole thing
     K) I made sure to split up space invaders 2 so that it fits mulitple documents instead of only one
     L) I made sure that when I pressed a button, it fired bullets at any time and adjusted the indentation
-    M) I changed the following variables: player_1_bullets, player_2_bullets, alien_list, alien_bullets, Player_2_Backup
+    M) I changed the following variables: player_1.Bullet_List, player_2_bullets, alien_list, alien_bullets, Player_2_Backup
     , player_1_backup
     N) I changed so that the variables don't change anymore and are all lowercase unless important class variables and game variables
     O) I made sure to get rid of the shoot time from the bullet firing any time
@@ -283,3 +283,24 @@ With the multiline, it will be a tuple with the first value of the amoutn of spa
 39) I added the multiline charactersitics with several steps
     1) I began adding the init function attributes with multiline options\
     2) I bagan adding an new draw function that include a sub function to d raw a letter
+    4) I need to change the scores of the player bullets so that it matches the score of the alien bullets
+
+Objectives:
+1) I want to keep the function of the player bullets to be retained inside the player bullet lists
+In order to do that, I will have to do the following. I also want to change the function of updating the scores to be game_completion_message
+, and I will finally change from the player bullets being an outside variable to be an inside variable
+1) I changed all the variables regarding the player bullets to be called
+2) I started to make names lower-cased
+
+
+Objectives:
+I am now trying to make space invaders 1 and space invaders 2 to be matching. In order to do that, I will have
+to check if the code is matching unless it had to be different. 
+1) I am now stuck with the bullet list names. I will ahve to implement the bullet list into the player class
+it's self instead of as a separate variable.
+2) I also have updated the scores, and I showed the scores inside the player class instead of outside the player class
+I will have to change the naming from player_score_list to player.score
+3) I have alien_bullets inside the alien bullet class now
+4) I have canceled that plan for now. 
+5) I will have to sotp trying to make everything perfect.
+6) 

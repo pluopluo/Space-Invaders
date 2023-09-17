@@ -66,13 +66,13 @@ def MainGame():
 
     def Bullet_Barrier_Collision(Barrier,bullet):
         ## declaring nonlocals to the bullet lists and the bullet explosion list
-        nonlocal Player_1_Bullets, Player_2_Bullets, Alien_Bullets, bullet_explosion_list
+        nonlocal player_1.Bullet_List, Player_2_Bullets, Alien_Bullets, bullet_explosion_list
     
         ## checking what type of bullet it is and what iteration should be performed ont he Barrier
         if bullet in Alien_Bullets:
             Barrier_Iteration = [0,len(Barrier),1]
             
-        elif bullet in Player_1_Bullets or bullet in Player_2_Bullets:
+        elif bullet in player_1.Bullet_List or bullet in Player_2_Bullets:
             Barrier_Iteration = [len(Barrier) - 1,-1,-1]
          
         ## checking the Barrier and if the divisor is supposed to be 2
@@ -93,8 +93,8 @@ def MainGame():
                     if barrier_iteration_counter >= len(Barrier):
                         if bullet in Alien_Bullets:
                             Alien_Bullets.remove(bullet)
-                        if bullet in Player_1_Bullets:
-                            Player_1_Bullets.remove(bullet)
+                        if bullet in player_1.Bullet_List:
+                            player_1.Bullet_List.remove(bullet)
                         if bullet in Player_2_Bullets:
                             Player_2_Bullets.remove(bullet)
                         break
@@ -137,7 +137,7 @@ def MainGame():
         
     def Player_Explode(player):
         ## nonlocal declaration to variables and lists
-        nonlocal Alien_Bullets, Player_1_Bullets, Player_2_Bullets
+        nonlocal Alien_Bullets, player_1.Bullet_List, Player_2_Bullets
         nonlocal player_1, player_2, player_1_life, player_2_life
         nonlocal flag_gameover
  
@@ -635,10 +635,10 @@ def MainGame():
 
         def Check(self):
             ## declaring nonlocals to the bullets and scores
-            nonlocal Player_1_Bullets, Player_2_Bullets
+            nonlocal player_1.Bullet_List, Player_2_Bullets
             nonlocal player_1_score, player_2_score
 
-            ## checking if the Player_1_Bullets hit the Barriers
+            ## checking if the player_1.Bullet_List hit the Barriers
             if self.ypos + self.height > 330 and self.ypos < 370:
                 if self.xpos + self.length > 48 and self.xpos < 108:
                     Bullet_Barrier_Collision(barrier1,self)
@@ -650,7 +650,7 @@ def MainGame():
                     Bullet_Barrier_Collision(barrier4,self)
 
             ## checking if the bullets hit the alien
-            if self in Player_1_Bullets or self in Player_2_Bullets:
+            if self in player_1.Bullet_List or self in Player_2_Bullets:
                 for group in alien_list:
                     for alien in group:
                         if Collide(alien,self) == True:
@@ -668,9 +668,9 @@ def MainGame():
                                 increment = 3
 
                             ## updating the player scores
-                            if self in Player_1_Bullets:
+                            if self in player_1.Bullet_List:
                                 player_1_score.phrase[2] = player_1_score.phrase[2] + increment
-                                Player_1_Bullets.remove(self)
+                                player_1.Bullet_List.remove(self)
                             elif self in Player_2_Bullets:
                                 player_2_score.phrase[2] = player_2_score.phrase[2] + increment
                                 Player_2_Bullets.remove(self)
@@ -692,11 +692,11 @@ def MainGame():
                             break 
 
                     ## ending the iteration if the bullet is removed
-                    if self not in Player_1_Bullets and self not in Player_2_Bullets:
+                    if self not in player_1.Bullet_List and self not in Player_2_Bullets:
                         break
 
             ## checking if the bullet hits the mystery ship
-            if self in Player_1_Bullets:
+            if self in player_1.Bullet_List:
                 if Collide(self,mystery_ship) == True:
 
                     ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
@@ -722,7 +722,7 @@ def MainGame():
                         mystery_ship.xpos = 2500
 
                     ## removing the bullet from the bullet list
-                        Player_1_Bullets.remove(self)
+                        player_1.Bullet_List.remove(self)
 
                     ## playing the mystery ship's explosion sound
                         Mystery_Ship_Explosion.Sound.play()
@@ -764,10 +764,10 @@ def MainGame():
             Update_Score(high_score)
 
             ## checking if the player bullet hits the top of the screen
-            if self in Player_1_Bullets or self in Player_2_Bullets:
+            if self in player_1.Bullet_List or self in Player_2_Bullets:
                 if self.ypos < 0:
-                    if self in Player_1_Bullets:
-                        Player_1_Bullets.remove(self)
+                    if self in player_1.Bullet_List:
+                        player_1.Bullet_List.remove(self)
                     elif self in Player_2_Bullets:
                         Player_2_Bullets.remove(self)
                     bullet_explosion_list.append(Bullet_Explosion(self.xpos - 6,self.ypos))
@@ -858,9 +858,9 @@ def MainGame():
 
             ## checking if the alien_bullet hit the player bullet
             if len(Alien_Bullets) == Alien_Bullets_length:
-                for bullet in Player_1_Bullets:
+                for bullet in player_1.Bullet_List:
                     if self.xpos + self.length > bullet.xpos and bullet.xpos + bullet.length > self.xpos and self.ypos + self.height > bullet.ypos and bullet.ypos + bullet.height > self.ypos:
-                        Player_1_Bullets.remove(bullet)
+                        player_1.Bullet_List.remove(bullet)
                         bullet_explosion_list.append(Bullet_Explosion(bullet.xpos - 6,bullet.ypos - 8))
                         if self.type == 1:
                             if random.randint(1,2) == 1:
@@ -1430,7 +1430,7 @@ def MainGame():
         Barrier_Refill()
 
         ## setting up the bullet lists
-        Player_1_Bullets = []
+        player_1.Bullet_List = []
         Player_2_Bullets = []
         Alien_Bullets = []
         bullet_explosion_list = []
@@ -1501,7 +1501,7 @@ def MainGame():
                     alien_bullet_iteration_counter = alien_bullet_iteration_counter + 1
 
         ## moving the player bullets
-            for bullet in Player_1_Bullets:
+            for bullet in player_1.Bullet_List:
                 bullet.Move_Bullet()
                 bullet.Check()
             for bullet in Player_2_Bullets:
@@ -1562,10 +1562,10 @@ def MainGame():
                 ## shooting bullets using space
                     if event.key == K_SPACE:
                         if player_1 != None:
-                            if player_1.Shoot_Timer <= 0 and len(Player_1_Bullets) == 0:
+                            if player_1.Shoot_Timer <= 0 and len(player_1.Bullet_List) == 0:
                                 player_1.Shoot_Timer = 60
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
-                                Player_1_Bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+                                player_1.Bullet_List.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
 
                                 ## playing the sound
@@ -1589,9 +1589,9 @@ def MainGame():
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
                         else:
-                            if player_1.Shoot_Timer <= 0 and len(Player_1_Bullets) == 0:
+                            if player_1.Shoot_Timer <= 0 and len(player_1.Bullet_List) == 0:
                                 player_1.Shoot_Timer = 60
-                                Player_1_Bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+                                player_1.Bullet_List.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
@@ -1683,7 +1683,7 @@ def MainGame():
                 explosion.Draw()
                 
         ## drawing the player bullet with the specific color
-            for bullet in Player_1_Bullets:
+            for bullet in player_1.Bullet_List:
                 if flag_game_mode == 'two_player':
                     bullet.Draw('green')
                 else:
@@ -1719,7 +1719,7 @@ def MainGame():
             if len(alien_list) == 0 and len(alien_explosion_list) == 0:
                 ## emptying all the bullet lists
                 Alien_Bullets = []
-                Player_1_Bullets = []
+                player_1.Bullet_List = []
                 Player_2_Bullets = []
 
                 ## changing the alien's counter ypos because they move farther downward as each level passes

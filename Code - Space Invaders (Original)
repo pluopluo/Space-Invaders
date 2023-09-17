@@ -13,9 +13,10 @@ clock = pygame.time.Clock()
 
 ## setting up the game play
 def MainGame():
-    def Close_Skip_Check(): 
+    def Close_Skip_Check():
         nonlocal flag_skip    
 
+        ## event loop
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -35,6 +36,7 @@ def MainGame():
             for xpos in range(0,480,60):
                 pygame.draw.rect(screen,black,(xpos,0,60,480))
 
+                ## quit check
                 for event in pygame.event.get():
                     if event.type == QUIT:
                         pygame.quit()
@@ -47,7 +49,6 @@ def MainGame():
             flag_skip = 'stage_2'
     
     def Pause(time):
-        ## time units
         num_of_time_units = int(time*60)
 
         ## iteration process
@@ -76,41 +77,15 @@ def MainGame():
         if object_1.xpos + object_1.length > object_2.xpos and object_2.xpos + object_2.length > object_1.xpos:
             if object_1.ypos + object_1.height > object_2.ypos and object_2.ypos + object_2.height > object_1.ypos:
                 return True
-            
-    def Alien_Barrier_Collision(alien,barrier):
-        ## setting the function variables
-        barrier_iteration_counter = 0
-        barrier_struck = False
-
-        ## iterating through the barriers
-        while True:
-
-            ## checking if the iteration process is finished
-            if barrier_iteration_counter == len(barrier):
-                break
-
-            ## checking if a barrier block hit the alien
-            if alien.xpos + alien.length >= barrier[barrier_iteration_counter].xpos and alien.xpos <= barrier[barrier_iteration_counter].xpos + barrier[barrier_iteration_counter].length:
-                if alien.ypos + alien.height >= barrier[barrier_iteration_counter].ypos:
-                    barrier_struck = True
-            
-            ## destroying the barrier block
-            if barrier_struck == True:
-                barrier.pop(barrier_iteration_counter)
-                barrier_struck = False
-
-            ## updating the iteration counter only if the barrier isn't destroyed
-            else:  
-                barrier_iteration_counter = barrier_iteration_counter + 1
 
     def Bullet_Barrier_Collision(barrier,bullet):
         ## declaring nonlocals to the bullet lists and the bullet explosion list
-        nonlocal player_1_bullets, player_2_bullets, alien_bullets, bullet_explosion_list
+        nonlocal player_1, player_2, alien_bullets, bullet_explosion_list
     
         ## checking what type of bullet it is and what iteration should be performed on the barrier
         if bullet in alien_bullets:
             barrier_iteration = [0,len(barrier),1]            
-        elif bullet in player_1_bullets or bullet in player_2_bullets:
+        elif bullet in player_1.Bullet_List or bullet in player_2.Bullet_List:
             barrier_iteration = [len(barrier) - 1,-1,-1]
          
         ## checking if the barrier is the alien invasion line and setting the divisor to two
@@ -126,12 +101,12 @@ def MainGame():
                 ## removing the bullet from the lists
                 if bullet in alien_bullets:
                     alien_bullets.remove(bullet)
-                if bullet in player_1_bullets:
-                    player_1_bullets.remove(bullet)
-                if bullet in player_2_bullets:
-                    player_2_bullets.remove(bullet)
+                if bullet in player_1.Bullet_List:
+                    player_1.Bullet_List.remove(bullet)
+                if bullet in player_2.Bullet_List:
+                    player_2.Bullet_List.remove(bullet)
 
-                ## setting up the counter and the flag variables
+                ## setting up the counter, flag, and counter variables
                 target_barrier = barrier[barrier_num]
                 barrier_iteration_counter = 0
                 flag_barrier_struck = False
@@ -155,7 +130,7 @@ def MainGame():
                         if target_barrier.xpos - bullet.Dr[2]*2 < barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.height + bullet.Dr[2]*2:
                             if target_barrier.ypos - bullet.Dr[3]*2 < barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[3]*2:
 
-                                # deciding how far it is and the chance of the Barrier being destroyed
+                                # deciding how far it is and the chance of the barrier being destroyed
                                 y_distance = abs(target_barrier.ypos - barrier[barrier_iteration_counter].ypos) + 1
                                 x_distance = abs(target_barrier.xpos - barrier[barrier_iteration_counter].xpos) + 1
                                 x_range = x_distance//(bullet.Dr[2])
@@ -174,10 +149,33 @@ def MainGame():
                 
                 ## breaking the for loop from no use
                 break
+
+    def Alien_Barrier_Collision(alien,barrier):
+        barrier_iteration_counter = 0
+        barrier_struck = False
+
+        ## iterating through the barriers
+        while True:
+            if barrier_iteration_counter == len(barrier):
+                break
+
+            ## checking if a barrier block hit the alien
+            if alien.xpos + alien.length >= barrier[barrier_iteration_counter].xpos and alien.xpos <= barrier[barrier_iteration_counter].xpos + barrier[barrier_iteration_counter].length:
+                if alien.ypos + alien.height >= barrier[barrier_iteration_counter].ypos:
+                    barrier_struck = True
             
-    def Update_Score(score,increment):      
+            ## destroying the barrier block
+            if barrier_struck == True:
+                barrier.pop(barrier_iteration_counter)
+                barrier_struck = False
+
+            ## updating the iteration counter only if the barrier isn't destroyed
+            else:  
+                barrier_iteration_counter = barrier_iteration_counter + 1
+
+    def Update_Score(score,increment,place_value):      
         ## updating the player's score by hundreads, thousands, or reset 
-        score.text[2] = score.text[2] + increment     
+        score.text[place_value] = score.text[place_value] + increment     
         if score.text[2] >= 10:
             score.text[1] = score.text[1] + 1
             score.text[2] = score.text[2] - 10
@@ -186,10 +184,43 @@ def MainGame():
             score.text[1] = score.text[1] - 10
         if score.text[0] >= 10:
             score.text[0] = score.text[0] - 10
-        
+    
+    def Mystery_Ship_Collide_Check(player,bullet):
+        ## nonlocalizing the mystery ship
+        nonlocal mystery_ship
+
+        ## checking if the bullet collides with the mystery ship
+        if Collide(bullet,mystery_ship) == True:
+            global mystery_ship_explosion_list
+
+            ## checking if the lucky shot is true
+            if player.Lucky_Shot == True:
+                if player.Shoot_Counter == 15:
+                    mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                    Update_Score(player.Score,3,2)
+                else:
+                    player.Lucky_Shot = False
+                player.Shoot_Counter = 0
+            
+            ## checking if lucky shot is false
+            if player.Lucky_Shot == False:
+                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
+                Update_Score(player.Score,3,2)
+
+            ## checking when the enable the lucky shot
+            if player.Shoot_Counter == 23:
+                player.Shoot_Counter = 0
+                player.Lucky_Shot = True
+            
+            ## removing ship with soundand removing the bullet
+            player.Bullet_List.remove(bullet)
+            Mystery_Ship_Explosion.Sound.play()
+            mystery_ship.xpos = 2500
+            return True # ending the function
+            
     def Player_Explode(player):
         ## nonlocal declaration to variables and lists
-        nonlocal alien_bullets, player_1_bullets, player_2_bullets
+        nonlocal alien_bullets, player_1.Bullet_List, player_2_bullets
         nonlocal player_1, player_2, player_1_life, player_2_life
         nonlocal flag_gameover
  
@@ -309,10 +340,10 @@ def MainGame():
                 alien_list.append(alien_group)
 
     def Barrier_Refill():
-        ## globalizing the Barrier lists
+        ## globalizing the barrier lists
         nonlocal barrier1,barrier2,barrier3,barrier4,alien_invasion_line
 
-        ## filling the Barrier lists
+        ## filling the barrier lists
         for row in range(0,len(barrier_layout)):
             for column in range(len(barrier_layout[row])):
                 if barrier_layout[row][column] == 1:
@@ -346,8 +377,8 @@ def MainGame():
 
             ## drawing the score messages and the credits
             score_message.Draw()
-            player_1_score.Draw()
-            player_2_score.Draw()
+            player_1.Score.Draw()
+            player_2.Score.Draw()
             high_score.Draw()
             player_1_life.Draw()
             player_2_life.Draw()
@@ -602,8 +633,12 @@ def MainGame():
         Flag_Movement_Direction = None
 
         ## setting up the counter variables
-        Shoot_Iteration_Counter = 0
+        Shot_Counter = 0
         Lucky_Shot = False
+
+        ## setting up bullet list and score
+        Bullet_List = []
+        Score = 0
         
         ## setting up the player's image
         Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')
@@ -694,9 +729,8 @@ def MainGame():
             self.ypos = self.ypos - 5
 
         def Check(self):
-            ## declaring nonlocals to the bullets and scores
-            nonlocal player_1_bullets, player_2_bullets
-            nonlocal player_1_score, player_2_score
+            ## declaring nonlocals the players
+            nonlocal player_1, player_2
 
             ## checking if the bullets hit the alien
             for group in alien_list:
@@ -716,15 +750,15 @@ def MainGame():
                             increment = 3
 
                         ## updating the player scores
-                        if self in player_1_bullets:
-                            Update_Score(player_1_score,increment)
-                            player_1_bullets.remove(self)
+                        if self in player_1.Bullet_List:
+                            Update_Score(player_1.Score,increment,2)
+                            player_1.Bullet_List.remove(self)
                         elif self in player_2_bullets:
-                            Update_Score(player_2_score,increment)
+                            Update_Score(player_2.Score,increment,2)
                             player_2_bullets.remove(self)
 
                         ## updating the high score
-                        Update_Score(high_score,increment)
+                        Update_Score(high_score,increment,2)
 
                         ## checking if the counter alien movement variable should be changed
                         if len(group) == 0:
@@ -740,22 +774,23 @@ def MainGame():
                         return ## ending the function
             
             ## checking if the bullet hits the mystery ship
-            if self in player_1_bullets:
+            if self in player_1.Bullet_List:
                 if Collide(self,mystery_ship) == True:
 
                     ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
                         if player_1.Lucky_Shot == True:
-                            if (player_1.Shoot_Iteration_Counter - 23)%15 == 0:
+                            if player_1.Shoot_Iteration_Counter - 38 == 0:
                                 mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
-                                Update_Score(player_1_score,30)
+                                Update_Score(player_1.Score,3,1)
+                                Update_Score(high_score,3,2)
                             else:
                                 player_1.Lucky_Shot = False
 
                     ## checking if otherwise and making it worth 200 points
-                        if player_1.Lucky_Shot == False:
+                        elif player_1.Lucky_Shot == False:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                            player_1_score.text[1] = player_1_score.text[1] + 2
-                            high_score.text[1] = high_score.text[1] + 2
+                            Update_Score(player_1.Score,2,2)
+                            Update_Score(high_score,2,2)
 
                     ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
                         if player_1.Shoot_Iteration_Counter == 23:
@@ -765,7 +800,7 @@ def MainGame():
                         mystery_ship.xpos = 2500
 
                     ## removing the bullet from the bullet list
-                        player_1_bullets.remove(self)
+                        player_1.Bullet_List.remove(self)
 
                     ## playing the mystery ship's explosion sound
                         Mystery_Ship_Explosion.Sound.play()
@@ -777,7 +812,7 @@ def MainGame():
                         if player_2.Lucky_Shot == True:
                             if (player_2.Shoot_Iteration_Counter - 23)%15 == 0:
                                 mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
-                                player_2_score.text[1] = player_1_score.text[1] + 3
+                                player_2.Score.text[1] = player_1.Score.text[1] + 3
                                 high_score.text[1] = high_score.text[1] + 3
                             else:
                                 player_2.Lucky_Shot = False
@@ -785,23 +820,21 @@ def MainGame():
                     ## checking if otherwise and making it worth 200 points
                         if player_2.Lucky_Shot == False:
                             mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
-                            player_2_score.text[1] = player_2_score.text[1] + 2
+                            player_2.Score.text[1] = player_2.Score.text[1] + 2
                             high_score.text[1] = high_score.text[1] + 2
                             
                     ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
                         if player_2.Shoot_Iteration_Counter == 23:
                             player_2.Lucky_Shot = True
 
-                    ## relocating the mystery ship
-                        mystery_ship.xpos = 2500
 
                     ## removing the bullet from the bullet list
                         player_2_bullets.remove(self)
 
                     ## playing the mystery ship's explosion sound
-                        Mystery_Ship_Explosion.Sound.play()
 
-            ## checking if the player_1_bullets hit the Barriers
+
+            ## checking if the player_1.Bullet_List hit the Barriers
             if self.ypos + self.height > 330 and self.ypos < 370:
                 if self.xpos + self.length > 48 and self.xpos < 108:
                     Bullet_Barrier_Collision(barrier1,self)
@@ -812,16 +845,11 @@ def MainGame():
                 elif self.xpos + self.length > 372 and self.xpos < 432:
                     Bullet_Barrier_Collision(barrier4,self)
 
-            if player_1_test_list != player_1_bullets: 
-                return # ending the function
-            elif player_2_test_list != player_2_bullets:
-                return # ending the function
-
             ## checking if the player bullet hits the top of the screen
-            if self in player_1_bullets or self in player_2_bullets:
+            if self in player_1.Bullet_List or self in player_2_bullets:
                 if self.ypos < 0:
-                    if self in player_1_bullets:
-                        player_1_bullets.remove(self)
+                    if self in player_1.Bullet_List:
+                        player_1.Bullet_List.remove(self)
                     elif self in player_2_bullets:
                         player_2_bullets.remove(self)
                     bullet_explosion_list.append(Bullet_Explosion(self.xpos - 6,self.ypos))
@@ -867,7 +895,7 @@ def MainGame():
             self.ypos = ypos
             self.type = random.randint(1,3)
 
-            ## setting up the attributes such as the varying lengths, heights, the Barrier destruction range
+            ## setting up the attributes such as the varying lengths, heights, the barrier destruction range
             if self.type == 1:
                 self.length = 6
                 self.height = 12
@@ -912,9 +940,9 @@ def MainGame():
 
             ## checking if the alien_bullet hit the player bullet
             if len(alien_bullets) == alien_bullets_length:
-                for bullet in player_1_bullets:
+                for bullet in player_1.Bullet_List:
                     if self.xpos + self.length > bullet.xpos and bullet.xpos + bullet.length > self.xpos and self.ypos + self.height > bullet.ypos and bullet.ypos + bullet.height > self.ypos:
-                        player_1_bullets.remove(bullet)
+                        player_1.Bullet_List.remove(bullet)
                         bullet_explosion_list.append(Bullet_Explosion(bullet.xpos - 6,bullet.ypos - 8))
                         if self.type == 1:
                             if random.randint(1,2) == 1:
@@ -1105,8 +1133,8 @@ def MainGame():
         
         ## setting up the player's score and the high score
         score_message = Game_Text(20,'SCORE<1> HI-SCORE SCORE<2>')
-        player_1_score = Game_Text(60,[0,0,0,0],xpos = 60)
-        player_2_score = Game_Text(60,[0,0,0,0],xpos = 320)
+        player_1.Score = Game_Text(60,[0,0,0,0],xpos = 60)
+        player_2.Score = Game_Text(60,[0,0,0,0],xpos = 320)
         high_score = Game_Text(60,[0,0,0,0],xpos = 200)
 
         while True:
@@ -1114,8 +1142,8 @@ def MainGame():
 
             ## drawing the player's score
             score_message.Draw()
-            player_1_score.Draw()
-            player_2_score.Draw()
+            player_1.Score.Draw()
+            player_2.Score.Draw()
             high_score.Draw()
             credit_message.Draw()
 
@@ -1160,8 +1188,8 @@ def MainGame():
         
         # drawing the player's score and high score
         score_message.Draw()
-        player_1_score.Draw()
-        player_2_score.Draw()
+        player_1.Score.Draw()
+        player_2.Score.Draw()
         high_score.Draw()
         credit_message.Draw()
 
@@ -1353,8 +1381,8 @@ def MainGame():
 
             ## drawing the scores
             score_message.Draw()
-            player_1_score.Draw()
-            player_2_score.Draw()
+            player_1.Score.Draw()
+            player_2.Score.Draw()
             high_score.Draw()
             credit_message.Draw()
 
@@ -1395,17 +1423,17 @@ def MainGame():
                     play_one_player_message = Game_Text(180,'PLAY PLAYER<1>')
                     play_one_player_message.Draw()
                     if time%2 == 0:
-                        player_1_score.Draw()
+                        player_1.Score.Draw()
 
                 if flag_game_mode == 'two_player':
                     ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
                     play_two_player_message = Game_Text(220,'PLAY PLAYER<2>')
                     play_two_player_message.Draw()
                     if time%2 == 0:
-                        player_2_score.Draw()
-                        player_1_score.Draw()
+                        player_2.Score.Draw()
+                        player_1.Score.Draw()
                 else:
-                    player_2_score.Draw()
+                    player_2.Score.Draw()
 
                 ## drawing the rest of the score info and the credit message
                 score_message.Draw()
@@ -1453,7 +1481,7 @@ def MainGame():
         mystery_ship = Mystery_Ship(2500,90)
         mystery_ship_explosion_list = []
         
-        ## setting up the Barrier layout
+        ## setting up the barrier layout
         barrier_layout = [[0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
                         [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
                         [0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
@@ -1475,7 +1503,7 @@ def MainGame():
                         [1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1],
                         [1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]]
 
-        ## setting up the Barrier and alien invasion line
+        ## setting up the barrier and alien invasion line
         barrier1 = []
         barrier2 = []
         barrier3 = []
@@ -1484,7 +1512,7 @@ def MainGame():
         Barrier_Refill()
 
         ## setting up the bullet lists
-        player_1_bullets = []
+        player_1.Bullet_List = []
         player_2_bullets = []
         alien_bullets = []
         bullet_explosion_list = []
@@ -1555,7 +1583,7 @@ def MainGame():
                     alien_bullet_iteration_counter = alien_bullet_iteration_counter + 1
 
         ## moving the player bullets
-            for bullet in player_1_bullets:
+            for bullet in player_1.Bullet_List:
                 bullet.Move_Bullet()
                 bullet.Check()
             for bullet in player_2_bullets:
@@ -1617,10 +1645,10 @@ def MainGame():
                 ## shooting bullets using space
                     if event.key == K_SPACE:
                         if player_1 != None:
-                            if player_1.Shoot_Timer <= 0 and len(player_1_bullets) == 0:
+                            if player_1.Shoot_Timer <= 0 and len(player_1.Bullet_List) == 0:
                                 player_1.Shoot_Timer = 60
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
-                                player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+                                player_1.Bullet_List.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
 
                                 ## playing the sound
@@ -1644,9 +1672,9 @@ def MainGame():
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
                         else:
-                            if player_1.Shoot_Timer <= 0 and len(player_1_bullets) == 0:
+                            if player_1.Shoot_Timer <= 0 and len(player_1.Bullet_List) == 0:
                                 player_1.Shoot_Timer = 60
-                                player_1_bullets.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
+                                player_1.Bullet_List.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
 
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
@@ -1693,8 +1721,8 @@ def MainGame():
 
         ## drawing the score and the credits
             score_message.Draw()
-            player_1_score.Draw()
-            player_2_score.Draw()
+            player_1.Score.Draw()
+            player_2.Score.Draw()
             high_score.Draw()            
             player_1_life.Draw()
             player_2_life.Draw()
@@ -1735,7 +1763,7 @@ def MainGame():
                 explosion.Draw()
                 
         ## drawing the player bullet with the specific color
-            for bullet in player_1_bullets:
+            for bullet in player_1.Bullet_List:
                 if flag_game_mode == 'two_player':
                     bullet.Draw('green')
                 else:
@@ -1771,7 +1799,7 @@ def MainGame():
             if len(alien_list) == 0 and len(alien_explosion_list) == 0:
                 ## emptying all the bullet lists
                 alien_bullets = []
-                player_1_bullets = []
+                player_1.Bullet_List = []
                 player_2_bullets = []
 
                 ## changing the alien's counter ypos because they move farther downward as each level passes

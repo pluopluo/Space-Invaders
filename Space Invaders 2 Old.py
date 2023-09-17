@@ -78,26 +78,26 @@ def MainGame():
             if object_1.ypos + object_1.height > object_2.ypos and object_2.ypos + object_2.height > object_1.ypos:
                 return True
 
-    def Bullet_Barrier_Collision(Barrier,bullet):
+    def Bullet_Barrier_Collision(barrier,bullet):
         ## declaring nonlocals to the players and the bullet explosion list
         nonlocal player_1, player_2, alien_bullets, bullet_explosion_list
     
         ## checking what type of bullet it is and what iteration should be performed on the barrier
         if bullet in alien_bullets:
-            Barrier_Iteration = [0,len(Barrier),1]
+            barrier_iteration = [0,len(barrier),1]
         elif bullet in player_1.Bullet_List or bullet in player_2_bullets:
-            Barrier_Iteration = [len(Barrier) - 1,-1,-1]
+            barrier_iteration = [len(barrier) - 1,-1,-1]
          
-        ## checking the Barrier and if the divisor is supposed to be 2
-        if Barrier == alien_invasion_line:
+        ## checking the barrier and if the divisor is supposed to be 2
+        if barrier == alien_invasion_line:
             divisor = 2
         else:
             divisor = 1
 
         target_barrier = None
         ## checking the specific particle the bullet hits
-        for i in range(Barrier_Iteration[0],Barrier_Iteration[1],Barrier_Iteration[2]):
-            if Collide(bullet,Barrier[i]) == True:
+        for barrier_index in range(barrier_iteration[0],barrier_iteration[1],barrier_iteration[2]):
+            if Collide(bullet,barrier[barrier_index]) == True:
 
                 # removing the barrier from the list
                 if bullet in alien_bullets:
@@ -107,60 +107,67 @@ def MainGame():
                 if bullet in player_2_bullets:
                     player_2_bullets.remove(bullet)
 
-                target_barrier = Barrier[i]
+                target_barrier = barrier[barrier_index]
                 barrier_iteration_counter = 0
-                barrier_struck = False
+                flag_barrier_struck = False
+
+                ## running through the barrier and checking which ones should disappear
                 while True:
-                    # breaking the bullet and the while loop
-                    if barrier_iteration_counter >= len(Barrier):
+
+                    # breaking the while loop when the iteration process is done
+                    if barrier_iteration_counter >= len(barrier):
                         break
                 
-                    ## checking if the xpos is correct
-                    if Barrier[barrier_iteration_counter].xpos%(divisor*2) == 0:
-                        ## checking if the Barrier particle is in close range of the area hit by the bullet
-                        if target_barrier.xpos - bullet.Dr[0]*2 < Barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.length + bullet.Dr[0]:
-                            if target_barrier.ypos - bullet.Dr[1]*2 < Barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[1]*2:
-                                barrier_struck = True
+                    ## checking if the xpos is correct from the ground shield
+                    if barrier[barrier_iteration_counter].xpos%(divisor*2) == 0:
+
+                        ## checking if the barrier particle is in close range of the area hit by the bullet
+                        if target_barrier.xpos - bullet.Dr[0]*2 < barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.length + bullet.Dr[0]:
+                            if target_barrier.ypos - bullet.Dr[1]*2 < barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[1]*2:
+                                flag_barrier_struck = True
                             
-                        ## checking if the Barrier particle is in far range of the area struck by the bullet
-                        if target_barrier.xpos - bullet.Dr[2]*2 < Barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.height + bullet.Dr[2]*2:
-                            if target_barrier.ypos - bullet.Dr[3]*2 < Barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[3]*2:
-                                # deciding how far it is and the chance of the Barrier being destroyed
-                                y_distance = abs(target_barrier.ypos - Barrier[barrier_iteration_counter].ypos) + 1
-                                x_distance = abs(target_barrier.xpos - Barrier[barrier_iteration_counter].xpos) + 1
+                        ## checking if the barrier particle is in far range of the area struck by the bullet
+                        if target_barrier.xpos - bullet.Dr[2]*2 < barrier[barrier_iteration_counter].xpos < target_barrier.xpos + target_barrier.height + bullet.Dr[2]*2:
+                            if target_barrier.ypos - bullet.Dr[3]*2 < barrier[barrier_iteration_counter].ypos < target_barrier.ypos + target_barrier.height + bullet.Dr[3]*2:
+                                # deciding how far it is and the chance of the barrier being destroyed
+                                y_distance = abs(target_barrier.ypos - barrier[barrier_iteration_counter].ypos) + 1
+                                x_distance = abs(target_barrier.xpos - barrier[barrier_iteration_counter].xpos) + 1
                                 x_range = x_distance//(bullet.Dr[2])
                                 y_range = y_distance//(bullet.Dr[3])
                                 if random.randint(0,x_range) == 0 and random.randint(0,y_range) == 0:
-                                    barrier_struck = True
+                                    flag_barrier_struck = True
 
-                    ## destroying the Barrier partlce
-                    if barrier_struck == True:
-                        Barrier.pop(barrier_iteration_counter)
-                        barrier_struck = False
+                    ## destroying the barrier partlce
+                    if flag_barrier_struck == True:
+                        barrier.pop(barrier_iteration_counter)
+                        flag_barrier_struck = False
+
+                    ## otherwise updating the barrier iteration counter
                     else:
                         barrier_iteration_counter = barrier_iteration_counter + 1
-                break
+                break  ## breaking the for loop from no use 
 
-    def Alien_Barrier_Collision(alien,Barrier):
+    def Alien_Barrier_Collision(alien,barrier):
         barrier_iteration_counter = 0
         flag_barrier_struck = False
 
         ## iterating through the barriers
         while True:
-            if barrier_iteration_counter == len(Barrier):
+            if barrier_iteration_counter == len(barrier):
                 break
 
             ## checking if a barrier block hit the alien
-            if alien.xpos + alien.length >= Barrier[barrier_iteration_counter].xpos and alien.xpos <= Barrier[barrier_iteration_counter].xpos + Barrier[barrier_iteration_counter].length:
-                if alien.ypos + alien.height >= Barrier[barrier_iteration_counter].ypos:
+            if alien.xpos + alien.length >= barrier[barrier_iteration_counter].xpos and alien.xpos <= barrier[barrier_iteration_counter].xpos + barrier[barrier_iteration_counter].length:
+                if alien.ypos + alien.height >= barrier[barrier_iteration_counter].ypos:
                     flag_barrier_struck = True
             
             ## destroying the barrier block
             if flag_barrier_struck == True:
-                Barrier.pop(barrier_iteration_counter)
+                barrier.pop(barrier_iteration_counter)
                 flag_barrier_struck = False
+
+            ## updating the iteration counter only if the barrier isn't destroyed
             else:
-                ## updating the iteration counter only if the barrier isn't destroyed
                 barrier_iteration_counter = barrier_iteration_counter + 1
 
     def Update_Score(score):            

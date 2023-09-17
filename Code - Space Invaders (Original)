@@ -118,7 +118,7 @@ def MainGame():
                     if barrier_iteration_counter >= len(barrier):
                         break
                 
-                    ## checking if the xpos is correct
+                    ## checking if the xpos is correct from the ground shield
                     if barrier[barrier_iteration_counter].xpos%(divisor*2) == 0:
 
                         ## checking if the barrier particle is in close range of the area hit by the bullet
@@ -146,13 +146,11 @@ def MainGame():
                     ## otherwise updating the barrier iteration counter
                     else:
                         barrier_iteration_counter = barrier_iteration_counter + 1
-                
-                ## breaking the for loop from no use
-                break
+                break  ## breaking the for loop from no use
 
     def Alien_Barrier_Collision(alien,barrier):
         barrier_iteration_counter = 0
-        barrier_struck = False
+        flag_barrier_struck = False
 
         ## iterating through the barriers
         while True:
@@ -162,12 +160,12 @@ def MainGame():
             ## checking if a barrier block hit the alien
             if alien.xpos + alien.length >= barrier[barrier_iteration_counter].xpos and alien.xpos <= barrier[barrier_iteration_counter].xpos + barrier[barrier_iteration_counter].length:
                 if alien.ypos + alien.height >= barrier[barrier_iteration_counter].ypos:
-                    barrier_struck = True
+                    flag_barrier_struck = True
             
             ## destroying the barrier block
-            if barrier_struck == True:
+            if flag_barrier_struck == True:
                 barrier.pop(barrier_iteration_counter)
-                barrier_struck = False
+                flag_barrier_struck = False
 
             ## updating the iteration counter only if the barrier isn't destroyed
             else:  
@@ -179,7 +177,7 @@ def MainGame():
         if score.text[2] >= 10:
             score.text[1] = score.text[1] + 1
             score.text[2] = score.text[2] - 10
-        if score.text[1] >= 10:
+        if score.text[1] >= 10: 
             score.text[0] = score.text[0] + 1
             score.text[1] = score.text[1] - 10
         if score.text[0] >= 10:

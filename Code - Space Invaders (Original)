@@ -79,7 +79,7 @@ def MainGame():
                 return True
 
     def Bullet_Barrier_Collision(barrier,bullet):
-        ## declaring nonlocals to the bullet lists and the bullet explosion list
+        ## declaring nonlocals to the players and the bullet explosion list
         nonlocal player_1, player_2, alien_bullets, bullet_explosion_list
     
         ## checking what type of bullet it is and what iteration should be performed on the barrier
@@ -95,10 +95,10 @@ def MainGame():
             divisor = 1
 
     ## checking the specific particle the bullet hits by running through the barrier
-        for barrier_num in range(barrier_iteration[0],barrier_iteration[1],barrier_iteration[2]):
-            if Collide(bullet,barrier[barrier_num]) == True:
+        for barrier_index in range(barrier_iteration[0],barrier_iteration[1],barrier_iteration[2]):
+            if Collide(bullet,barrier[barrier_index]) == True:
 
-                ## removing the bullet from the lists
+                ## removing the bullet from the list
                 if bullet in alien_bullets:
                     alien_bullets.remove(bullet)
                 if bullet in player_1.Bullet_List:
@@ -107,7 +107,7 @@ def MainGame():
                     player_2.Bullet_List.remove(bullet)
 
                 ## setting up the counter, flag, and counter variables
-                target_barrier = barrier[barrier_num]
+                target_barrier = barrier[barrier_index]
                 barrier_iteration_counter = 0
                 flag_barrier_struck = False
 
@@ -138,7 +138,7 @@ def MainGame():
                                 if random.randint(0,x_range) == 0 and random.randint(0,y_range) == 0:
                                     flag_barrier_struck = True
 
-                    ## destroying the barrier partlce
+                    ## destroying the barrier paricle
                     if flag_barrier_struck == True:
                         barrier.pop(barrier_iteration_counter)
                         flag_barrier_struck = False
@@ -217,9 +217,9 @@ def MainGame():
             return True # ending the function
             
     def Player_Explode(player):
-        ## nonlocal declaration to variables and lists
+        ## nonlocal declaration to bullets and players, and gameover variable
         nonlocal alien_bullets, player_1.Bullet_List, player_2_bullets
-        nonlocal player_1, player_2, player_1_life, player_2_life
+        nonlocal player_1, player_2, player_1.lives, player_2.lives
         nonlocal flag_gameover
  
         ## playing the sound
@@ -269,7 +269,7 @@ def MainGame():
 
                 ## changing the player's lives and backup
                 player_1_backup.pop(-1)
-                player_1_life.text[0] = player_1_life.text[0] - 1
+                player_1.lives.text[0] = player_1.lives.text[0] - 1
 
             ## checking elsewise if the list is empty and removing the player from the game
             elif len(player_1_backup) == 0:
@@ -286,7 +286,7 @@ def MainGame():
                 
                 ## changing the player's lives
                 player_2_backup.pop(-1)
-                player_2_life.text[0] = player_2_life.text[0] - 1
+                player_2.lives.text[0] = player_2.lives.text[0] - 1
 
             ## checking elsewise if the list is empty and removing the player from the game
             elif len(player_2_backup) == 0:
@@ -378,8 +378,8 @@ def MainGame():
             player_1.Score.Draw()
             player_2.Score.Draw()
             high_score.Draw()
-            player_1_life.Draw()
-            player_2_life.Draw()
+            player_1.lives.Draw()
+            player_2.lives.Draw()
             credit_message.Draw()
 
             ## drawing the floor
@@ -636,7 +636,8 @@ def MainGame():
 
         ## setting up bullet list and score
         Bullet_List = []
-        Score = 0
+        Score = None
+        Lives = None
         
         ## setting up the player's image
         Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')
@@ -1457,17 +1458,17 @@ def MainGame():
         player_2 = None
         player_1_backup = []
         player_2_backup = []
-        player_1_life = Game_Text(456,[],xpos = 10)
-        player_2_life = Game_Text(456,[],xpos = 10)
+        player_1.Lives = Game_Text(456,[],xpos = 10)
+        player_2.Lives = Game_Text(456,[],xpos = 10)
 
         if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
             player_1_backup = [Player(30,450),Player(70,450)]
-            player_1_life.text = [2]
+            player_1.lives.text = [2]
         if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
             player_2_backup = [Player(420,450),Player(380,450)]
-            player_2_life.text = [2]
+            player_2.lives.text = [2]
             
         alien_list = []
         Fill_Alien(True)
@@ -1722,8 +1723,8 @@ def MainGame():
             player_1.Score.Draw()
             player_2.Score.Draw()
             high_score.Draw()            
-            player_1_life.Draw()
-            player_2_life.Draw()
+            player_1.lives.Draw()
+            player_2.lives.Draw()
             credit_message.Draw()
             
         ## drawing the player

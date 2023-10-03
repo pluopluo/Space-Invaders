@@ -303,4 +303,5 @@ I will have to change the naming from player_score_list to player.score
 3) I have alien_bullets inside the alien bullet class now
 4) I have canceled that plan for now. 
 5) I will have to sotp trying to make everything perfect.
-6) 
+6) I will compare the two code lines to make sure that they are the same and perfecting everything
+7) I will have to save the mystery ship collide check to the end

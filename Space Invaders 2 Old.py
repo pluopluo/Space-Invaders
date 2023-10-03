@@ -183,7 +183,7 @@ def MainGame():
     def Player_Explode(player):
         ## nonlocal declaration to variables and lists
         nonlocal alien_bullets, player_1.Bullet_List, player_2_bullets
-        nonlocal player_1, player_2, player_1_life, player_2_life
+        nonlocal player_1, player_2, player_1_life, player_2.lives
         nonlocal flag_gameover
  
         ## playing the sound
@@ -245,7 +245,7 @@ def MainGame():
                 
                 ## changing the player's lives
                 player_2_backup.pop(-1)
-                player_2_life.phrase = player_2_life.phrase - 1
+                player_2.lives.phrase = player_2.lives.phrase - 1
 
             elif len(player_2_backup) == 0:
 
@@ -542,7 +542,7 @@ def MainGame():
             player_2_score.Draw()
             high_score.Draw()
             player_1_life.Draw()
-            player_2_life.Draw()
+            player_2.lives.Draw()
             credit_message.Draw()
 
             ## drawing the floor
@@ -1847,7 +1847,7 @@ def MainGame():
         player_1_backup = []
         player_2_backup = []
         player_1_life = Game_Text(10,456,[])
-        player_2_life = Game_Text(460,456,[])
+        player_2.lives = Game_Text(460,456,[])
 
         if flag_game_mode == 'one_player' or flag_game_mode == 'two_player':
             player_1 = Player(50,400)
@@ -1856,7 +1856,7 @@ def MainGame():
         if flag_game_mode == 'two_player':
             player_2 = Player(90,400)
             player_2_backup = [Player(420,450),Player(380,450)]
-            player_2_life.phrase = 2
+            player_2.lives.phrase = 2
             
         aliens = []
         Fill_Alien()
@@ -2117,7 +2117,7 @@ def MainGame():
             player_2_score.Draw()
             high_score.Draw()            
             player_1_life.Draw()
-            player_2_life.Draw()
+            player_2.lives.Draw()
             credit_message.Draw()
 
         ## drawing the player

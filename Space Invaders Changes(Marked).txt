@@ -308,4 +308,7 @@ I will have to change the naming from player_score_list to player.score
 
 
 Goals 
-Today, I will try to complete changing the bullet list so that it is joined by the player class instead
+Today, I will try to make sure that code lines 1-100 are the same
+while doing that, for the close skip function, I will have to see how it is done
+    a) I will copy the code from the online function onto my own document
+    b) I will have to copy and paste the 

@@ -15,17 +15,43 @@ clock = pygame.time.Clock()
 def MainGame():
 
     def Close_Or_Skip():
+        nonlocal Flag_Skip
+
+        ## event loop
         for event in pygame.event.get():
+
+            ## quit check
             if event.type == QUIT:
                 pygame.quit()
                 exit()
-            ## skipping if the enter key is pressed
+
+            ## skip check
             elif event.type == KEYDOWN:
                 if event.key == K_RETURN:              
                     nonlocal Flag_Skip
                     if Flag_Skip == False:
                         Flag_Skip = True
     
+        ## checking if the player has skipped
+        if flag_skip == True:
+            clock.tick(60)
+
+            ## filling the screen quickly but not directly
+            for xpos in range(0,480,60):
+                pygame.draw.rect(screen,black,(xpos,0,60,480))
+
+                ## quit check
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        pygame.quit()
+                        exit()
+
+                pygame.display.update()
+                clock.tick(40)
+            
+            ## setting flag skip with a new value showing the player already skipped
+            flag_skip = 'stage_2'
+
     def Pause(time):
         num_of_time_units = int(time*60)
         for time_unit in range(0,num_of_time_units):

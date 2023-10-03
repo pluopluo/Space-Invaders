@@ -311,4 +311,4 @@ Goals
 Today, I will try to make sure that code lines 1-100 are the same
 while doing that, for the close skip function, I will have to see how it is done
     a) I will copy the code from the online function onto my own document
-    b) I will have to copy and paste the 
+    b) I will have to alternate the code so it fits perfectly with the new function. 

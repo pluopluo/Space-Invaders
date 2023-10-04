@@ -312,3 +312,13 @@ Today, I will try to make sure that code lines 1-100 are the same
 while doing that, for the close skip function, I will have to see how it is done
     a) I will copy the code from the online function onto my own document
     b) I will have to alternate the code so it fits perfectly with the new function. 
+    c) I changed the function's name from close or skip to close skip check
+    d) I will need to do that with both documents
+    e) I will need to delete the funciton that fills the screen black
+    f) problem. I saw a problem in the fill black function, and I will need to fix it putting the if condition checking if the player
+    filled is true inside the player function
+    g) never mind, I don't want to do that any more
+    h) I will need to change the variables from uppercase to lower case of the player_1_bullets,player_2_bullets,
+    ect. 
+
+Now, I will try to work on lines 100-200 to see if they are the same

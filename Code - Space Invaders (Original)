@@ -94,7 +94,7 @@ def MainGame():
         ## declaring nonlocals to the bullet lists and the bullet explosion list
         nonlocal player_1, player_2, alien_bullets, bullet_explosion_list
     
-        ## checking what type of bullet it is and what iteration should be performed ont he Barrier
+        ## checking what type of bullet it is and what iteration should be performed on the Barrier
         if bullet in alien_bullets:
             Barrier_Iteration = [0,len(Barrier),1]
             
@@ -261,6 +261,7 @@ def MainGame():
             for group in range(len(Alien.layout[row]) - 1,-1,-1):
                 alien_group = []
                 for alien in range(len(Alien.layout[row][group]),0,-1):
+
                     ## checking the x-value to place the alien because the lists are uneven
                     if len(Alien.layout[row][group]) == 1:
                         xpos = 60
@@ -532,7 +533,6 @@ def MainGame():
                 alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
 
         def Draw(self,color='white'):
-            ## drawing the alien based on the color selected
             if color == 'white':
                 return screen.blit(Alien.Image_List[0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
             elif color == 'green':
@@ -1236,7 +1236,6 @@ def MainGame():
 
         ## moving the alien towards the letter to replace it
         while True:
-
             ## checking if the player decides to skip and breaking the loop if the skip variable is true
             Close_Skip_Check()
             if Flag_Skip == 'stage_2':
@@ -1375,7 +1374,7 @@ def MainGame():
             credit_message.xpos = 173
 
 ## setting up the elements
-        ## setting up the Gameover Flag Variable
+        ## setting up the gameover flag variable
         Flag_Gameover = False
 
         ## setting up the player, their backup, and their live 
@@ -1459,7 +1458,7 @@ def MainGame():
             mystery_ship.Move_Mystery_Ship()
             mystery_ship.Play_Sound()
 
-        ## moving alien_list and changing animations only if there is at least one alien on the screen
+        ## moving aliens and changing animations only if there is at least one alien on the screen
             if len(alien_explosion_list) == 0:
                 Alien.Timer = Alien.Timer - 1
                 if  Alien.Timer <= 0:
@@ -1539,26 +1538,22 @@ def MainGame():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-
                 elif event.type == KEYDOWN:
                     if event.key == K_RIGHT:
                         if player_1 != None:
                             player_1.Flag_Movement_Direction = 'right'
                         else:
                             player_2.Flag_Movement_Direction = 'right'
-
                     elif event.key == K_LEFT:
                         if player_1 != None:
                             player_1.Flag_Movement_Direction = 'left'
                         else:
                             player_2.Flag_Movement_Direction = 'left'
-
                     elif event.key == K_a:
                         if player_2 != None:
                             player_2.Flag_Movement_Direction = 'left'
                         else:
                             player_1.Flag_Movement_Direction = 'left'
-
                     elif event.key == K_d:
                         if player_2 != None:
                             player_2.Flag_Movement_Direction = 'right'
@@ -1572,7 +1567,6 @@ def MainGame():
                                 player_1.Shoot_Timer = 60
                                 player_1.Shoot_Iteration_Counter = player_1.Shoot_Iteration_Counter + 1
                                 player_1.Bullet_List.append(Player_Bullet(player_1.xpos + 14,player_1.ypos - 10))
-
 
                                 ## playing the sound
                                 Player.Shoot_Sound.play()
@@ -1612,7 +1606,6 @@ def MainGame():
                         else:
                             if player_2.Flag_Movement_Direction == 'right':
                                 player_2.Flag_Movement_Direction = None
-
                     elif event.key == K_LEFT:
                         if player_1 != None:
                             if player_1.Flag_Movement_Direction == 'left':
@@ -1620,15 +1613,13 @@ def MainGame():
                         else:
                             if player_2.Flag_Movement_Direction == 'left':
                                 player_2.Flag_Movement_Direction = None
-
                     if event.key == K_a:
                         if player_2 != None:
                             if player_2.Flag_Movement_Direction == 'left':
                                 player_2.Flag_Movement_Direction = None
                         else:
                             if player_1.Flag_Movement_Direction == 'left':
-                                player_1.Flag_Movement_Direction = None
-                                
+                                player_1.Flag_Movement_Direction = None   
                     elif event.key == K_d:
                         if player_2 != None:
                             if player_2.Flag_Movement_Direction == 'right':
@@ -1674,7 +1665,7 @@ def MainGame():
         ## drawing the Mystery_Ship
             mystery_ship.Draw()
 
-        ## drawing the alien_list
+        ## drawing the aliens
             for group in alien_list:
                 for alien in group:
                     if alien.ypos >= 315:

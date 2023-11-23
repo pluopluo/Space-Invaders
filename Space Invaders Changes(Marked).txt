@@ -330,8 +330,26 @@ while doing that, for the close skip function, I will have to see how it is done
         c) I will also need to change the code with the new addition of the dictionary. It includes making the translation different
 
 Now, I will try to work on lines 100-200 to see if they are the same
+f-1) I made sure that the bulelt iteration instead of being i is barrier_index
 f) I will need to make player_1_bullets and alien_1_bullets into the player class as bullet_list 
 g) I will also need to do the same thing to space invaders 2 
 
+
+Here are the following guilde line towards coding
+in a class, the class variables come in the following order:
+
+1)flag variables
+2)counter variables
+3)lists 
+4)player_sound
+5)image
+
+also no variables are capitalized unless they are a function or a class variable
+
+
 Here are the things that I will need to do in the future
 I will need to add comments on the side
+I will need to change the wording and instead of being a list is a string
+I will also need to make sure that the words have a x-cordinate of being in the middle
+I will need to relocate alien collide souund either in space invaders original or space invaders 2 
+I will need to change so that all the code variables are lower case unless they are a function or a class variable

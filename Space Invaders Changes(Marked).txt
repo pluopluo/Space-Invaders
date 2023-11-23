@@ -320,5 +320,18 @@ while doing that, for the close skip function, I will have to see how it is done
     g) never mind, I don't want to do that any more
     h) I will need to change the variables from uppercase to lower case of the player_1_bullets,player_2_bullets,
     ect. 
+    i) I also renamed alien bullets and player_1_backup to lowercase
+    j) I renamed alien list so it is lowercase
+    k) I will now need to perform a big process changing the words and phrases
+        a) I am currently working on perfecting and making the line that loads the images into the dictionary small
+        b) I am also working on building a dictionary that has the regular character as the key nad the string character as the value
+            a) In order to do that, I will need to change all the numbers in the dictionary containing the keys into strings
+            b) time to add the new dictionary                           
+        c) I will also need to change the code with the new addition of the dictionary. It includes making the translation different
 
 Now, I will try to work on lines 100-200 to see if they are the same
+f) I will need to make player_1_bullets and alien_1_bullets into the player class as bullet_list 
+g) I will also need to do the same thing to space invaders 2 
+
+Here are the things that I will need to do in the future
+I will need to add comments on the side

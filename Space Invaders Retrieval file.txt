@@ -1,18 +1,15 @@
-## importing files
-import random
+i     ## importing files
 import pygame
 from pygame.locals import *
 from customcolors import *
 from pygame import mixer
 
-## setting up pygame, it's screen, caption, and clock
-pygame.init()
+p     ## setting up pygame, it's screen, caption, and clock
 screen = pygame.display.set_mode((480,480))
 pygame.display.set_caption('Space Invaders')
-clock = pygame.time.Clock()                         
+clock = pygame.time.Clock()                           
 
-## setting up the game play
-def MainGame():
+d     ## setting up the game play
 
     def Close_Skip_Check():
         nonlocal Flag_Skip
@@ -56,7 +53,7 @@ def MainGame():
         num_of_time_units = int(time*60)
         for time_unit in range(0,num_of_time_units):
 
-            ## checking if the player has pressed skip
+            ## checking if the player has pressed skip 
             Close_Skip_Check()
             if Flag_Skip == 'stage_2':
                 return
@@ -91,7 +88,7 @@ def MainGame():
                 Barrier_Iteration_Counter = Barrier_Iteration_Counter + 1
 
     def Bullet_Barrier_Collision(Barrier,bullet):
-        nonlocal player_1, player_2, alien_bullets, Bullet_Explosion_List        ## declaring nonlocals
+        nonlocal player_1, player_2, alien_bullets, bullet_explosion_list        ## declaring nonlocals 
     
         ## checking what type of bullet it is and what iteration should be performed on the Barrier
         if bullet in alien_bullets:
@@ -114,7 +111,7 @@ def MainGame():
                 Barrier_Iteration_Counter = 0
                 Barrier_Struck = False
                 while True:
-                    if Barrier_Iteration_Counter >= len(Barrier):       # breaking the bullet and the while loop
+                    if Barrier_Iteration_Counter >= len(Barrier):    # breaking the bullet and the while loop
                         if bullet in alien_bullets:
                             alien_bullets.remove(bullet)
                         if bullet in player_1.Bullet_List:
@@ -158,11 +155,11 @@ def MainGame():
             score.phrase[0] = score.phrase[0] - 10
         
     def Player_Explode(player):
-        nonlocal alien_bullets        ## nonlocal declaration to variables, lists, ect. 
+        nonlocal alien_bullets        ## nonlocal declaration to variables, players, ect. 
         nonlocal player_1, player_2, player_1_life, player_2_life
         nonlocal Flag_Gameover
  
-        Player_Explosion.Sound.play()        ## playing the sound and uploading the player explosion images     
+        Player_Explosion.Sound.play()        ## playing the sound and uploading the player explosion images               
         player_explosion = Player_Explosion(player.xpos,player.ypos,40,20)
 
         for iteration in range(1,20):        ## drawing the player_explosion
@@ -174,7 +171,7 @@ def MainGame():
                 
         ## emptying the player explosion from the screen by drawing a black rectangle
         player_explosion.Draw(3)
-        
+    
         if player == player_1:        ## drawing the player afterwards
             if player_2 != None:
                 player_2.Draw('blue')
@@ -207,7 +204,7 @@ def MainGame():
                 player_2.Flag_Struck = False
                 player_2.ypos = 400
                 player_2.xpos = 90
-                
+            
                 player_2_backup.pop(-1)    ## changing the player's lives
                 player_2_life.phrase[0] = player_2_life.phrase[0] - 1
 
@@ -220,222 +217,48 @@ def MainGame():
         if player_1 == None and player_2 == None:
             Flag_Gameover = True
 
-    def Fill_Alien():
-        nonlocal aliens        ## nonlocal declaration to the lists and variables
-        nonlocal Flag_Game_Level
-
-        Alien.Timer = 20        ## resetting all the alien attributes
+    def Fill_Alien(Start_Game=False):
+        nonlocal alien_list        ## nonlocal declaration to the lists and variables
+        
+        Alien.Timer = 2        ## resetting all the alien attributes
         Alien.Animation = 0
         Alien.Flag_Collide_Side = None
         Alien.Flag_Down_Step = None
         Alien.Speed = 5
-        Alien.Counter_Background_Sound = 1  ## resetting alien movement sounds and position moving down the screen afters each level
+        Alien.Counter_Movement  = 0        ## resetting the alien movement iteration and sounds
+        Alien.Counter_Background_Sound = 1 
+        if Start_Game == True:
+            Alien.Counter_Position = 0
 
-        ## layouts for various levels
-        if Flag_Game_Level == [0,1]:
-            alien_x_distance = 30
-            alien_y_distance = 30
-            alien_y_start_pos = 120
-            alien_x_start_pos = 100
-            alien_layout = [[1,1,1,1],
-                            [1,1,1,1],
-                            [1,1,1,1]]
-    
-        elif Flag_Game_Level == [0,2]:
-            alien_x_distance = 30
-            alien_y_distance = 30
-            alien_y_start_pos = 120
-            alien_x_start_pos = 100
-            alien_layout = [[1,1,1,1,1],
-                            [1,1,1,1,1],
-                            [1,1,1,1,1],
-                            [1,1,1,1,1]]
-        
-        elif Flag_Game_Level == [0,3]:
-            alien_x_distance = 30
-            alien_y_distance = 30
-            alien_y_start_pos = 100
-            alien_x_start_pos = 100
-            alien_layout = [[0,0,1,1,0,0],
-                            [0,1,1,1,1,0],
-                            [1,1,1,1,1,1],
-                            [1,1,1,1,1,1],
-                            [0,1,1,1,1,0],
-                            [0,0,1,1,0,0]]
-            
-        elif Flag_Game_Level == [0,4]:
-            alien_x_distance = 20
-            alien_y_distance = 20
-            alien_y_start_pos = 120
-            alien_x_start_pos = 100
-            alien_layout = [[0,0,1,0,0,0,0,0,1,0,0],
-                            [0,0,0,1,0,0,0,1,0,0,0],
-                            [0,0,1,1,1,1,1,1,1,0,0],
-                            [0,1,1,0,1,1,1,0,1,1,0],
-                            [1,1,1,1,1,1,1,1,1,1,1],
-                            [1,0,1,1,1,1,1,1,1,0,1],
-                            [1,0,1,0,0,0,0,0,1,0,1],
-                            [0,0,0,1,1,0,1,1,0,0,0]]
+        for row in range(len(Alien.layout) - 1,-1,-1):    ## filling the alien_list
+            for group in range(len(Alien.layout[row]) - 1,-1,-1):
+                alien_group = []
+                for alien in range(len(Alien.layout[row][group]),0,-1):
 
-        elif Flag_Game_Level == [0,5]:
-            alien_x_distance = 20
-            alien_y_distance = 15
-            alien_y_start_pos = 120
-            alien_x_start_pos = 100
-            alien_layout = [[1,1,0,0,0,0,0,0,1,1],
-                            [1,1,0,0,0,0,0,0,1,1],
-                            [1,1,0,0,0,0,0,0,1,1],
-                            [1,1,0,0,2,0,0,0,1,1],
-                            [0,1,1,0,0,0,0,1,1,0],
-                            [0,1,1,0,0,0,0,1,1,0],
-                            [0,1,1,0,0,0,0,1,1,0],
-                            [0,0,1,1,0,0,1,1,0,0],
-                            [0,0,1,1,0,0,1,1,0,0],                 
-                            [0,0,0,1,1,1,1,0,0,0],  
-                            [0,0,0,1,1,1,1,0,0,0],
-                            [0,0,0,0,1,1,0,0,0,0]]
-
-        elif Flag_Game_Level == [0,6]:
-            alien_x_distance = 30
-            alien_y_distance = 30
-            alien_y_start_pos = 100
-            alien_x_start_pos = 120
-            alien_layout = [[2,0,2,0,2,0,2],
-                            [0,0,0,0,0,0,0],
-                            [0,0,2,0,2,0,0],
-                            [0,0,0,0,0,0,0],
-                            [2,0,2,0,2,0,2]]
-        
-        elif Flag_Game_Level == [0,7]:
-            alien_x_distance = 20
-            alien_y_distance = 20
-            alien_y_start_pos = 60
-            alien_x_start_pos = 40
-            alien_layout = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,1,1,1,1,1,0,0,0,0,0],
-                            [0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
-                            [0,0,0,1,0,2,0,0,2,0,0,1,0,0,0],
-                            [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],
-                            [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-                            [1,1,1,0,1,1,1,0,1,1,1,0,1,1,1],
-                            [0,0,1,1,1,1,1,1,1,1,1,1,1,0,0],
-                            [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
-                            [0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],
-                            [0,1,0,0,0,0,0,1,0,0,0,0,0,1,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
-
-        elif Flag_Game_Level == [0,8]:
-            alien_x_distance = 20
-            alien_y_distance = 20
-            alien_y_start_pos = 40
-            alien_x_start_pos = 110
-            alien_layout = [[0,0,0,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,3,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1],
-                            [1,1,1,1,1,1,1,1,1,1,1,1]]
-        
-        elif Flag_Game_Level == [0,9]:
-            alien_x_distance = 20
-            alien_y_distance = 20
-            alien_y_start_pos = 100
-            alien_x_start_pos = 60
-            alien_layout = [[0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            [3,0,0,0,0,0,3,0,0,0,0,0,3],
-                            [0,0,0,0,0,0,0,0,0,0,0,0,0]]
-        
-        elif Flag_Game_Level == [1,0]:
-            alien_x_distance = 20
-            alien_y_distance = 15
-            alien_y_start_pos = 80
-            alien_x_start_pos = 40
-            alien_layout = [[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0],
-                            [0,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,0],
-                            [0,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,0],
-                            [0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0],
-                            [0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0],
-                            [0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0],
-                            [0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0],
-                            [0,0,0,0,0,1,1,0,1,1,1,0,0,1,1,0,0,0,0],
-                            [0,0,0,0,1,1,0,1,1,0,1,1,0,1,1,0,0,0,0],
-                            [0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0,0,0,0],
-                            [0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0],
-                            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
-
-        elif Flag_Game_Level == [1,1]:
-            alien_x_distance = 20
-            alien_y_distance = 20
-            alien_y_start_pos = 100
-            alien_x_start_pos = 60
-            alien_layout = [[0],
-                            [4],
-                            [0]]
-            
-        elif Flag_Game_Level == [1,2]:
-            alien_x_distance = 30
-            alien_y_distance = 30
-            alien_y_start_pos = 80
-            alien_x_start_pos = 60
-            alien_layout = [[2,0,2,0,2,0,2,0,2],
-                            [0,0,0,0,0,0,0,0,0],
-                            [2,0,2,0,2,0,2,0,2],
-                            [0,0,0,0,0,0,0,0,0],
-                            [2,0,2,0,2,0,2,0,2],
-                            [0,0,0,0,0,0,0,0,0],
-                            [2,0,2,0,2,0,2,0,2]]
-            
-        elif Flag_Game_Level == [1,3]:
-            alien_x_distance = 20
-            alien_y_distance = 15
-            alien_y_start_pos = 80
-            alien_x_start_pos = 60
-            alien_layout = [[1,1,1,1,1,0,1,0,0,0,1,0,1,1,1,1],
-                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
-                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
-                            [0,0,1,0,0,0,1,1,1,1,1,0,1,1,1,1],
-                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
-                            [0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0],
-                            [0,0,1,0,0,0,1,0,0,0,1,0,1,1,1,1],
-                            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                            [1,1,1,1,0,1,0,0,0,1,0,1,1,1,1,0],
-                            [1,0,0,0,0,1,1,0,0,1,0,1,0,0,0,1],
-                            [1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
-                            [1,1,1,1,0,1,0,1,0,1,0,1,0,0,0,1],
-                            [1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
-                            [1,0,0,0,0,1,0,0,1,1,0,1,0,0,0,1],
-                            [1,1,1,1,0,1,0,0,0,1,0,1,1,1,1,0]]
-
-        ## filling the aliens
-        for row in range(len(alien_layout) - 1,-1,-1):
-            for column in range(len(alien_layout[row]) - 1,-1,-1):
-                if alien_layout[row][column] >= 1:
-                    ## adding the aliens to the group list
-                    if row > 3/5*len(alien_layout):
-                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,2,alien_layout[row][column]))
-                    elif row > 1/5*len(alien_layout):
-                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,1,alien_layout[row][column]))
+                    if len(Alien.layout[row][group]) == 1:  ## checking the x-value to place the alien because the lists are uneven
+                        xpos = 60
                     else:
-                        aliens.append(Alien(column*alien_x_distance + alien_x_start_pos,row*alien_y_distance + alien_y_start_pos,3,alien_layout[row][column]))
+                        xpos = alien*30
+
+                    if row == 4 or row == 3:    ## adding the alien_list to the group list
+                        alien_group.append(Alien(group*60 + xpos + 20,row*30 + 120 + 6*Alien.Counter_Position,2))
+                    elif row == 2 or row == 1:
+                        alien_group.append(Alien(group*60 + xpos + 20,row*30 + 120 + 6*Alien.Counter_Position,1))
+                    else:
+                        alien_group.append(Alien(group*60 + xpos + 20,row*30 + 120 + 6*Alien.Counter_Position,3))
+
+                alien_list.append(alien_group)    ## adding the group list to the alien list
 
     def Barrier_Refill():
-        nonlocal Barrier1,Barrier2,Barrier3,Barrier4,alien_invasion_line    ## globalizing the Barrier lists
+        nonlocal barrier1,barrier2,barrier3,barrier4,alien_invasion_line    ## globalizing the Barrier lists
 
-        for row in range(0,len(Barrier_layout)):    ## filling the Barrier lists
-            for column in range(len(Barrier_layout[row])):
-                if Barrier_layout[row][column] == 1:
-                    Barrier1.append(Barrier(column*2 + 48,row*2 + 330))
-                    Barrier2.append(Barrier(column*2 + 156,row*2 + 330))
-                    Barrier3.append(Barrier(column*2 + 264,row*2 + 330))
-                    Barrier4.append(Barrier(column*2 + 372,row*2 + 330))
+        for row in range(0,len(barrier_layout)):    ## filling the Barrier lists
+            for column in range(len(barrier_layout[row])):
+                if barrier_layout[row][column] == 1:
+                    barrier1.append(Barrier(column*2 + 48,row*2 + 330))
+                    barrier2.append(Barrier(column*2 + 156,row*2 + 330))
+                    barrier3.append(Barrier(column*2 + 264,row*2 + 330))
+                    barrier4.append(Barrier(column*2 + 372,row*2 + 330))
         
         for row in range(0,1):    ## filling the alien invasion line
             for column in range(0,480):
@@ -452,7 +275,7 @@ def MainGame():
         if Flag_Skip == True:
             Flag_Skip  = 'stage_2'
 
-    def Screen_Draw(start_of_game = False): 
+    def Screen_Draw(start_of_game = False):     
         if start_of_game == True:    ## limiting the process of drawing everything to be only at the start of the game 
             screen.fill(black)
 
@@ -463,17 +286,17 @@ def MainGame():
             player_1_life.Draw()
             player_2_life.Draw()
             credit_message.Draw()
-
+        
             for Barrier_particle in alien_invasion_line:    ## drawing the floor
                 Barrier_particle.Draw()
-
-            for Barrier_particle in Barrier1:    ## drawing the Barrier
+        
+            for Barrier_particle in barrier1:    ## drawing the Barrier
                 Barrier_particle.Draw()
-            for Barrier_particle in Barrier2:
+            for Barrier_particle in barrier2:
                 Barrier_particle.Draw()
-            for Barrier_particle in Barrier3:
+            for Barrier_particle in barrier3:
                 Barrier_particle.Draw()
-            for Barrier_particle in Barrier4:
+            for Barrier_particle in barrier4:
                 Barrier_particle.Draw()
             
             player_1.Draw('green')    ## drawing the players 
@@ -483,28 +306,16 @@ def MainGame():
                 player.Draw('green')
             for player in player_2_backup:
                 player.Draw('blue')
-    
-        nonlocal Flag_Game_Level    ## nonlnocal declaration
+        
+        for group in alien_list:    ## drawing the alien_list and closing the screen if the quit button is pressed
+            for alien in group:
+                alien.Draw('white')
+                Close_Skip_Check()
+                pygame.display.update()
+                clock.tick(60)
 
-        if Flag_Game_Level[0] > 0:    ## drawing the level for something equal to or greater then 10
-            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[0],Flag_Game_Level[1]]
-            level_message = Words_And_Phrases(180,180,level_message_list)
-        else:    ## drawing the level for something that is less then 10
-            level_message_list = ['L','E','V','E','L','space',Flag_Game_Level[1]]    
-            level_message = Words_And_Phrases(187,180,level_message_list)
-        level_message.Draw()
-
-        pygame.display.update()    ## updating the game and pausing it
-        Pause(2)
-
-        pygame.draw.rect(screen,black,(180,180,120,14))    ## drawing a square to erase level message
-        for alien in aliens:    ## drawing the aliens and closing the screen if the quit button is pressed
-            alien.Draw('white')
-            Close_Skip_Check()
-            pygame.display.update()
-            clock.tick(60)
-
-    class Game_Element:    ## main class
+    ## main class
+    class Game_Element:
         Basic_Sound_Url = 'Sounds\\'
         Basic_Url = 'Images\\'
         def __init__(self,xpos,ypos):
@@ -512,156 +323,180 @@ def MainGame():
             self.ypos = ypos
 
     class Words_And_Phrases(Game_Element):
-        Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',    ## uploading all the character names
+        ## uploading all the character names
+        Character_Name_List = ['A','B','C','D','E','E','F','G','H','I','J','K','L','M','N',
                                 'O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2',
                                 '3','4','5','6','7','8','9','left','right','equal',
                                 'asterisk','question_mark','dash','space','yflip']
-            
-        Character_Dictionary = {}    ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
+        
+        ## uploading all the character images, transforming it, and storing it in a dictionary with respective value
+        Character_Dictionary = {}
         for character_name in Character_Name_List:
 
-        
-            img = pygame.image.load(Game_Element.Basic_Url+'letters\\' + character_name + '.jpeg')    ## loading the image, transforming it, then storing it
+            ## loading the image, transforming it, then storing it
+            img = pygame.image.load(Game_Element.Basic_Url+'letters\\' + character_name + '.jpeg')
             img = pygame.transform.scale(img,(10,14))
             Character_Dictionary[character_name] = img
-
-        Symbol_Translation_Dictionary = {'<':'left','>':'right','=':'equal','*':'asterisk','?':'question_mark',    ## setting up a translation dictionary for symbols to words
+        
+        ## setting up a translation dictionary for symbols to words
+        Symbol_Translation_Dictionary = {'<':'left','>':'right','=':'equal','*':'asterisk','?':'question_mark',
                                          '-':'dash',' ':'space',1:'1',2:'2',3:'3',4:'4',5:'5',6:'6',7:'7',8:'8',
                                          9:'9',0:'0'}
-         
+            
         def __init__(self,xpos,ypos,phrase):
             super().__init__(xpos,ypos)
             self.phrase = phrase
 
         def Draw(self,delay=0):
-            Counter_Spacing = 0    ## setting up the counter spacing used for drawing
 
-            for character in self.phrase:    ## iteration process
-                if Player_Selected == True:    ## checking if the player decides to skip(specifically in the pause)
+            ## setting up the counter spacing used for drawing 
+            Counter_Spacing = 0
+
+            ## iteration process
+            for character in self.phrase:
+
+                ## checking if the player decides to skip(specifically in the pause)
+                if Player_Selected == True:
                     if Flag_Skip == 'stage_2':
                         break 
-
-                if character in Words_And_Phrases.Symbol_Translation_Dictionary:    ## translating the symbols from characters or numbers into strings
+                
+                ## translating the symbols from characters or numbers into strings
+                if character in Words_And_Phrases.Symbol_Translation_Dictionary:
                     character = Words_And_Phrases.Symbol_Translation_Dictionary[character]
-                screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))    ## drawing the letter and increasing the counter spacing
+                
+                ## drawing the letter and increasing the counter spacing
+                screen.blit(Words_And_Phrases.Character_Dictionary[character],(self.xpos + Counter_Spacing,self.ypos))
                 Counter_Spacing = Counter_Spacing + 15
 
-                if delay != 0:    ## pausing if there is a delay
+                ## pausing if there is a delay
+                if delay != 0:
                     pygame.display.update()
                     Pause(delay/60)
 
-    class Alien(Game_Element):                                                                                                                                                                                
-        Speed = 5    ## movement
-        Timer = 20
+    class Alien(Game_Element):                                                                                                                                                                                 
+        ## movement
+        Speed = 5
+        Timer = 2
         Flag_Collide_Side = None
         Flag_Down_Step = False
-        Counter_Background_Sound = 1    ## counters and animation
-        Current_Animation = 0
-        Letter_Flip_Image_List = []    ## setting up the letter interaction images from the start screen
+        
+        ## counters
+        Counter_Position = 0
+        Counter_Movement = 0
+        Counter_Background_Sound = 1
 
-        for image_number in range(1,5):    ## loading and transforming the images then adding it to the list
+        ## animation
+        Current_Animation = 0
+
+        ## layout    
+        layout = [[[0],[0,0],[0,0],[0,0],[0,0],[0,0]],
+                  [[0],[0,0],[0,0],[0,0],[0,0],[0,0]],
+                  [[0],[0,0],[0,0],[0,0],[0,0],[0,0]],
+                  [[0],[0,0],[0,0],[0,0],[0,0],[0,0]],
+                  [[0],[0,0],[0,0],[0,0],[0,0],[0,0]]]
+        
+        ## setting up the letter interaction images from the start screen
+        Letter_Flip_Image_List = []
+
+        ## loading and transforming the images and then adding them to the list
+        for image_number in range(1,5):
             img = pygame.image.load(Game_Element.Basic_Url+'Alien Letter Flip\Interaction '+str(image_number)+'.jpeg')
             img = pygame.transform.scale(img,(32,15))
             Letter_Flip_Image_List.append(img)
         
-        Image_List = []    ## setting up the alien images
-        for alien_size in [1,2,3,4,5]:
-            alien_color_list = []
-            for alien_color in ['White','Green']:
-                alien_type_list = []
-                for alien_type in range(1,4):
-                    alien_animation_list = []
-                    for animation_frame in range(1,3):
-                        img = pygame.image.load(Game_Element.Basic_Url+'Alien\\'+str(alien_color)+' '+str(alien_type)+' '+str(animation_frame)+'.jpeg')    ## loading the image and deciding the scale factor
-                        alien_scale_factor = 2**(alien_size - 1)
+        ## setting up the alien images
+        Image_List = []
 
-                        if alien_type == 3:    ## deciding the length of the aliens depending on it's type
-                            alien_length = 15
-                        else:
-                            alien_length = 20
+        ## uploading all the images
+        for alien_color in ['White','Green']:
+            alien_type_list = []
+            for alien_type in range(1,4):
+                alien_animation_list = []
+                for animation_frame in range(1,3):
 
-                        img = pygame.transform.scale(img,(alien_length*alien_scale_factor,15*alien_scale_factor))    ## transforming the image
-                        alien_animation_list.append(img)    ## storing the images in lists
-                    alien_type_list.append(alien_animation_list)
-                alien_color_list.append(alien_type_list)
-            Image_List.append(alien_color_list)
+                    ## loading the image
+                    img = pygame.image.load(Game_Element.Basic_Url+'Alien\\'+str(alien_color)+' '+str(alien_type)+' '+str(animation_frame)+'.jpeg')
+        
+                    ## deciding the width of the alien_list
+                    if alien_type == 3:
+                        alien_length = 15
+                    else:
+                        alien_length = 20
 
-        def __init__(self,xpos,ypos,type,size):
-            super().__init__(xpos,ypos) ## init function and other attributes
+                    ## transforming the image
+                    img = pygame.transform.scale(img,(alien_length,15))
+
+                    ## storing the images in lists
+                    alien_animation_list.append(img)
+                alien_type_list.append(alien_animation_list)
+            Image_List.append(alien_type_list)
+
+        def __init__(self,xpos,ypos,type):
+            super().__init__(xpos,ypos)
             self.type = type
-            self.size = size
-            self.scale_factor = 2**(self.size - 1)    ## setting up the scale factor and health
-            self.health = self.scale_factor
 
-            if self.type == 3:    ## deciding it's length and width
+            ## deciding the length and width
+            if self.type == 3:
                 self.length = 15
                 self.height = 15
             else:
                 self.length = 20
                 self.height = 15
-            
-            self.length = self.length*self.scale_factor    ## transforming the length and height based on the scale factor
-            self.height = self.height*self.scale_factor
- 
+
         def Move_Alien(self):
-            self.xpos = self.xpos + self.Speed ## changing the speed
+            self.xpos = self.xpos + self.Speed
+            
+            ## changing the alien's animation
+            if self.Current_Animation == 0:
+                self.Current_Animation = 1
+            elif self.Current_Animation == 1:
+                self.Current_Animation = 0
 
         def Move_Down(self):
-            self.ypos = self.ypos + 15  ## moving the aliend own 
-            if Alien.Flag_Collide_Side == 'left':  ## checking the direction of the alien
+            ## changing the alien_list' ypos
+            self.ypos = self.ypos + (15 - (Alien.Counter_Position/2))
+         
+            ## changing the alien_list' speed based on the collide side
+            if Alien.Flag_Collide_Side == 'left':
                 Alien.Speed = 5
             elif Alien.Flag_Collide_Side == 'right':
                 Alien.Speed = -5
-            Alien.Flag_Collide_Side = None
 
         def Check(self):
-            if self.xpos + self.length >= 440:    ## checking if the alien hits the edge
+            ## checking if the alien hits the edge
+            if self.xpos + self.length >= 440:
                 Alien.Flag_Collide_Side = 'right'
             elif self.xpos <= 35:
                 Alien.Flag_Collide_Side = 'left'
 
-            if self.ypos + self.height > 330 and self.ypos < 370:    ## checking if the aliens reach the Barrier
+            ## checking if the alien_list reach the Barrier
+            if self.ypos + self.height > 330 and self.ypos < 370:
                 if self.xpos + self.length > 48 and self.xpos < 108:
-                    Alien_Barrier_Collision(self,Barrier1)
+                    Alien_Barrier_Collision(self,barrier1)
                 elif self.xpos + self.length > 156 and self.xpos < 216:
-                    Alien_Barrier_Collision(self,Barrier2)
+                    Alien_Barrier_Collision(self,barrier2)
                 elif self.xpos + self.length > 264 and self.xpos < 324:
-                    Alien_Barrier_Collision(self,Barrier3)
+                    Alien_Barrier_Collision(self,barrier3)
                 elif self.xpos + self.length > 372 and self.xpos < 432:
-                    Alien_Barrier_Collision(self,Barrier4)
+                    Alien_Barrier_Collision(self,barrier4)
 
-            if self.ypos + self.height >= 435:    # checking if the aliens hit the invasion line or invade
+            # checking if the alien_list hit the invasion line or invade
+            if self.ypos + self.height == 435:
                 nonlocal Flag_Gameover
                 Flag_Gameover = True
 
         def Shoot(self):
-            if player_1 != None:    ## aliens shooting a bullet at player 1
-                if self.xpos + self.length > player_1.xpos and player_1.xpos + player_1.length > self.xpos:
-                    if random.randint(1,70) == 1:
-                        alien_bullets.append(Alien_Bullet(self.xpos + self.length/2,self.ypos + self.height))
-            
-            if player_2 != None:    # aliens shooting a bullet at player 2
-                if self.xpos + self.length > player_2.xpos and player_2.xpos + player_2.length > self.xpos:
-                    if random.randint(1,70) == 1:
-                        alien_bullets.append(Alien_Bullet(self.xpos + self.length/2,self.ypos + self.height))
-
-        def Split(self):
-            aliens.remove(self)    ## removing the alien from the screen
-            if self.size == 1:   ## checking if the alien should explode
-                    Alien_Explosion_List.append(Alien_Explosion(self.xpos,self.ypos))    ## adding the explosion to the explosion list
-
-            elif self.size > 1: ## checking if the size is greater then 1 and making it split
-                    for row in range(0,2):    ## adding more aliens to the screen
-                        for column in range(0,2):
-                            aliens.append(Alien(self.xpos + row*self.length/2,self.ypos + column*self.height/2,self.type,self.size - 1))
+            ## alien_list shooting a bullet
+            if random.randint(1,100) == 1:
+                alien_bullets.append(Alien_Bullet(self.xpos,self.ypos))
 
         def Draw(self,color='white'):
             if color == 'white':
-                return screen.blit(Alien.Image_List[self.size - 1][0][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[0][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
             elif color == 'green':
-                return screen.blit(Alien.Image_List[self.size - 1][1][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[1][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
             elif color == 'red':
-                return screen.blit(Alien.Image_List[self.size - 1][2][self.type - 1][Alien.Current_Animation],(self.xpos,self.ypos))
+                return screen.blit(Alien.Image_List[2][self.type - 1][self.Current_Animation],(self.xpos,self.ypos))
 
         def Draw_Letter_Take(self):
             return screen.blit(Alien.Letter_Flip_Image_List[self.Current_Animation],(self.xpos - 8,self.ypos))
@@ -669,18 +504,29 @@ def MainGame():
             return screen.blit(Alien.Letter_Flip_Image_List[self.Current_Animation + 2],(self.xpos - 8,self.ypos))
 
     class Player(Game_Element):
-        Flag_Struck = False        ## setting up the flag variables
+        ## setting up the flag variables
+        Flag_Struck = False
         Flag_Movement_Direction = None
-        Shoot_Iteration_Counter = 0    ## setting up the counter variables
+
+        ## setting up the counter variables
+        Shoot_Iteration_Counter = 0
         Lucky_Shot = False
-        Bullet_List = []    ## setting up the bullet list
-        Shoot_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player shoot sound.wav')    ## setting up the shoot sound
-        Shoot_Timer = 0    ## setting up the shoot timer
-    
-        Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')    ## setting up the player's image
+
+        ## Bullet List
+        Bullet_List = []
+
+        ## setting up the shoot sound
+        Shoot_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player shoot sound.wav')
+
+        ## setting up the player's image
+        Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player green.jpeg')
         Green_Image = pygame.transform.scale(Img,(30,20))
+
         Img = pygame.image.load(Game_Element.Basic_Url+'Player\\player blue.jpeg')
         Blue_Image = pygame.transform.scale(Img,(30,20))
+
+        ## setting up the shoot timer
+        Shoot_Timer = 0
 
         def __init__(self,xpos,ypos):
             super().__init__(xpos,ypos)
@@ -688,7 +534,8 @@ def MainGame():
             self.height = 20
 
         def Move_Player(self):
-            if self.Shoot_Timer > 0:    ## updating the shoot timer
+            ## updating the shoot timer
+            if self.Shoot_Timer > 0:
                 self.Shoot_Timer = self.Shoot_Timer - 1
             
             if self.Flag_Movement_Direction == 'left':
@@ -707,20 +554,24 @@ def MainGame():
                 return screen.blit(Player.Blue_Image,(self.xpos,self.ypos))
 
     class Mystery_Ship(Game_Element):
-        Low_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'mystery ship low sound.wav')    ## adding the sounds
+        ## adding the images
+        Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship\Mystery Ship Red.jpeg')
+        Image = pygame.transform.scale(Img,(32,14))
+        
+        ## adding the sounds
+        Low_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'mystery ship low sound.wav')
         Sound_Iteration_Counter = 10
 
-        Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship\Mystery Ship Red.jpeg')    ## adding the images
-        Image = pygame.transform.scale(Img,(32,14))
-    
         def __init__(self,xpos,ypos):
             super().__init__(xpos,ypos)
             self.length = 32
             self.height = 14
 
         def Move_Mystery_Ship(self):
-            self.xpos = self.xpos - 2    ## moving the mystery ship
-            if self.xpos + self.length < 0:    ## checking if it should be replaced and the sound counter is also fixed
+            ## moving the mystery ship
+            self.xpos = self.xpos - 2
+            ## checking if it should be replaced and the sound counter is also fixed
+            if self.xpos + self.length < 0:
                 self.xpos = 2500
                 self.Sound_Iteration_Counter = 10
 
@@ -728,22 +579,24 @@ def MainGame():
             return screen.blit(Mystery_Ship.Image,(self.xpos,self.ypos))
             
         def Play_Sound(self):
-            if self.xpos < 480:    ## playing it's sound
+            ## playing it's sound
+            if self.xpos < 480:
                 if self.Sound_Iteration_Counter >= 10:
                     self.Low_Sound.play()
                     self.Sound_Iteration_Counter = 0
                 self.Sound_Iteration_Counter = self.Sound_Iteration_Counter + 1
                 
     class Player_Bullet(Game_Element):
-        img = pygame.image.load(Game_Element.Basic_Url+'Player Bullet\player bullet white.jpeg')    ## uploading images
+        ## uploading images
+        img = pygame.image.load(Game_Element.Basic_Url+'Player Bullet\player bullet white.jpeg')
         White_Image = pygame.transform.scale(img,(2,16))
         img = pygame.image.load(Game_Element.Basic_Url+'Player Bullet\player bullet blue.jpeg')
         Blue_Image = pygame.transform.scale(img,(2,16))
         img = pygame.image.load(Game_Element.Basic_Url+'Player Bullet\player bullet green.jpeg')
         Green_Image = pygame.transform.scale(img,(2,16))
 
-        Alien_Collide_Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'alien shot sound.wav')    ## setting up the sound
-        Dr = [2,5,4,7]    ## setting up the destruction ranges
+        ## setting up the destruction ranges
+        Dr = [2,5,4,7]
 
         def __init__(self,xpos,ypos):
             super().__init__(xpos,ypos)
@@ -754,110 +607,143 @@ def MainGame():
             self.ypos = self.ypos - 5
 
         def Check(self):
-            nonlocal player_1, player_2    ## declaring nonlocals to the players and scores
+            ## declaring nonlocals to the players and scores
+            nonlocal player_1, player_2
             nonlocal player_1_score, player_2_score
 
-            if self.ypos + self.height > 330 and self.ypos < 370:    ## checking if the player_1.Bullet_List hit the Barriers
+            ## checking if the player_1.Bullet_List hit the Barriers
+            if self.ypos + self.height > 330 and self.ypos < 370:
                 if self.xpos + self.length > 48 and self.xpos < 108:
-                    Bullet_Barrier_Collision(Barrier1,self)
+                    Bullet_Barrier_Collision(barrier1,self)
                 elif self.xpos + self.length > 156 and self.xpos < 216:
-                    Bullet_Barrier_Collision(Barrier2,self)
+                    Bullet_Barrier_Collision(barrier2,self)
                 elif self.xpos + self.length > 264 and self.xpos < 324:
-                    Bullet_Barrier_Collision(Barrier3,self)
+                    Bullet_Barrier_Collision(barrier3,self)
                 elif self.xpos + self.length > 372 and self.xpos < 432:
-                    Bullet_Barrier_Collision(Barrier4,self)
+                    Bullet_Barrier_Collision(barrier4,self)
 
-            if self in player_1.Bullet_List or self in player_2.Bullet_List:    ## checking if the bullets hit the alien
-                for alien in aliens:
-                    if Collide(alien,self) == True:
-                        Player_Bullet.Alien_Collide_Sound.play()    ## playing the alien collide sound
-                        alien.health = alien.health - 1    ## subtracting health from the aliens
+            ## checking if the bullets hit the alien
+            if self in player_1.Bullet_List or self in player_2.Bullet_List:
+                for group in alien_list:
+                    for alien in group:
+                        if Collide(alien,self) == True:
 
-                        if alien.health == 0:    ## checking if the alien's health is equal to zero
-                            alien.Split()    ## splitting the alien
-                        else:
-                            if self in player_1.Bullet_List:    ## removing the bullet from the player bullet's list
+                            ## removing the alien
+                            group.remove(alien)
+
+                            ## checking how much should be added to the scores based on the alien type
+                            increment = 0
+                            if alien.type == 2:
+                                increment = 1
+                            elif alien.type == 1:
+                                increment = 2
+                            elif alien.type == 3:
+                                increment = 3
+
+                            ## updating the player scores
+                            if self in player_1.Bullet_List:
+                                player_1_score.phrase[2] = player_1_score.phrase[2] + increment
                                 player_1.Bullet_List.remove(self)
                             elif self in player_2.Bullet_List:
+                                player_2_score.phrase[2] = player_2_score.phrase[2] + increment
                                 player_2.Bullet_List.remove(self)
-                            break    ## breaking otherwise because the player's score are not updated unless the alien dissapears
 
-                        increment = 0    ## checking how much should be added to the scores based on the alien type
-                        if alien.type == 2:
-                            increment = 1
-                        elif alien.type == 1:
-                            increment = 2
-                        elif alien.type == 3:
-                            increment = 3
+                            ## updating the high score
+                            high_score.phrase[2] = high_score.phrase[2] + increment
 
-                        if self in player_1.Bullet_List:    ## updating the player scores and removing the player's bullet
-                            player_1.Bullet_List.remove(self)
-                            player_1_score.phrase[2] = player_1_score.phrase[2] + increment
-                        elif self in player_2.Bullet_List:
-                            player_2.Bullet_List.remove(self)
-                            player_1_score.phrase[2] = player_1_score.phrase[2] + increment
+                            ## checking if the counter alien movement variable should be changed
+                            if len(group) == 0:
+                                if Alien.Counter_Movement > alien_list.index(group):
+                                    Alien.Counter_Movement = Alien.Counter_Movement - 1
+                                alien_list.remove(group)
+                                
+                            ## adding the explosion to the explosion list
+                            alien_explosion_list.append(Alien_Explosion(alien.xpos,alien.ypos))
 
-                        high_score.phrase[2] = high_score.phrase[2] + increment    ## updating the high score
-                        break 
+                            ## playing the explosion sound
+                            Alien_Explosion.Sound.play()
+                            break 
 
-                    if self not in player_1.Bullet_List and self not in player_2.Bullet_List:    ## ending the iteration if the bullet is removed
+                    ## ending the iteration if the bullet is removed
+                    if self not in player_1.Bullet_List and self not in player_2.Bullet_List:
                         break
 
-            if self in player_1.Bullet_List:    ## checking if the bullet hits the mystery ship
+            ## checking if the bullet hits the mystery ship
+            if self in player_1.Bullet_List:
                 if Collide(self,mystery_ship) == True:
-                        if player_1.Lucky_Shot == True:    ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
+
+                    ## checking if the player 1 bullets hits the mystery ship at the 15th shot and making it worth 300 points
+                        if player_1.Lucky_Shot == True:
                             if (player_1.Shoot_Iteration_Counter - 23)%15 == 0:
-                                Mystery_Ship_Explosion_List.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
                                 player_1_score.phrase[1] = player_1_score.phrase[1] + 3
                                 high_score.phrase[1] = high_score.phrase[1] + 3
                             else:
                                 player_1.Lucky_Shot = False
 
-                        if player_1.Lucky_Shot == False:    ## checking if otherwise and making it worth 200 points
-                            Mystery_Ship_Explosion_List.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
+                    ## checking if otherwise and making it worth 200 points
+                        if player_1.Lucky_Shot == False:
+                            mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
                             player_1_score.phrase[1] = player_1_score.phrase[1] + 2
                             high_score.phrase[1] = high_score.phrase[1] + 2
 
-                        if player_1.Shoot_Iteration_Counter == 23:    ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
+                    ## checking if the player 1 bullet hits the mystery ship on the 23rd shot 
+                        if player_1.Shoot_Iteration_Counter == 23:
                             player_1.Lucky_Shot = True
 
-                        mystery_ship.xpos = 2500    ## relocating the mystery ship
-                        player_1.Bullet_List.remove(self)    ## removing the bullet from the bullet list
-                        Mystery_Ship_Explosion.Sound.play()## playing the mystery ship's explosion sound
+                    ## relocating the mystery ship
+                        mystery_ship.xpos = 2500
+
+                    ## removing the bullet from the bullet list
+                        player_1.Bullet_List.remove(self)
+
+                    ## playing the mystery ship's explosion sound
+                        Mystery_Ship_Explosion.Sound.play()
 
             elif self in player_2.Bullet_List:
                 if Collide(self,mystery_ship) == True:
-                        if player_2.Lucky_Shot == True:    ## checking if the player 2's bullets hits the mystery ship at the 15th shot and making it worth 300 points
+
+                    ## checking if the player 2's bullets hits the mystery ship at the 15th shot and making it worth 300 points
+                        if player_2.Lucky_Shot == True:
                             if (player_2.Shoot_Iteration_Counter - 23)%15 == 0:
-                                Mystery_Ship_Explosion_List.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
+                                mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,300))
                                 player_2_score.phrase[1] = player_1_score.phrase[1] + 3
                                 high_score.phrase[1] = high_score.phrase[1] + 3
                             else:
                                 player_2.Lucky_Shot = False
 
-                        if player_2.Lucky_Shot == False:    ## checking if otherwise and making it worth 200 points
-                            Mystery_Ship_Explosion_List.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
+                    ## checking if otherwise and making it worth 200 points
+                        if player_2.Lucky_Shot == False:
+                            mystery_ship_explosion_list.append(Mystery_Ship_Explosion(mystery_ship.xpos,mystery_ship.ypos,200))
                             player_2_score.phrase[1] = player_2_score.phrase[1] + 2
                             high_score.phrase[1] = high_score.phrase[1] + 2
-                        
-                        if player_2.Shoot_Iteration_Counter == 23:    ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
+                            
+                    ## checking if the player 2's bullet hits the mystery ship on the 23rd shot
+                        if player_2.Shoot_Iteration_Counter == 23:
                             player_2.Lucky_Shot = True
 
-                        mystery_ship.xpos = 2500    ## relocating the mystery ship
-                        player_2.Bullet_List.remove(self)    ## removing the bullet from the bullet list
-                        Mystery_Ship_Explosion.Sound.play()    ## playing the mystery ship's explosion sound
+                    ## relocating the mystery ship
+                        mystery_ship.xpos = 2500
 
-            Update_Score(player_1_score)    ## checking if the hundreads or thousands place in the scores should be updated
+                    ## removing the bullet from the bullet list
+                        player_2.Bullet_List.remove(self)
+
+                    ## playing the mystery ship's explosion sound
+                        Mystery_Ship_Explosion.Sound.play()
+   
+            ## checking if the hundreads or thousands place in the scores should be updated
+            Update_Score(player_1_score)
             Update_Score(player_2_score)
             Update_Score(high_score)
 
-            if self in player_1.Bullet_List or self in player_2.Bullet_List:   ## checking if the player bullet hits the top of the screen
+            ## checking if the player bullet hits the top of the screen
+            if self in player_1.Bullet_List or self in player_2.Bullet_List:
                 if self.ypos < 0:
                     if self in player_1.Bullet_List:
                         player_1.Bullet_List.remove(self)
                     elif self in player_2.Bullet_List:
                         player_2.Bullet_List.remove(self)
-                    Bullet_Explosion_List.append(Bullet_Explosion(self.xpos - 6,self.ypos))
+                    bullet_explosion_list.append(Bullet_Explosion(self.xpos - 6,self.ypos))
 
         def Draw(self,color='white'):
             if color == 'white':
@@ -868,7 +754,8 @@ def MainGame():
                 return screen.blit(Player_Bullet.Green_Image,(self.xpos,self.ypos))
 
     class Alien_Bullet(Game_Element):
-        Current_Animation = 1    ## class variables
+        ## class variables
+        Current_Animation = 1
         
         layout_1 = [[2,2,2,2,2,6],
                     [2,2,2,6,2,2],
@@ -883,7 +770,8 @@ def MainGame():
                     [2,3,2,1,2,3,2],
                     [3,2,1,2,3,2,1]]
         
-        Image_List = []    ## uploading all the alien bullet images
+        ## uploading all the alien bullet images
+        Image_List = []
         for color in ['White','Green']:
             color_list = []
             for image_particle in range(1,7):
@@ -893,11 +781,13 @@ def MainGame():
             Image_List.append(color_list)
 
         def __init__(self,xpos,ypos):
-            self.xpos = xpos    ## setting up the cordinates and the type
+            ## setting up the cordinates and the type 
+            self.xpos = xpos
             self.ypos = ypos
             self.type = random.randint(1,3)
 
-            if self.type == 1:    ## setting up the attributes such as the varying lengths, heights, the Barrier destruction range
+            ## setting up the attributes such as the varying lengths, heights, the Barrier destruction range
+            if self.type == 1:
                 self.length = 6
                 self.height = 12
                 self.Dr = [2,5,4,7]
@@ -911,35 +801,40 @@ def MainGame():
                 self.Dr = [3,5,5,7]
       
         def Move_Alien_Bullet(self):
-            self.Current_Animation = self.Current_Animation + 1    ## updating the animation
+            ## updating the animation
+            self.Current_Animation = self.Current_Animation + 1
             if self.Current_Animation == 4:
                 self.Current_Animation = 0
-            self.ypos = self.ypos + 3    ## updating the y cordinates
+            ## updating the y cordinates
+            self.ypos = self.ypos + 3
 
         def Check(self):
-            nonlocal alien_bullets, Bullet_Explosion_List
-            alien_bullets_length = len(alien_bullets)
-            if self.ypos + self.height > 330 and self.ypos < 370:    ## checking if the alien_bullets hit the Barriers
+            nonlocal alien_bullets, bullet_explosion_list
+            Alien_Bullets_length = len(alien_bullets)
+            ## checking if the alien_bullets hit the Barriers
+            if self.ypos + self.height > 330 and self.ypos < 370:
                 if self.xpos + self.length > 48 and self.xpos < 108:
-                    Bullet_Barrier_Collision(Barrier1,self)
+                    Bullet_Barrier_Collision(barrier1,self)
                 elif self.xpos + self.length > 156 and self.xpos < 216:
-                    Bullet_Barrier_Collision(Barrier2,self)
+                    Bullet_Barrier_Collision(barrier2,self)
                 elif self.xpos + self.length > 264 and self.xpos < 324:
-                    Bullet_Barrier_Collision(Barrier3,self)
+                    Bullet_Barrier_Collision(barrier3,self)
                 elif self.xpos + self.length > 372 and self.xpos < 432:
-                    Bullet_Barrier_Collision(Barrier4,self)
+                    Bullet_Barrier_Collision(barrier4,self)
 
-            if self.ypos + self.height > 435 and len(alien_bullets) == alien_bullets_length:    ## checking if the alien_bullets hits the boundary line
+            ## checking if the alien_bullets hits the boundary line
+            if self.ypos + self.height > 435 and len(alien_bullets) == Alien_Bullets_length:
                 Bullet_Barrier_Collision(alien_invasion_line,self)
                 if self in alien_bullets:
                     alien_bullets.remove(self)
-                Bullet_Explosion_List.append(Bullet_Explosion(self.xpos - 3,self.ypos - 4,))
-        
-            if len(alien_bullets) == alien_bullets_length:    ## checking if the alien_bullet hit the player bullet
+                bullet_explosion_list.append(Bullet_Explosion(self.xpos - 3,self.ypos - 4,))
+
+            ## checking if the alien_bullet hit the player bullet
+            if len(alien_bullets) == Alien_Bullets_length:
                 for bullet in player_1.Bullet_List:
                     if self.xpos + self.length > bullet.xpos and bullet.xpos + bullet.length > self.xpos and self.ypos + self.height > bullet.ypos and bullet.ypos + bullet.height > self.ypos:
                         player_1.Bullet_List.remove(bullet)
-                        Bullet_Explosion_List.append(Bullet_Explosion(bullet.xpos - 6,bullet.ypos - 8))
+                        bullet_explosion_list.append(Bullet_Explosion(bullet.xpos - 6,bullet.ypos - 8))
                         if self.type == 1:
                             if random.randint(1,2) == 1:
                                 alien_bullets.remove(self)
@@ -948,11 +843,11 @@ def MainGame():
                                 alien_bullets.remove(self)
                         break
 
-            if len(alien_bullets) == alien_bullets_length:
+            if len(alien_bullets) == Alien_Bullets_length:
                 for bullet in player_2.Bullet_List:
                     if Collide(self,bullet) == True:
                         player_2.Bullet_List.remove(bullet)
-                        Bullet_Explosion_List.append(Bullet_Explosion(bullet.xpos - 6,bullet.ypos - 8))
+                        bullet_explosion_list.append(Bullet_Explosion(bullet.xpos - 6,bullet.ypos - 8))
                         if self.type == 1:
                             if random.randint(1,2) == 1:
                                 alien_bullets.remove(self)
@@ -961,21 +856,25 @@ def MainGame():
                                 alien_bullets.remove(self)
                         break
 
-            if len(alien_bullets) == alien_bullets_length:   # ## checking if the alien bullet hits the player
+            # ## checking if the alien bullet hits the player
+            if len(alien_bullets) == Alien_Bullets_length:
                 if player_1 != None:
                     if Collide(self,player_1) == True:
                         alien_bullets.remove(self)
                         player_1.Flag_Struck = True
-            if len(alien_bullets) == alien_bullets_length:
+
+            if len(alien_bullets) == Alien_Bullets_length:
                 if player_2 != None:
                     if Collide(self,player_2) == True:
                         alien_bullets.remove(self)
                         player_2.Flag_Struck = True
 
         def Draw(self):
-            counter_xpos = 0    ## drawing the alien bullet
+            ## drawing the alien bullet
+            counter_xpos = 0
 
-            if self.type == 1:    ## checking what type it is and drawing the right images
+            ## checking what type it is and drawing the right images
+            if self.type == 1:
                 for image_particle in Alien_Bullet.layout_1[self.Current_Animation]:
                     if self.ypos + 2 > 330:
                         screen.blit(Alien_Bullet.Image_List[1][image_particle- 1],(self.xpos,self.ypos + counter_xpos))
@@ -990,7 +889,7 @@ def MainGame():
                     else:
                         screen.blit(Alien_Bullet.Image_List[0][image_particle- 1],(self.xpos,self.ypos + counter_xpos))
                     counter_xpos = counter_xpos + 2
-
+                    
             if self.type == 3:
                 for image_particle in Alien_Bullet.layout_3[self.Current_Animation]:
                     if self.ypos + 2 > 330:
@@ -1000,7 +899,8 @@ def MainGame():
                     counter_xpos = counter_xpos + 2
 
     class Barrier(Game_Element):
-        img = pygame.image.load(Game_Element.Basic_Url+'Barrier\\barrier particle.jpeg')    ## setting up the images according to this
+        ## setting up the images according to this
+        img = pygame.image.load(Game_Element.Basic_Url+'Barrier\\barrier particle.jpeg')
         green_image = pygame.transform.scale(img,(2,2))
         def __init__(self,xpos,ypos):
             super().__init__(xpos,ypos)
@@ -1009,18 +909,26 @@ def MainGame():
         def Draw(self):
             return screen.blit(Barrier.green_image,(self.xpos,self.ypos))
 
-    class Alien_Explosion(Game_Element):    ## setting up the scinario classes
-        Img = pygame.image.load(Game_Element.Basic_Url+'Alien Explosion\\alien explosion white.jpeg')    ## setting up the image
+    ## setting up the scinario classes
+    class Alien_Explosion(Game_Element):
+        ## setting up the image
+        Img = pygame.image.load(Game_Element.Basic_Url+'Alien Explosion\\alien explosion white.jpeg')
         White_Image = pygame.transform.scale(Img,(20,13))
         Img = pygame.image.load(Game_Element.Basic_Url+'Alien Explosion\\alien explosion green.jpeg')
         Green_Image = pygame.transform.scale(Img,(20,13))
-        Existing_Timer = 10    ## setting up the Existing_Timer
+
+        ## setting up it's sound
+        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'alien shot sound.wav')
+
+        ## setting up the Existing_Timer
+        Existing_Timer = 10
 
         def Update_Timer(self):
-            self.Existing_Timer = self.Existing_Timer - 1    ## removing the explosion when the timer reaches zero
+            ## removing the explosion when the timer reaches zero
+            self.Existing_Timer = self.Existing_Timer - 1
             if self.Existing_Timer == 0:
-                nonlocal Alien_Explosion_List
-                Alien_Explosion_List.remove(self)
+                nonlocal alien_explosion_list
+                alien_explosion_list.remove(self)
 
         def Draw(self):
             if self.ypos + 13 > 330:
@@ -1029,25 +937,30 @@ def MainGame():
                 screen.blit(Alien_Explosion.White_Image,(self.xpos,self.ypos))
 
     class Mystery_Ship_Explosion(Alien_Explosion):
-        Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship Explosion\\mystery ship explosion red.jpeg')    ## uploading the images
+        ## uploading the images
+        Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship Explosion\\mystery ship explosion red.jpeg')
         Explosion_Image = pygame.transform.scale(Img,(42,16))
         Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship Explosion\\mystery ship score 200 red.jpeg')
         Score_200_Image = pygame.transform.scale(Img,(40,14)) 
         Img = pygame.image.load(Game_Element.Basic_Url+'Mystery Ship Explosion\\mystery ship score 200 red.jpeg')
         Score_300_Image = pygame.transform.scale(Img,(40,14)) 
 
-        Existing_Timer = 20    ## setting up the existing timer
-        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'mystery ship high sound.wav')    ## setting up the sound
+        ## setting up the existing timer
+        Existing_Timer = 20
+
+        ## setting up the sound
+        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'mystery ship high sound.wav')
 
         def __init__(self,xpos,ypos,points=200):
             super().__init__(xpos,ypos)
             self.points = points
 
         def Update_Timer(self):
-            self.Existing_Timer = self.Existing_Timer - 1    ## removing the explosion when the timer reaches zero
+            ## removing the explosion when the timer reaches zero
+            self.Existing_Timer = self.Existing_Timer - 1
             if self.Existing_Timer == 0:
-                nonlocal Mystery_Ship_Explosion_List
-                Mystery_Ship_Explosion_List.remove(self)
+                nonlocal mystery_ship_explosion_list
+                mystery_ship_explosion_list.remove(self)
 
         def Draw(self):
             if self.Existing_Timer > 10:
@@ -1059,15 +972,18 @@ def MainGame():
                     screen.blit(Mystery_Ship_Explosion.Score_200_Image,(self.xpos - 4,self.ypos))
 
     class Bullet_Explosion(Game_Element):
-        Img = pygame.image.load(Game_Element.Basic_Url+'Bullet_Explosions\\bullet and bullet explosion.jpeg')
+        Img = pygame.image.load(Game_Element.Basic_Url+'Bullet Explosions\\bullet and bullet explosion.jpeg')
         Image = pygame.transform.scale(Img,(12,16))
         Explosion_Timer = 4
         def Draw(self):
             return screen.blit(Bullet_Explosion.Image,(self.xpos,self.ypos))
 
     class Player_Explosion(Game_Element):
-        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player explosion sound.wav')    ## uploading the sound
-        Image_List = []    ## uploading the player explosion images
+        ## uploading the sound
+        Sound = mixer.Sound(Game_Element.Basic_Sound_Url+'player explosion sound.wav')
+
+        ## uploading the player explosion images
+        Image_List = []
         for image_number in range(1,4):
             img = pygame.image.load(Game_Element.Basic_Url+'Player Explosion\player explosion '+str(image_number)+'.jpeg')
             Image_List.append(pygame.transform.scale(img,(40,20)))
@@ -1085,38 +1001,28 @@ def MainGame():
             elif image_number == 3:
                 screen.blit(Player_Explosion.Image_List[2],(self.xpos,self.ypos))
 
-    while True:    ## The Game Loop
-## setting up the menu 1
-    
-        please_select_message_list = ['P','L','E','A','S','E','space','S','E','L','E','C','T']    ## setting up the words and messages
-        please_select_message = Words_And_Phrases(140,140,please_select_message_list)
+    ## The Game Loop
+    while True:
+      ## setting up the menu 1
+        please_select_message = Words_And_Phrases(140,140,'PLEASE SELECT')
+        one_or_two_players_message = Words_And_Phrases(120,180,'<1 OR 2 PLAYERS>')
+        one_player_message = Words_And_Phrases(190,220,'1PLAYER')
+        two_player_message = Words_And_Phrases(190,260,'2PLAYER')
 
-        one_or_two_players_message_list = ['left',1,'space','O','R','space',2,'space','P','L','A','Y','E','R','S','right']
-        one_or_two_players_message = Words_And_Phrases(120,180,one_or_two_players_message_list)
+        ## setting up the select asterisk
+        asterisk = Words_And_Phrases(170,220,'*')
 
-        one_player_message_list = [1,'P','L','A','Y','E','R']
-        one_player_message = Words_And_Phrases(190,220,one_player_message_list)
+        ## setting up the important credit message
+        credit_message = Words_And_Phrases(340,456,'CREDIT 00')
 
-        two_player_message_list = [2,'P','L','A','Y','E','R']
-        two_player_message = Words_And_Phrases(190,260,two_player_message_list)
+        ## setting up the flag variable to begin the game
+        Player_Selected = False
 
-    
-        asterisk_list = ['asterisk']    ## setting up the select asterisk
-        asterisk = Words_And_Phrases(170,220,asterisk_list)
-
-    
-        credit_message_list = ['C','R','E','D','I','T','space',0,0]    ## setting up the important credit message
-        credit_message = Words_And_Phrases(340,456,credit_message_list)
-
-    
-        Player_Selected = False    ## setting up the flag variable to begin the game
-
-    
-        Flag_Game_Mode = 'one_player'    ## setting up the mode variable
-
-    
-        score_message_list = ['S','C','O','R','E','left',1,'right','space','H','I','dash','S','C','O','R','E','space','S','C','O','R','E','left',2,'right']    ## setting up the player's score and the high score
-        score_message = Words_And_Phrases(45,20,score_message_list)
+        ## setting up the mode variable
+        Flag_Game_Mode = 'one_player'
+        
+        ## setting up the player's score and the high score
+        score_message = Words_And_Phrases(45,20,'SCORE<1> HI-SCORE SCORE<2>')
         player_1_score = Words_And_Phrases(60,60,[0,0,0,0])
         player_2_score = Words_And_Phrases(320,60,[0,0,0,0])
         high_score = Words_And_Phrases(200,60,[0,0,0,0])
@@ -1124,114 +1030,130 @@ def MainGame():
         while True:
             screen.fill(black)
 
-        
-            score_message.Draw()    ## drawing the player's score
+            ## drawing the player's score
+            score_message.Draw()
             player_1_score.Draw()
             player_2_score.Draw()
             high_score.Draw()
             credit_message.Draw()
 
-        
-            please_select_message.Draw()    ## drawing the phrases
+            ## drawing the phrases
+            please_select_message.Draw()
             one_or_two_players_message.Draw()
             one_player_message.Draw()
             two_player_message.Draw()
             asterisk.Draw()
 
-        
-            for event in pygame.event.get():    ## basic key functions
+            ## basic key functions
+            for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
 
                 if event.type == KEYDOWN:
                     if event.key == K_DOWN:
-                        asterisk = Words_And_Phrases(170,220,asterisk_list)    ## changing the asterik's position resetting the game mode
+                        ## changing the asterik's position resetting the game mode
+                        asterisk.ypos = 260
                         Flag_Game_Mode = 'two_player'
+
                     elif event.key == K_UP:
-                        asterisk = Words_And_Phrases(170,180,asterisk_list)   ## changing the asterik's position resetting the game mode
+                        ## changing the asterik's position resetting the game mode
+                        asterisk.ypos = 220
                         Flag_Game_Mode = 'one_player'
+
                     elif event.key == K_RETURN:
                         Player_Selected = True
-                        
+
             pygame.display.update()
             clock.tick(60)
             if Player_Selected == True:
                 break
 
-## setting up the menu 2
-        Flag_Skip = False    ## flag skip variable
-        screen.fill(black)    ## emptying the screen
-    
-        score_message.Draw()    # drawing the player's score and high score
+      ## setting up the menu 2
+        Flag_Skip = False
+
+        ## emptying the screen
+        screen.fill(black)
+        
+        # drawing the player's score and high score
+        score_message.Draw()
         player_1_score.Draw()
         player_2_score.Draw()
         high_score.Draw()
         credit_message.Draw()
-    
-        play_message_list = ['P','L','A']    # setting up and drawing the words and messages
-        play_message = Words_And_Phrases(210,150,play_message_list)
-        play_message.Draw(10)
+
+        # setting up and drawing the words and messages
+        play_message = Words_And_Phrases(210,150,'PLA')
+        play_message.Draw(6)
 
         y_message = Words_And_Phrases(255,150,['yflip'])
-        y_message.Draw(10)
+        y_message.Draw(6)
 
-        Space_Invaders_message_list = ['S','P','A','C','E','space','I','N','V','A','D','E','R','S']
-        Space_Invaders_message = Words_And_Phrases(135,190,Space_Invaders_message_list)
-        Space_Invaders_message.Draw(10)
+        Space_Invaders_message = Words_And_Phrases(135,190,'SPACE INVADERS')
+        Space_Invaders_message.Draw(6)
+
         Pause(0.5)
 
-        score_advance_table_message = ['asterisk','S','C','O','R','E','space','A','D','V','A','N','C','E','space','T','A','B','L','E','asterisk']    ## drawing the score_advance_table
-        score_advance_table = Words_And_Phrases(80,250,score_advance_table_message)
+        ## drawing the score_advance_table
+        score_advance_table = Words_And_Phrases(80,250,'*SCORE ADVANCE TABLE*')
         score_advance_table.Draw()
 
-        if Flag_Skip == False:    ## drawing the alien display only if the player hasn't skipped
+        ## drawing the alien display only if the player hasn't skipped
+        if Flag_Skip == False:
             mystery_ship_display = Mystery_Ship(144,285)
             mystery_ship_display.Draw()
                 
-            alien_3_display = Alien(153,320,3,1)
+            alien_3_display = Alien(153,320,3)
             alien_3_display.Draw('white')
 
-            alien_1_display = Alien(150,355,1,1)
+            alien_1_display = Alien(150,355,1)
             alien_1_display.Draw('white')
 
-            alien_2_display = Alien(150,390,2,1)
+            alien_2_display = Alien(150,390,2)
             alien_2_display.Draw('white')
 
-        mystery_point_message_list = ['equal','question_mark','space','M','Y','S','T','E','R','Y']    ## drawing the alien values
-        mystery_point_message = Words_And_Phrases(180,285,mystery_point_message_list)
-        mystery_point_message.Draw(10)
+        ## drawing the alien values
+        mystery_point_message = Words_And_Phrases(180,285,'=? MYSTERY')
+        mystery_point_message.Draw(6)
         
-        thirty_points_message_list = ['equal',3,0,'space','P','O','I','N','T','S']
-        thirty_points_message = Words_And_Phrases(180,320,thirty_points_message_list)
-        thirty_points_message.Draw(10)
+        thirty_points_message = Words_And_Phrases(180,320,'=30 POINTS')
+        thirty_points_message.Draw(6)
 
-        twenty_points_message_list = ['equal',2,0,'space','P','O','I','N','T','S']
-        twenty_points_message = Words_And_Phrases(180,355,twenty_points_message_list)
-        twenty_points_message.Draw(10)
+        twenty_points_message = Words_And_Phrases(180,355,'=20 POINTS')
+        twenty_points_message.Draw(6)
 
-        ten_points_message_list = ['equal',1,0,'space','P','O','I','N','T','S']
-        ten_points_message = Words_And_Phrases(180,390,ten_points_message_list)
-        ten_points_message.Draw(10)
+        ten_points_message = Words_And_Phrases(180,390,'=10 POINTS')
+        ten_points_message.Draw(6)
 
     ## setting up the short alien film
-        start_alien = Alien(605,149,3,1)    # making the alien
+
+        # making the alien
+        start_alien = Alien(605,149,3)
         start_alien.Speed = -5
-        while True:    ## moving the alien towards the letter to take it
-            Close_Skip_Check()    ## checking if the player decides to skip and the break the loop if that happens
+
+        ## moving the alien towards the letter to take it
+        while True:
+
+            ## checking if the player decides to skip and the break the loop if that happens
+            Close_Skip_Check()
             if Flag_Skip == 'stage_2':
                 break
 
-            pygame.draw.rect(screen,black,(0,150,480,15))    ## drawing the words
+            ## drawing the words
+            pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
             y_message.Draw()
 
-            start_alien.Draw()    ## drawing the alien
+            ## drawing the alien
+            start_alien.Draw()
             start_alien.Move_Alien()
 
-        
-            if start_alien.xpos == 260:    ## checking if the alien reaches the cordinate of 265 where it will take the letter
-                start_alien.Speed = 5    ## changing the alien speed
+            ## checking if the alien reaches the cordinate of 265 where it will take the letter
+            if start_alien.xpos == 260:
+
+                ## changing the alien speed
+                start_alien.Speed = 5
+
                 pygame.display.update()
                 clock.tick(30)
                 break
@@ -1239,18 +1161,28 @@ def MainGame():
             pygame.display.update()
             clock.tick(30)
 
-    
-        while True:    ## moving the alien away from the letter to take it away
-            Close_Skip_Check()    ## checking if the player decides to skip and breaking the loop if the skip variable is true
+        ## moving the alien away from the letter to take it away
+        while True:
+
+            ## checking if the player decides to skip and breaking the loop if the skip variable is true
+            Close_Skip_Check()
             if Flag_Skip == 'stage_2':
                 break
-        
-            pygame.draw.rect(screen,black,(0,150,480,15))    ## drawing the words
+            
+            ## drawing the words
+            pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
-            start_alien.Draw_Letter_Take()    ## drawing the alien
+
+            ## drawing the alien
+            start_alien.Draw_Letter_Take()
             start_alien.Move_Alien()
-            if start_alien.xpos == 600:    ## checking if the alien reaches the cordinate of 600 where it will flip the letter
-                start_alien.Speed = -5    ## changing the alien speed
+
+            ## checking if the alien reaches the cordinate of 600 where it will flip the letter
+            if start_alien.xpos == 600:
+
+                ## changing the alien speed
+                start_alien.Speed = -5
+
                 pygame.display.update()
                 clock.tick(30)
                 break
@@ -1258,28 +1190,44 @@ def MainGame():
             pygame.display.update()
             clock.tick(30)
 
-        while True:    ## moving the alien towards the letter to replace it
-            Close_Skip_Check()   
+        ## moving the alien towards the letter to replace it
+        while True:
+            ## checking if the player decides to skip and breaking the loop if the skip variable is true
+            Close_Skip_Check()
             if Flag_Skip == 'stage_2':
                 break
-            pygame.draw.rect(screen,black,(0,150,480,15))    ## drawing the words
+
+            ## drawing the words
+            pygame.draw.rect(screen,black,(0,150,480,15))
             play_message.Draw()
-            start_alien.Draw_Letter_Place()   ## drawing the alien
-            if start_alien.xpos == 260:    ## checking if the alien reaches the cordinate of 260 where it place the flipped letter
-                y_message_list = ['Y']   # flipping the letter
-                y_message = Words_And_Phrases(255,150,y_message_list)
-                start_alien.Speed = 5   ## changing the alien speed
+
+            ## drawing the alien
+            start_alien.Draw_Letter_Place()
+
+            ## checking if the alien reaches the cordinate of 260 where it place the flipped letter
+            if start_alien.xpos == 260:
+
+                # flipping the letter
+                y_message = Words_And_Phrases(255,150,'Y')
+
+                ## changing the alien speed
+                start_alien.Speed = 5
+
                 pygame.display.update()
                 clock.tick(30)
                 break
 
-            start_alien.Move_Alien()    ## moving the alien
+            ## moving the alien
+            start_alien.Move_Alien()
+
             pygame.display.update()
             clock.tick(30)
         
-    
-        while True:    ## moving the alien away from the letter
-            Close_Skip_Check()    ## breaking the loop if the skip variable is true
+        ## moving the alien away from the letter
+        while True:
+
+            ## breaking the loop if the skip variable is true
+            Close_Skip_Check()
             if Flag_Skip == 'stage_2':
                 break
 
@@ -1303,7 +1251,7 @@ def MainGame():
 
         ## deleting the start alien from no use
         del start_alien
-        
+
     ## checking if the player hasn't skipped and setting up the menu 3 and menu 4
         if Flag_Skip == False:
 
@@ -1317,30 +1265,26 @@ def MainGame():
             player_1_score.Draw()
             player_2_score.Draw()
             high_score.Draw()
-            credit_message.draw()
+            credit_message.Draw()
 
             ## drawing the buttons
-            push_message_list = ['P','U','S','H']
-            push_message = Words_And_Phrases(210,180,push_message_list)
+            push_message = Words_And_Phrases(210,180,'PUSH')
             push_message.Draw()
 
             ## drawing the message describing the one player buttons used
             if Flag_Game_Mode == 'one_player':
-                only_one_player_button_message_list = ['O','N','L','Y','space',1,'space','P','L','A','Y','E','R','space','B','U','T','T','O','N']
-                only_one_player_button_message = Words_And_Phrases(90,230,only_one_player_button_message_list)
+                only_one_player_button_message = Words_And_Phrases(90,230,'ONLY 1 PLAYER BUTTON')
                 only_one_player_button_message.Draw()
 
             ## drawing the message describing the two player buttons used
             elif Flag_Game_Mode == 'two_player':
-                only_two_player_button_message_list = [2,'space','P','L','A','Y','E','R','space','B','U','T','T','O','N']
-                only_two_player_button_message = Words_And_Phrases(127,230,only_two_player_button_message_list)
+                only_two_player_button_message = Words_And_Phrases(127,230,'2 PLAYER BUTTON')
                 only_two_player_button_message.Draw()
             
             ## updating the screen only without the flagskip variable
             pygame.display.update()
             Pause(2)
 
-    
         ## setting up menu 4
             ## filling the screen black quickly but not directly
             Fill_Black()
@@ -1355,16 +1299,14 @@ def MainGame():
 
                 if Flag_Game_Mode == 'one_player':
                     ## drawing the play player 1 message and blinking the player 1 score
-                    play_one_player_message_list = ['P','L','A','Y','space','P','L','A','Y','E','R','left',1,'right']
-                    play_one_player_message = Words_And_Phrases(135,180,play_one_player_message_list)
+                    play_one_player_message = Words_And_Phrases(135,180,'PLAY PLAYER<1>')
                     play_one_player_message.Draw()
                     if time%2 == 0:
                         player_1_score.Draw()
 
                 if Flag_Game_Mode == 'two_player':
                     ## drawing the play player 2 message and blinking the player 1 and the player 2 score 
-                    play_two_player_message_list = ['P','L','A','Y','space','P','L','A','Y','E','R','left',2,'right']
-                    play_two_player_message = Words_And_Phrases(135,220,play_two_player_message_list)
+                    play_two_player_message = Words_And_Phrases(135,220,'PLAY PLAYER<2>')
                     play_two_player_message.Draw()
                     if time%2 == 0:
                         player_2_score.Draw()
@@ -1387,10 +1329,8 @@ def MainGame():
         if Flag_Game_Mode == 'two_player':
             credit_message.xpos = 173
 
-## setting up the elements
-        ## setting up the gameover flag variable
+      ## setting up the elements
         Flag_Gameover = False
-        Flag_Game_Level = [0,1]
 
         ## setting up the player, their backup, and their live 
         player_1 = None
@@ -1409,18 +1349,18 @@ def MainGame():
             player_2_backup = [Player(420,450),Player(380,450)]
             player_2_life.phrase = [2]
             
-        aliens = []
-        Fill_Alien()
+        alien_list = []
+        Fill_Alien(True)
 
         ## alien attributes
-        Alien_Explosion_List = []
+        alien_explosion_list = []
 
         ## setting up the Mystery_Ship
         mystery_ship = Mystery_Ship(2500,90)
-        Mystery_Ship_Explosion_List = []
+        mystery_ship_explosion_list = []
         
         ## setting up the Barrier layout
-        Barrier_layout = [[0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+        barrier_layout = [[0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
                         [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
                         [0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
                         [0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
@@ -1442,10 +1382,10 @@ def MainGame():
                         [1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]]
 
         ## setting up the Barrier and alien invasion line
-        Barrier1 = []
-        Barrier2 = []
-        Barrier3 = []
-        Barrier4 = []
+        barrier1 = []
+        barrier2 = []
+        barrier3 = []
+        barrier4 = []
         alien_invasion_line = []
         Barrier_Refill()
 
@@ -1453,7 +1393,7 @@ def MainGame():
         player_1.Bullet_List = []
         player_2.Bullet_List = []
         alien_bullets = []
-        Bullet_Explosion_List = []
+        bullet_explosion_list = []
         
     # setting up the screen
         Fill_Black()
@@ -1474,47 +1414,50 @@ def MainGame():
             mystery_ship.Play_Sound()
 
         ## moving aliens and changing animations only if there is at least one alien on the screen
-            if len(Alien_Explosion_List) == 0:
+            if len(alien_explosion_list) == 0:
                 Alien.Timer = Alien.Timer - 1
                 if  Alien.Timer <= 0:
-                    Alien.Timer = 20
+                    Alien.Timer = 2
+                    if Alien.Flag_Down_Step == True:
+                        for i in range(len(alien_list[Alien.Counter_Movement])):
+                            alien_list[Alien.Counter_Movement][i].Move_Down()
+                            alien_list[Alien.Counter_Movement][i].Shoot()
+                            alien_list[Alien.Counter_Movement][i].Check()
+                    for i in range(len(alien_list[Alien.Counter_Movement])):
+                        alien_list[Alien.Counter_Movement][i].Move_Alien()
+                        alien_list[Alien.Counter_Movement][i].Shoot()
+                        alien_list[Alien.Counter_Movement][i].Check()
+                    Alien.Counter_Movement = Alien.Counter_Movement + 1
 
-                    ## updating the alien's animation 
-                    if Alien.Current_Animation == 0:
-                        Alien.Current_Animation = 1
-                    elif Alien.Current_Animation == 1:
-                        Alien.Current_Animation = 0
+        ## checking if all the alien_list have moved
+            if Alien.Counter_Movement == len(alien_list):
+                Alien.Counter_Movement = 0
 
-                    ## moving the aliens down whenever the aliens reach a side
-                    if Alien.Flag_Collide_Side != None:
-                        for alien in aliens:
-                            alien.Move_Down()
-                            alien.Shoot()
-                            alien.Check()
-                    
-                    ## moving the aliens regularly
-                    elif Alien.Flag_Collide_Side == None:
-                        for alien in aliens:
-                            alien.Move_Alien()
-                            alien.Shoot()
-                            alien.Check()
+            ## stoping the alien_list from continously moving down
+                if Alien.Flag_Collide_Side != None and Alien.Flag_Down_Step == True:
+                    Alien.Flag_Down_Step = False
+                    Alien.Flag_Collide_Side = None
 
-                ## playing the background music of the alien movement
-                    mixer.music.load(Game_Element.Basic_Sound_Url+'background sound '+str(Alien.Counter_Background_Sound)+'.wav')
-                    mixer.music.play()
-                    Alien.Counter_Background_Sound = Alien.Counter_Background_Sound + 1
-                    if Alien.Counter_Background_Sound == 5:
-                        Alien.Counter_Background_Sound = 1
+            ## enabling the alien_list to move down
+                if Alien.Flag_Collide_Side != None:
+                    Alien.Flag_Down_Step = True
+                
+            ## playing the background music of the alien movement
+                mixer.music.load(Game_Element.Basic_Sound_Url+'background sound '+str(Alien.Counter_Background_Sound)+'.wav')
+                mixer.music.play()
+                Alien.Counter_Background_Sound = Alien.Counter_Background_Sound + 1
+                if Alien.Counter_Background_Sound == 5:
+                    Alien.Counter_Background_Sound = 1
 
         ## moving the alien bullets
             alien_bullet_Iteration_Counter = 0
             while True:
                 if alien_bullet_Iteration_Counter >= len(alien_bullets):
                     break
-                alien_bullets_length = len(alien_bullets)
+                Alien_Bullets_length = len(alien_bullets)
                 alien_bullets[alien_bullet_Iteration_Counter].Move_Alien_Bullet()
                 alien_bullets[alien_bullet_Iteration_Counter].Check()
-                if len(alien_bullets) == alien_bullets_length:
+                if len(alien_bullets) == Alien_Bullets_length:
                     alien_bullet_Iteration_Counter = alien_bullet_Iteration_Counter + 1
 
         ## moving the player bullets
@@ -1528,20 +1471,20 @@ def MainGame():
         ## updating the alien dead timer
             Alien_Explosion_Iteration_Counter = 0
             while True:
-                if Alien_Explosion_Iteration_Counter == len(Alien_Explosion_List):
+                if Alien_Explosion_Iteration_Counter == len(alien_explosion_list):
                     break
-                Alien_Explosion_Length = len(Alien_Explosion_List)
-                Alien_Explosion_List[Alien_Explosion_Iteration_Counter].Update_Timer()
-                if Alien_Explosion_Length == len(Alien_Explosion_List):
+                Alien_Explosion_Length = len(alien_explosion_list)
+                alien_explosion_list[Alien_Explosion_Iteration_Counter].Update_Timer()
+                if Alien_Explosion_Length == len(alien_explosion_list):
                     Alien_Explosion_Iteration_Counter = Alien_Explosion_Iteration_Counter + 1
             
             Mystery_Ship_Explosion_Iteration_Counter = 0
             while True:
-                if Mystery_Ship_Explosion_Iteration_Counter == len(Mystery_Ship_Explosion_List):
+                if Mystery_Ship_Explosion_Iteration_Counter == len(mystery_ship_explosion_list):
                     break
-                Mystery_Ship_Explosion_Length = len(Mystery_Ship_Explosion_List)
-                Mystery_Ship_Explosion_List[Mystery_Ship_Explosion_Iteration_Counter].Update_Timer()
-                if Mystery_Ship_Explosion_Length == len(Mystery_Ship_Explosion_List):
+                Mystery_Ship_Explosion_Length = len(mystery_ship_explosion_list)
+                mystery_ship_explosion_list[Mystery_Ship_Explosion_Iteration_Counter].Update_Timer()
+                if Mystery_Ship_Explosion_Length == len(mystery_ship_explosion_list):
                     Mystery_Ship_Explosion_Iteration_Counter = Mystery_Ship_Explosion_Iteration_Counter + 1
  
             ## The Key Loop
@@ -1631,7 +1574,7 @@ def MainGame():
                                 player_2.Flag_Movement_Direction = None
                         else:
                             if player_1.Flag_Movement_Direction == 'left':
-                                player_1.Flag_Movement_Direction = None
+                                player_1.Flag_Movement_Direction = None   
                     elif event.key == K_d:
                         if player_2 != None:
                             if player_2.Flag_Movement_Direction == 'right':
@@ -1645,7 +1588,7 @@ def MainGame():
             for Barrier_particle in alien_invasion_line:
                 Barrier_particle.Draw()
 
-        ## drawing the score
+        ## drawing the score and the credits
             score_message.Draw()
             player_1_score.Draw()
             player_2_score.Draw()
@@ -1653,7 +1596,7 @@ def MainGame():
             player_1_life.Draw()
             player_2_life.Draw()
             credit_message.Draw()
-
+            
         ## drawing the player
             if player_1 != None:
                 player_1.Draw('green')
@@ -1665,29 +1608,30 @@ def MainGame():
                 player.Draw('blue')
             
         ## drawing the Barriers
-            for Barrier_particle in Barrier1:
+            for Barrier_particle in barrier1:
                 Barrier_particle.Draw()
-            for Barrier_particle in Barrier2:
+            for Barrier_particle in barrier2:
                 Barrier_particle.Draw()
-            for Barrier_particle in Barrier3:
+            for Barrier_particle in barrier3:
                 Barrier_particle.Draw()
-            for Barrier_particle in Barrier4:
+            for Barrier_particle in barrier4:
                 Barrier_particle.Draw()
                 
         ## drawing the Mystery_Ship
             mystery_ship.Draw()
 
         ## drawing the aliens
-            for alien in aliens:
-                if alien.ypos >= 315:
-                    alien.Draw('green')
-                else:
-                    alien.Draw('white')
+            for group in alien_list:
+                for alien in group:
+                    if alien.ypos >= 315:
+                        alien.Draw('green')
+                    else:
+                        alien.Draw('white')
 
         ## drawing the Alien_Explosion and Mystery Ship Explosion
-            for explosion in Alien_Explosion_List:
+            for explosion in alien_explosion_list:
                 explosion.Draw()
-            for explosion in Mystery_Ship_Explosion_List:
+            for explosion in mystery_ship_explosion_list:
                 explosion.Draw()
                 
         ## drawing the player bullet with the specific color
@@ -1710,12 +1654,12 @@ def MainGame():
         ##drawing the explosion caused by the player and alien bullets
             bullet_explosion_Iteration_Counter = 0
             while True:
-                if bullet_explosion_Iteration_Counter == len(Bullet_Explosion_List):
+                if bullet_explosion_Iteration_Counter == len(bullet_explosion_list):
                     break
-                Bullet_Explosion_List[bullet_explosion_Iteration_Counter].Draw()
-                Bullet_Explosion_List[bullet_explosion_Iteration_Counter].Explosion_Timer = Bullet_Explosion_List[bullet_explosion_Iteration_Counter].Explosion_Timer - 1
-                if Bullet_Explosion_List[bullet_explosion_Iteration_Counter].Explosion_Timer == 0:
-                    Bullet_Explosion_List.pop(bullet_explosion_Iteration_Counter)
+                bullet_explosion_list[bullet_explosion_Iteration_Counter].Draw()
+                bullet_explosion_list[bullet_explosion_Iteration_Counter].Explosion_Timer = bullet_explosion_list[bullet_explosion_Iteration_Counter].Explosion_Timer - 1
+                if bullet_explosion_list[bullet_explosion_Iteration_Counter].Explosion_Timer == 0:
+                    bullet_explosion_list.pop(bullet_explosion_Iteration_Counter)
                 else:
                     bullet_explosion_Iteration_Counter = bullet_explosion_Iteration_Counter + 1
 
@@ -1723,28 +1667,27 @@ def MainGame():
             pygame.display.update()
             clock.tick(60)
 
-            ## checking if all the aliens are shot
-            if len(aliens) == 0 and len(Alien_Explosion_List) == 0:
+            ## checking if all the alien_list are shot
+            if len(alien_list) == 0 and len(alien_explosion_list) == 0:
                 ## emptying all the bullet lists
                 alien_bullets = []
                 player_1.Bullet_List = []
                 player_2.Bullet_List = []
 
-                ## making the players stop
+                ## changing the alien's counter ypos because they move farther downward as each level passes
+                Alien.Counter_Position = Alien.Counter_Position + 1
+                if Alien.Counter_Position == 10:
+                    Alien.Counter_Position = 0
+
+                ## making the players stop and resetting the player's xpos 
                 if player_1 != None:
+                    player_1.xpos = 50
                     player_1.Flag_Movement_Direction = None
                 elif player_2 != None:
+                    player_2.xpos = 90
                     player_2.Flag_Movement_Direction = None
 
-                ## increasing the level of the game
-                Flag_Game_Level[1] = Flag_Game_Level[1] + 1
-
-                ## inreasing the level of the game by the tens place
-                if Flag_Game_Level[1] > 9:
-                    Flag_Game_Level[0] = Flag_Game_Level[0] + 1
-                    Flag_Game_Level[1] = Flag_Game_Level[1] - 10
-
-                ## Refilling Aliens and Barriers
+                ## Refilling alien_list and Barriers
                 Fill_Alien()
                 Barrier_Refill()
 
@@ -1763,8 +1706,7 @@ def MainGame():
         ## ending the game
             if Flag_Gameover == True:
                 ## drawing the Game Over Sign
-                game_over_message_list = ['G','A','M','E','O','V','E','R']
-                game_over_message = Words_And_Phrases(180,120,game_over_message_list)
+                game_over_message = Words_And_Phrases(180,120,'GAMEOVER')
                 game_over_message.Draw()
                 pygame.display.update()
                 Pause(2)
